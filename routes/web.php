@@ -22,3 +22,5 @@ Route::get('halo', function () {
 Route::get('lembaga', 'LembagaController@index');
 
 Route::get('santri', 'SantriController@index');
+
+Route::get('pengajar', 'PengajarController@getAll');
