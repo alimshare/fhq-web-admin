@@ -239,6 +239,7 @@
                                 <li><a href="{{ url('santri') }}">Daftar Santri</a></li>
                                 <li><a href="{{ url('lembaga') }}">Daftar Lembaga</a></li>
                                 <li><a href="{{ url('pengajar') }}">Daftar Pengajar</a></li>
+                                <li><a href="{{ url('semester') }}">Daftar Semester</a></li>
                             </ul>
                         </div>
                     </li>

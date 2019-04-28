@@ -161,10 +161,10 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-        Ixudra\Curl\CurlServiceProvider::class,
         /*
          * Package Service Providers...
          */
+        Ixudra\Curl\CurlServiceProvider::class,
 
         /*
          * Application Service Providers...
