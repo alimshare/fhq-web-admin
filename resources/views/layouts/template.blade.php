@@ -257,13 +257,13 @@
                     </div>
                 </li>
                 <li class="no-padding active">
-                    <a class="collapsible-header waves-effect waves-grey active"><i class="material-icons">grid_on</i>Tables<i class="nav-drop-icon material-icons">keyboard_arrow_right</i></a>
+                    <a class="collapsible-header waves-effect waves-grey"><i class="material-icons">grid_on</i>Tables<i class="nav-drop-icon material-icons">keyboard_arrow_right</i></a>
                     <div class="collapsible-body">
                         <ul>
                             <li><a href="table-static.html">Static Tables</a></li>
                             <li><a href="table-responsive.html">Responsive Tables</a></li>
                             <li><a href="table-comparison.html">Comparison Table</a></li>
-                            <li><a href="table-data.html" class="active-page">Data Tables</a></li>
+                            <li><a href="table-data.html">Data Tables</a></li>
                         </ul>
                     </div>
                 </li>
