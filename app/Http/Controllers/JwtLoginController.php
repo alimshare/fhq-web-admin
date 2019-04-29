@@ -34,7 +34,7 @@ class JwtLoginController extends Controller
             ->post();
 
         if ($login->code != 'SUCCESS') {
-            return redirect('/show')->with('message', $login->message);
+            return redirect('/login')->with('message', $login->message);
         }
 
         $token = $login->token;
@@ -43,7 +43,7 @@ class JwtLoginController extends Controller
         if (isset($_COOKIE['token'])) {
             return redirect('/lembaga');
         } else {
-            return redirect('/show')->with('message', 'Please contact Administrator to solve the problem.');;
+            return redirect('/login')->with('message', 'Please contact Administrator to solve the problem.');;
         }
     }
 
