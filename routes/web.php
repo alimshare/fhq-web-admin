@@ -11,13 +11,17 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 Route::get('halo', function () {
 	return "Halo, Selamat Datang Di FHQ An-nashr";
 });
+
+Route::get('/', 'JwtLoginController@showLoginForm');
+Route::get('login', 'JwtLoginController@showLoginForm');
+Route::post('login', 'JwtLoginController@login')->name('login');
 
 Route::get('lembaga', 'LembagaController@index');
 

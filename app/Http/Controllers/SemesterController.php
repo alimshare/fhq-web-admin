@@ -18,24 +18,11 @@ class SemesterController extends Controller
     //di sini isi controller semester
     public function index()
     {
-	    $login = Curl::to(env('API_ENDPOINT').'auth/login')
-            ->withHeaders([
-                'Content-type: application/x-www-form-urlencoded',
-                'Authorization: Bearer'
-            ])
-            ->withData([ 
-                'username' => 'alimm.abdullah@gmail.com', 
-                'password' => 'p@ssw0rd', 
-                'clientId' => 'fhq-web', 
-                'clientSecret' => 'secret' 
-            ])
-            ->asJson()
-            ->post();
-
+	    $token = $this->token();
         $this->data['semester'] = Curl::to(env('API_ENDPOINT').'semester')
             ->withHeaders([
                 'Content-type: application/x-www-form-urlencoded',
-                'Authorization: Bearer '.$login->token
+                'Authorization: Bearer '.$token
             ])
             ->asJson()
             ->get();
