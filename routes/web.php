@@ -30,3 +30,5 @@ Route::get('santri', 'SantriController@index');
 Route::get('pengajar', 'PengajarController@index');
 
 Route::get('semester', 'SemesterController@index');
+
+Route::get('program', 'ProgramController@index');

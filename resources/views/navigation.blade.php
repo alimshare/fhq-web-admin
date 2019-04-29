@@ -22,6 +22,7 @@
                     <li><a href="{{ url('lembaga') }}">Daftar Lembaga</a></li>
                     <li><a href="{{ url('pengajar') }}">Daftar Pengajar</a></li>
                     <li><a href="{{ url('semester') }}">Daftar Semester</a></li>
+                    <li><a href="{{ url('program') }}">Program Pendidikan</a></li>
                 </ul>
             </div>
         </li>
