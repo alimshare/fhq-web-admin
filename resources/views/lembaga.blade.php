@@ -1,10 +1,6 @@
-@extends('header')
-@section('head-title')
-Santri
-@endsection
-@section('title')
-FHQ An-nashr
-@endsection
+@extends('layouts.template')
+@section('head-title', 'Lembaga')
+@section('title','FHQ An-nashr')
 @section('body')
 
 <main class="mn-inner">
