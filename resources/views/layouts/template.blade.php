@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>@yield('head-title')</title>
     @include('head')
 </head>
 <body>
