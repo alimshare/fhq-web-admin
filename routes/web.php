@@ -23,6 +23,6 @@ Route::get('lembaga', 'LembagaController@index');
 
 Route::get('santri', 'SantriController@index');
 
-Route::get('pengajar', 'PengajarController@getAll');
+Route::get('pengajar', 'PengajarController@index');
 
 Route::get('semester', 'SemesterController@index');

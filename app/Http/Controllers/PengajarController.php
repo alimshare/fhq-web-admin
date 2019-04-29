@@ -7,22 +7,38 @@ use Ixudra\Curl\Facades\Curl;
  
 class PengajarController extends Controller
 {
-    //di sini isi controller santri
-    public function getAll(){
-	    $login = Curl::to('https://sandbox.fhqannashr.org/auth/login')
-        ->withHeaders( array( 'Content-type: application/x-www-form-urlencoded', 'Authorization: Bearer' ) )
-        ->withData( array( 'username' => 'alimm.abdullah@gmail.com', 'password' => 'p@ssw0rd', 'clientId' => 'fhq-web', 'clientSecret' => 'secret' ))
-        ->post();
-        $json = json_decode($login, true);
-        $token = $json['token'];
+    /**
+     * Public container data.
+     * Variable ini untuk memudahkan penampungan data.
+     * Jadi, cukup 1 variable ini saja yg di pakai, untuk data yg akan di passing ke view.
+     * Cukup kirim $this->data, maka semuanya akan terkirim. Jadi insyaalah tidak ada yg kelewat.
+     */
+    public $data = array();
 
-        $listpengajar = Curl::to('https://sandbox.fhqannashr.org/pengajar')
-        ->withHeaders( array( 'Content-type: application/json', 'Authorization: Bearer '.$token ))
-        ->get();
+    public function index(){
 
-       $jsonpengajar = json_decode($listpengajar, true);
-       
-        return view('pengajar', $jsonpengajar);
+    $login = Curl::to(env('API_ENDPOINT').'auth/login')
+            ->withHeaders([
+                'Content-type: application/x-www-form-urlencoded',
+                'Authorization: Bearer'
+            ])
+            ->withData([ 
+                'username' => 'alimm.abdullah@gmail.com', 
+                'password' => 'p@ssw0rd', 
+                'clientId' => 'fhq-web', 
+                'clientSecret' => 'secret' 
+            ])
+            ->asJson()
+            ->post();
 
+        $this->data['pengajar'] = Curl::to(env('API_ENDPOINT').'pengajar')
+            ->withHeaders([
+                'Content-type: application/x-www-form-urlencoded',
+                'Authorization: Bearer '.$login->token
+            ])
+            ->asJson()
+            ->get();
+
+        return view('pengajar', $this->data);
 	}
 }

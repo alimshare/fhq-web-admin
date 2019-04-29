@@ -1,10 +1,9 @@
-@extends('header')
-@section('head-title')
-Pengajar
-@endsection
-@section('title')
-FHQ An-nashr
-@endsection
+@extends('layouts.template')
+
+@section('head-title', 'Pengajar')
+
+@section('title', 'FHQ An-nashr')
+
 @section('body')
 <main class="mn-inner">
                 <div class="row">
@@ -32,11 +31,11 @@ FHQ An-nashr
                                         </tr>
                                     </tfoot>
                                     <tbody>
-                                    	@foreach ($data as $n)
+                                    	@foreach ($pengajar->data as $el)
                                         <tr>
-                                            <td>{{ $n['nip'] }}</td>
-                                            <td>{{ $n['name'] }}</td>
-                                            <td>{{ $n['gender'] }}</td>
+                                            <td>{{ $el->nip }}</td>
+                                            <td>{{ $el->name }}</td>
+                                            <td>{{ $el->gender }}</td>
                                         </tr>
 										@endforeach
                                     </tbody>
