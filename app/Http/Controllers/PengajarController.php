@@ -29,4 +29,58 @@ class PengajarController extends Controller
 
         return view('pengajar', $this->data);
     }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        $token = $this->token();
+
+        $this->data['pengajar'] = Curl::to(env('API_ENDPOINT').'pengajar'.'/'.$id)
+            ->withHeaders([
+                'Content-type: application/x-www-form-urlencoded',
+                'Authorization: Bearer '.$token
+            ])
+            ->asJson()
+            ->get();
+
+        return view('pengajarshow', $this->data);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+         $token = $this->token();
+
+        $this->data['pengajar'] = Curl::to(env('API_ENDPOINT').'pengajar'.'/remove/'.$id)
+            ->withHeaders([
+                'Content-type: application/x-www-form-urlencoded',
+                'Authorization: Bearer '.$token
+            ])
+            ->asJson()
+            ->get();
+
+        return view('pengajardestroy', $this->data);
+    }
 }
