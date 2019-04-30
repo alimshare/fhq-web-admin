@@ -10,13 +10,12 @@ class SantriController extends Controller
     //di sini isi controller santri
     public function index(){
 	    $token = $this->token();
-        $listsantri = Curl::to('https://sandbox.fhqannashr.org/santri')
-        ->withHeaders( array( 'Content-type: application/json', 'Authorization: Bearer '.$token ))
+        $this->data['santri'] = Curl::to(env('API_ENDPOINT').'santri')
+        ->withHeaders(['Content-type: application/json', 'Authorization: Bearer '.$token])
+        ->asJson()
         ->get();
-
-       $jsonsantri = json_decode($listsantri, true);
        
-        return view('santri', $jsonsantri);
+        return view('santri', $this->data);
 
 	}
 }

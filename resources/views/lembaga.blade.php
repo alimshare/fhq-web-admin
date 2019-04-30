@@ -27,10 +27,10 @@
                                         </tr>
                                     </tfoot>
                                     <tbody>
-                                    	@foreach ($data as $n)
+                                    	@foreach ($lembaga->data as $n)
                                         <tr>
-                                            <td>{{ $n['name'] }}</td>
-                                            <td>{{ $n['since'] }}</td>
+                                            <td>{{ $n->name }}</td>
+                                            <td>{{ $n->since }}</td>
                                         </tr>
 										@endforeach
                                     </tbody>

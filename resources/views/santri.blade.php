@@ -26,10 +26,10 @@
                                 </tr>
                             </tfoot>
                             <tbody>
-                            	@foreach ($data as $n)
+                            	@foreach ($santri->data as $n)
                                 <tr>
-                                    <td>{{ $n['nis'] }}</td>
-                                    <td>{{ $n['name'] }}</td>
+                                    <td>{{ $n->nis }}</td>
+                                    <td>{{ $n->name }}</td>
                                 </tr>
 								@endforeach
                             </tbody>
