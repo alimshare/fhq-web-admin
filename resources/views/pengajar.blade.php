@@ -21,6 +21,7 @@
                                             <th>NIP</th>
                                             <th>Name</th>
                                             <th>Gender</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
@@ -28,6 +29,7 @@
                                             <th>NIP</th>
                                             <th>Name</th>
                                             <th>Gender</th>
+                                            <th>Action</th>
                                         </tr>
                                     </tfoot>
                                     <tbody>
@@ -36,6 +38,10 @@
                                             <td>{{ $el->nip }}</td>
                                             <td>{{ $el->name }}</td>
                                             <td>{{ $el->gender }}</td>
+                                            <td>
+                                            <a href="{{ url('/pengajar',$el->nip) }}"><button class="btn btn-default">Detail</button></a>
+                                            <a href="{{ url('/pengajar',$el->nip) }}"><button class="btn btn-default">Edit</button></a>
+                                            </td>
                                         </tr>
 										@endforeach
                                     </tbody>

@@ -29,7 +29,7 @@ Route::get('santri', 'SantriController@index');
 
 Route::get('pengajar', 'PengajarController@index');
 Route::get('pengajar/{id}', 'PengajarController@show');
-Route::get('pengajar/remove/{id}', 'PengajarController@destroy');
+Route::delete('pengajar/remove/{id}', 'PengajarController@destroy');
 
 Route::get('semester', 'SemesterController@index');
 
