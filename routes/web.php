@@ -31,6 +31,7 @@ Route::get('pengajar', 'PengajarController@index');
 Route::get('pengajar/{id}', 'PengajarController@show');
 Route::delete('pengajar/remove/{id}', 'PengajarController@destroy');
 
+Route::get('semester/{reference}', 'SemesterController@detail');
 Route::get('semester', 'SemesterController@index');
 
 Route::get('program', 'ProgramController@index');

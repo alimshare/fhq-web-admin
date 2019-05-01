@@ -20,12 +20,14 @@
                             <tr>
                                 <th>Lembaga</th>
                                 <th>Semester</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tfoot>
                             <tr>
                                 <th>Lembaga</th>
                                 <th>Semester</th>
+                                <th>Action</th>
                             </tr>
                         </tfoot>
                         <tbody>
@@ -33,6 +35,10 @@
                             <tr>
                                 <td>{{ $el->lembaga }}</td>
                                 <td>{{ $el->semester }}</td>
+                                <td>
+                                    <a href="{{ url('semester/'.$el->semester_reference) }}" class="waves-effect waves-light btn m-b-xs">Detail</a>
+                                    {{-- <a href="" class="waves-effect waves-light btn orange m-b-xs">Edit</a> --}}
+                                </td>
                             </tr>
 							@endforeach
                         </tbody>

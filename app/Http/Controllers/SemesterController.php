@@ -18,11 +18,10 @@ class SemesterController extends Controller
     //di sini isi controller semester
     public function index()
     {
-	    $token = $this->token();
         $this->data['semester'] = Curl::to(env('API_ENDPOINT').'semester')
             ->withHeaders([
                 'Content-type: application/x-www-form-urlencoded',
-                'Authorization: Bearer '.$token
+                'Authorization: Bearer '.$this->token()
             ])
             ->asJson()
             ->get();
@@ -30,4 +29,18 @@ class SemesterController extends Controller
         return view('semester', $this->data);
 
 	}
+
+    public function detail(Request $Request, $reference=null)
+    {
+        $this->data['semester'] = Curl::to(env('API_ENDPOINT').'semester/'.$reference)
+            ->withHeaders([
+                'Content-type: application/x-www-form-urlencoded',
+                'Authorization: Bearer '.$this->token()
+            ])
+            ->asJson()
+            ->get();
+
+        return view('semester-detail', $this->data);
+
+    }
 }
