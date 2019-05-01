@@ -23,15 +23,23 @@ Route::get('/', 'JwtLoginController@showLoginForm');
 Route::get('login', 'JwtLoginController@showLoginForm');
 Route::post('login', 'JwtLoginController@login')->name('login');
 
-Route::get('lembaga', 'LembagaController@index');
+Route::group(['middleware' => ['jwtoken']], function () {
+	
+	Route::get('lembaga', 'LembagaController@index');
 
-Route::get('santri', 'SantriController@index');
+	Route::get('santri', 'SantriController@index');
 
-Route::get('pengajar', 'PengajarController@index');
-Route::get('pengajar/{id}', 'PengajarController@show');
-Route::delete('pengajar/remove/{id}', 'PengajarController@destroy');
+	Route::get('pengajar', 'PengajarController@index');
+	Route::get('pengajar/{id}', 'PengajarController@show');
+	Route::delete('pengajar/remove/{id}', 'PengajarController@destroy');
 
-Route::get('semester/{reference}', 'SemesterController@detail');
-Route::get('semester', 'SemesterController@index');
+	/**
+	 * Semester
+	 */
+	Route::get('semester/{reference}', 'SemesterController@detail');
+	Route::put('semester/{reference}', 'SemesterController@update');
+	Route::get('semester', 'SemesterController@index');
 
-Route::get('program', 'ProgramController@index');
+	Route::get('program', 'ProgramController@index');
+
+});

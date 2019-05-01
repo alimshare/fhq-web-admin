@@ -40,7 +40,46 @@ class SemesterController extends Controller
             ->asJson()
             ->get();
 
-        return view('semester-detail', $this->data);
+        // $this->data['reference'] = $reference;
 
+        dd($this->data);
+
+        return view('semester-form', $this->data);
+
+    }
+
+    public function update(Request $request, $reference=null)
+    {
+        // dd($request->all());
+        $send_data = array();
+        if ($request->input('description')) 
+        {
+            $send_data['description'] = $request->input('description');
+        }
+
+        if ($request->input('lembaga')) 
+        {
+            $send_data['lembaga']['name'] = $request->input('lembaga');
+        }
+
+        if ($request->input('name')) 
+        {
+            $send_data['name'] = $request->input('name');
+        }
+
+        $send_data['active'] = $request->input('active') == 'on' ? 1 : 0;
+        
+        $this->data['semester'] = Curl::to(env('API_ENDPOINT').'semester/edit/'.$reference)
+            ->withHeaders([
+                'Content-type: application/x-www-form-urlencoded',
+                'Authorization: Bearer '.$this->token()
+            ])
+            ->withData( $send_data )
+            ->asJson()
+            ->put();
+
+        dd($this->data, $send_data);
+
+        return view('semester-form', $this->data);
     }
 }
