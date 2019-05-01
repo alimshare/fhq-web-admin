@@ -40,9 +40,9 @@ class SemesterController extends Controller
             ->asJson()
             ->get();
 
-        // $this->data['reference'] = $reference;
+        $this->data['reference'] = $reference;
 
-        dd($this->data);
+        // dd($this->data);
 
         return view('semester-form', $this->data);
 
@@ -78,7 +78,7 @@ class SemesterController extends Controller
             ->asJson()
             ->put();
 
-        dd($this->data, $send_data);
+        // dd($this->data, $send_data);
 
         return view('semester-form', $this->data);
     }

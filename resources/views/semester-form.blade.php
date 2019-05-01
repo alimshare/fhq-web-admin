@@ -21,7 +21,7 @@
                     <span class="card-title">Main</span><br>
                     <div class="row">
                         <div class="input-field col s12">
-                            <input placeholder="Semester" id="semester" type="text" name="semester" value="{{ $semester->data->name }}" required="">
+                            <input placeholder="Semester" id="semester" type="text" name="name" value="{{ $semester->data->name }}" required="">
                             <label for="semester">Semester</label>
                         </div>
                         <div class="input-field col s12">
