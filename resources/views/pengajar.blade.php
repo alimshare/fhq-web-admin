@@ -39,8 +39,7 @@
                                             <td>{{ $el->name }}</td>
                                             <td>{{ $el->gender }}</td>
                                             <td>
-                                            <a href="{{ url('/pengajar',$el->nip) }}"><button class="btn btn-default">Detail</button></a>
-                                            <a href="{{ url('/pengajar',$el->nip) }}"><button class="btn btn-default">Edit</button></a>
+                                            <a href="{{ url('/pengajar',$el->nip) }}"><button class="btn btn-default">Detil</button></a>
                                             </td>
                                         </tr>
 										@endforeach

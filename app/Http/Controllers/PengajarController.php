@@ -17,12 +17,10 @@ class PengajarController extends Controller
     public $data = array();
 
     public function index(){
-        $token = $this->token();
-
         $this->data['pengajar'] = Curl::to(env('API_ENDPOINT').'pengajar')
             ->withHeaders([
                 'Content-type: application/x-www-form-urlencoded',
-                'Authorization: Bearer '.$token
+                'Authorization: Bearer '.$this->token()
             ])
             ->asJson()
             ->get();
@@ -38,17 +36,15 @@ class PengajarController extends Controller
      */
     public function show($id)
     {
-        $token = $this->token();
-
         $this->data['pengajar'] = Curl::to(env('API_ENDPOINT').'pengajar'.'/'.$id)
             ->withHeaders([
                 'Content-type: application/x-www-form-urlencoded',
-                'Authorization: Bearer '.$token
+                'Authorization: Bearer '.$this->token()
             ])
             ->asJson()
             ->get();
 
-        return view('pengajarshow', $this->data);
+        return view('pengajar-detail', $this->data);
     }
 
     /**
@@ -71,12 +67,10 @@ class PengajarController extends Controller
      */
     public function destroy($id)
     {
-         $token = $this->token();
-
         $this->data['pengajar'] = Curl::to(env('API_ENDPOINT').'pengajar'.'/remove/'.$id)
             ->withHeaders([
                 'Content-type: application/x-www-form-urlencoded',
-                'Authorization: Bearer '.$token
+                'Authorization: Bearer '.$this->token()
             ])
             ->asJson()
             ->get();
