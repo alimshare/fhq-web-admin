@@ -26,7 +26,8 @@ Route::post('login', 'JwtLoginController@login')->name('login');
 Route::group(['middleware' => ['jwtoken']], function () {
 	
 	Route::get('lembaga', 'LembagaController@index');
-
+	Route::get('lembaga/add', 'LembagaController@showFormAdd');
+	Route::post('lembaga/postadd', 'LembagaController@add');
 	Route::get('santri', 'SantriController@index');
 
 	Route::get('pengajar', 'PengajarController@index');

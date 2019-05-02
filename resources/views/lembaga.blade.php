@@ -39,6 +39,14 @@
                         </div>
                     </div>
                 </div>
+                <div class="row">
+
+                <div class="fixed-action-btn horizontal click-to-toggle" style="bottom: 45px; right: 104px;">
+                    <a href="{{ url('lembaga/add') }}" class="btn-floating btn-large blue">
+                        <i class="material-icons">add</i>
+                    </a>
+                </div>
+                </div>
             </main>
         </div>
 
