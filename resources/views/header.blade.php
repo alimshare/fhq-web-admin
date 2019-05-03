@@ -13,5 +13,3 @@
             </div>
         </nav>
     </header>
-        
-    @yield('body')

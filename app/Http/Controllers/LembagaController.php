@@ -58,4 +58,14 @@ class LembagaController extends Controller
         	return redirect('/lembaga/add')->with('message', $addlembaga->message);
         }
 	}
+
+    public function remove($id){
+
+        $token = $this->token();
+        $this->data['lembaga'] = Curl::to(env('API_ENDPOINT').'lembaga/remove/'.$id)
+        ->withHeaders(['Content-type: application/x-www-form-urlencoded', 'Authorization: Bearer '.$token])
+        ->asJson()
+        ->delete();
+            return view('lembagaremove',$this->data);
+    }
 }

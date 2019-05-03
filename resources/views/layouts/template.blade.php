@@ -8,6 +8,7 @@
 <body>
     @include('header')
     @include('navigation')
+    @yield('body')
     @include('footer')
 </body>
 </html>
