@@ -34,14 +34,11 @@
                                             <td>{{ $n->since }}</td>
                                             <td><table width="5" border="0">
                                                 <tr>
-                                                    <td><form action="{{ url('lembaga/edit')}}/{{ $n->reference }}" method="post" style="margin-right:-90px;margin-top:-30px;margin-bottom:-30px;">
-                                                        {{ method_field('EDIT') }}
-                                                        <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                                                        <input class="btn btn-success blue" type="submit" value=" Ubah  " />
-                                                    </form>
+                                                    <td>
+                                                        <a href="{{ url('lembaga/detail')}}/{{ $n->reference }}" style="margin-top:-32px;margin-bottom:-30px;" class="btn btn-success blue" />Detail</a>
                                                     </td>
                                                     <td>
-                                                    <form action="{{ url('lembaga/remove')}}/{{ $n->reference }}" method="post" style="margin-left:-100px;margin-top:-30px;margin-bottom:-30px;">
+                                                    <form action="{{ url('lembaga/remove')}}/{{ $n->reference }}" method="post" style="margin-left:-380px;margin-top:-19px;margin-bottom:-30px;">
                                                         {{ method_field('DELETE') }}
                                                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                                         <input class="btn btn-success pink" type="submit" value="Hapus" />

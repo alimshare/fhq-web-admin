@@ -29,6 +29,8 @@ Route::group(['middleware' => ['jwtoken']], function () {
 	Route::get('lembaga/add', 'LembagaController@showFormAdd');
 	Route::post('lembaga/postadd', 'LembagaController@add');
 	Route::delete('lembaga/remove/{id}', 'LembagaController@remove');
+	Route::get('lembaga/detail/{id}', 'LembagaController@detail');
+
 	Route::get('santri', 'SantriController@index');
 
 	Route::get('pengajar', 'PengajarController@index');

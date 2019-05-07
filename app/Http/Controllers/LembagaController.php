@@ -19,7 +19,7 @@ class LembagaController extends Controller
 	}
 
 	public function showFormAdd(){
-		return view('add_lembaga');
+		return view('lembaga_add');
 	}
 
     public function add(Request $request){
@@ -59,6 +59,17 @@ class LembagaController extends Controller
         }
 	}
 
+    public function detail($id){
+        $token = $this->token();
+        $this->data['lembaga'] = Curl::to(env('API_ENDPOINT').'lembaga/'.$id)
+        ->withHeaders(['Content-type: application/json', 'Authorization: Bearer '.$token ])
+        ->asJson()
+        ->get();
+
+        return view('lembaga_detail', $this->data);
+        //return view('edit_lembaga');
+    }
+
     public function remove($id){
 
         $token = $this->token();
@@ -66,6 +77,10 @@ class LembagaController extends Controller
         ->withHeaders(['Content-type: application/x-www-form-urlencoded', 'Authorization: Bearer '.$token])
         ->asJson()
         ->delete();
-            return view('lembagaremove',$this->data);
+            if($this->data['lembaga']->code == 'SUCCESS'){
+                return redirect('lembaga')->with('alert','Berhasil Dihapus');
+            }else{
+                return view('lembagaremove',$this->data);
+            }
     }
 }
