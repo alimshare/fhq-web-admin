@@ -26,9 +26,18 @@ class SemesterController extends Controller
             ->asJson()
             ->get();
 
+            dd($this->data);
+
         return view('semester', $this->data);
 
 	}
+
+    public function add(Request $request)
+    {
+        // $this->data['semester'] = null;
+        $this->data['lembaga'] = $this->get_lembaga_list();
+        return view('semester-form', $this->data);
+    }
 
     public function detail(Request $Request, $reference=null)
     {
@@ -40,6 +49,8 @@ class SemesterController extends Controller
             ->asJson()
             ->get();
 
+        $this->data['lembaga'] = $this->get_lembaga_list();
+
         $this->data['reference'] = $reference;
 
         // dd($this->data);
@@ -50,7 +61,6 @@ class SemesterController extends Controller
 
     public function update(Request $request, $reference=null)
     {
-        // dd($request->all());
         $send_data = array();
         if ($request->input('description')) 
         {
@@ -59,7 +69,7 @@ class SemesterController extends Controller
 
         if ($request->input('lembaga')) 
         {
-            $send_data['lembaga']['name'] = $request->input('lembaga');
+            $send_data['lembaga'] = $request->input('lembaga');
         }
 
         if ($request->input('name')) 
@@ -69,17 +79,47 @@ class SemesterController extends Controller
 
         $send_data['active'] = $request->input('active') == 'on' ? 1 : 0;
         
-        $this->data['semester'] = Curl::to(env('API_ENDPOINT').'semester/edit/'.$reference)
-            ->withHeaders([
-                'Content-type: application/x-www-form-urlencoded',
-                'Authorization: Bearer '.$this->token()
-            ])
-            ->withData( $send_data )
-            ->asJson()
-            ->put();
+        if ($reference) 
+        {
+            $this->data['semester'] = Curl::to(env('API_ENDPOINT').'semester/edit/'.$reference)
+                ->withHeaders([
+                    'Content-type: application/json',
+                    'Authorization: Bearer '.$this->token()
+                ])
+                ->withData( $send_data )
+                ->asJson()
+                ->put();
+
+            return redirect('semester/'.$reference);
+        }
+        else
+        {
+            $this->data['semester'] = Curl::to(env('API_ENDPOINT').'semester/add')
+                ->withHeaders([
+                    'Content-type: application/json',
+                    'Authorization: Bearer '.$this->token()
+                ])
+                ->withData( $send_data )
+                ->asJson()
+                ->post();
+
+            dd($this->data);
+
+            return redirect('semester/');
+        }
 
         // dd($this->data, $send_data);
 
-        return view('semester-form', $this->data);
+    }
+
+    public function get_lembaga_list()
+    {
+        return Curl::to(env('API_ENDPOINT').'lembaga')
+            ->withHeaders([
+                'Content-type: application/json', 
+                'Authorization: Bearer '.$this->token()
+            ])
+            ->asJson()
+            ->get();
     }
 }

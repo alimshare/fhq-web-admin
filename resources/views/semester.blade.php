@@ -14,6 +14,8 @@
             <div class="card">
                 <div class="card-content">
                     <span class="card-title">Daftar Semester</span>
+                    <a href="{{ url('semester/add') }}" class="waves-effect waves-light btn m-b-xs">Add</a>
+
                     <br>
                     <table id="example" class="display responsive-table datatable-example">
                         <thead>

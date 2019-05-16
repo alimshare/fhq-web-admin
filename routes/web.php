@@ -40,6 +40,8 @@ Route::group(['middleware' => ['jwtoken']], function () {
 	/**
 	 * Semester
 	 */
+	Route::get('semester/add', 'SemesterController@add');
+	Route::post('semester/add', 'SemesterController@update');
 	Route::get('semester/{reference}', 'SemesterController@detail');
 	Route::put('semester/{reference}', 'SemesterController@update');
 	Route::get('semester', 'SemesterController@index');
