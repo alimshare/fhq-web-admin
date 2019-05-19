@@ -16,17 +16,28 @@ class SemesterController extends Controller
     public $data = array();
 
     //di sini isi controller semester
-    public function index()
+    public function index(Request $request, $lembaga_reference=null)
     {
-        $this->data['semester'] = Curl::to(env('API_ENDPOINT').'semester')
+        $url = $lembaga_reference ? "lembaga/{$lembaga_reference}/semester" : "semester";
+        $this->data['semester'] = Curl::to(env('API_ENDPOINT').$url)
             ->withHeaders([
-                'Content-type: application/x-www-form-urlencoded',
+                'Content-type: application/json',
                 'Authorization: Bearer '.$this->token()
             ])
             ->asJson()
             ->get();
 
-            dd($this->data);
+        if ($lembaga_reference) {
+            $this->data['lembaga'] = Curl::to(env('API_ENDPOINT')."lembaga/{$lembaga_reference}")
+                ->withHeaders([
+                    'Content-type: application/json',
+                    'Authorization: Bearer '.$this->token()
+                ])
+                ->asJson()
+                ->get();
+        }
+
+            // dd($this->data);
 
         return view('semester', $this->data);
 
@@ -103,13 +114,28 @@ class SemesterController extends Controller
                 ->asJson()
                 ->post();
 
-            dd($this->data);
+            // dd($this->data);
 
             return redirect('semester/');
         }
 
         // dd($this->data, $send_data);
 
+    }
+
+    public function remove(Request $request, $reference=null)
+    {
+        // dd($request, $reference);
+        $this->data['semester'] = Curl::to(env('API_ENDPOINT').'semester/remove/'.$reference)
+            ->withHeaders([
+                'Content-type: application/json',
+                'Authorization: Bearer '.$this->token()
+            ])
+            // ->withData( $send_data )
+            // ->asJson()
+            ->delete(); 
+
+        return redirect('semester');
     }
 
     public function get_lembaga_list()

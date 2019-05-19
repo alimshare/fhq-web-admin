@@ -8,13 +8,13 @@
 <main class="mn-inner">
     <div class="row">
         <div class="col s12">
-            <div class="page-title">Daftar Semester</div>
+            <div class="page-title">Daftar Halaqoh</div>
         </div>
         <div class="col s12 m12 l12">
             <div class="card">
                 <div class="card-content">
-                    <span class="card-title">{{ $lembaga->data->name ?? '' }}</span>
-                    <a href="{{ url('semester/add') }}" class="waves-effect waves-light btn m-b-xs">Add</a>
+                    <span class="card-title">{{ $halaqoh->semester->lembaga->name ?? '' }} - Semester {{ $halaqoh->semester->name }}</span>
+                    <a href="{{ url("halaqoh/add?semester={$halaqoh->semester->reference}") }}" class="waves-effect waves-light btn m-b-xs">Add</a>
 
                     <br>
                     <table id="example" class="display responsive-table datatable-example">
@@ -33,8 +33,8 @@
                             </tr>
                         </tfoot>
                         <tbody>
-                        	@foreach ($semester->data as $el)
-                            <tr>
+                        	@foreach ($halaqoh->halaqoh as $el)
+                            {{-- <tr>
                                 <td>{{ $el->name }}</td>
                                 <td>{{ $el->description }}</td>
                                 <td>
@@ -43,7 +43,7 @@
                                     &nbsp; &bull; &nbsp;
                                     <a href="{{ url('semester/remove/'.$el->reference) }}" class="waves-effect waves-light btn red m-b-xs">Delete</a>
                                 </td>
-                            </tr>
+                            </tr> --}}
 							@endforeach
                         </tbody>
                     </table>

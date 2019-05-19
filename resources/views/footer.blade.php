@@ -10,3 +10,5 @@
 <script src="{{ asset('assets/js/alpha.min.js') }}"></script>
 <script src="{{ asset('assets/js/pages/table-data.js') }}"></script>
 <script src="{{ asset('assets/js/pages/form_elements.js') }}"></script>
+
+@stack('scripts')
