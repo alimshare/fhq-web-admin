@@ -26,7 +26,7 @@
                         <div class="input-field col s12">
                             <select name="program" id="program" required="">
                                 @foreach ($program->data as $element)
-                                <option value="{{ $element->reference }}" >{{ $element->name }}</option>
+                                <option value="{{ $element->reference }}" {{ $halaqoh->data->program->reference == $element->reference ? 'selected' : '' }}>{{ $element->name }}</option>
                                 @endforeach
                             </select>
                             <label>Program</label>
@@ -34,20 +34,20 @@
                         <div class="input-field col s12">
                             <select name="nip" id="nip" required="">
                                 @foreach ($pengajar->data as $element)
-                                <option value="{{ $element->nip }}" >{{ $element->name }}</option>
+                                <option value="{{ $element->nip }}" {{ $halaqoh->data->pengajar->nip == $element->nip ? 'selected' : '' }}>{{ $element->name }}</option>
                                 @endforeach
                             </select>
                             <label>Pengajar</label>
                         </div>
                         <div class="input-field col s12">
                             <select name="day" id="day" required="">
-                                <option value="SABTU" >SABTU</option>
-                                <option value="AHAD" >AHAD</option>
+                                <option value="SABTU" {{ $halaqoh->data->day == 'SABTU' ? 'selected' : '' }}>SABTU</option>
+                                <option value="AHAD" {{ $halaqoh->data->day == 'AHAD' ? 'selected' : '' }}>AHAD</option>
                             </select>
                             <label>Hari</label>
                         </div>
                         <div class="input-field col s12">
-                            <input placeholder="07:00" id="start_hour" class="masked" name="start_hour" type="text" value="" required="">
+                            <input placeholder="07:00" id="start_hour" class="masked" name="start_hour" type="text" value="{{ $halaqoh->data->start_hour ?? '' }}" required="">
                             <label for="start_hour">Jam Mulai KBM</label>
                         </div>
                         {{-- <div class="input-field col s12">

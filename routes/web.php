@@ -66,9 +66,10 @@ Route::group(['middleware' => ['jwtoken']], function () {
 	/**
 	 * Halaqoh
 	 */
+	Route::delete('halaqoh/remove', 'HalaqohController@remove');
 	Route::get('halaqoh/add', 'HalaqohController@add');
 	Route::post('halaqoh/add', 'HalaqohController@save');
-	Route::get('halaqoh/edit/{reference}', 'HalaqohController@detail');
-	Route::put('halaqoh/edit/{reference}', 'HalaqohController@save');
+	Route::get('halaqoh/{reference}', 'HalaqohController@detail');
+	Route::put('halaqoh/{reference}', 'HalaqohController@save');
 
 });

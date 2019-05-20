@@ -41,10 +41,11 @@ class Controller extends BaseController
    				$data = $data->asJson()->put();
    				break;
    			case 'delete':
+   				$data = $data->asJson()->delete();
    				break;
    			
    			default:
-   				$data = $data->asJson()->delete();
+   				$data = $data->asJson()->get();
    				break;
    		}
 
