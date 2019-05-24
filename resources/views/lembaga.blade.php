@@ -11,6 +11,7 @@
             <div class="card">
                 <div class="card-content">
                     <span class="card-title">Daftar Lembaga</span>
+                    <a href="{{ url('lembaga/add') }}" class="waves-effect waves-light btn m-b-xs">Add</a>
                     <br>
                     <table id="example" class="display responsive-table datatable-example">
                         <thead>
@@ -49,14 +50,6 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row">
-
-    <div class="fixed-action-btn horizontal click-to-toggle" style="bottom: 45px; right: 104px;">
-        <a href="{{ url('lembaga/add') }}" class="btn-floating btn-large blue">
-            <i class="material-icons">add</i>
-        </a>
-    </div>
     </div>
 </main>
 
