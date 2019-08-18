@@ -7,6 +7,16 @@ use Illuminate\Http\Request;
 class HalaqohController extends Controller
 {
     /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
+    /**
      * Global variable
      */
     public $data = array();
@@ -16,10 +26,11 @@ class HalaqohController extends Controller
      */
     public function lists(Request $request, $reference=null)
     {
-    	$this->data['halaqoh'] = $this->hit_api("semester/{$reference}/halaqoh", "get");
-    	$this->data['semester_reference'] = $reference;
-    	// dd($this->data);
-    	return view("halaqoh", $this->data);
+    	// $this->data['halaqoh'] = $this->hit_api("semester/{$reference}/halaqoh", "get");
+    	// $this->data['semester_reference'] = $reference;
+
+        $this->data['list'] = \App\Model\View\ViewHalaqoh::all();
+        return view('pages.halaqoh.list', $this->data);
     }
 
     /**

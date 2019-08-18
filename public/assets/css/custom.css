@@ -1,1 +1,27 @@
 /* Write your custom CSS here */
+body {
+    background-color: #f9f9f9;
+}
+.mn-inner {
+	padding-top: 10px;
+	padding-left: : 220px;	
+	padding-bottom: 0px;
+	padding-right: 0px;
+}
+.breadcrumbs>li {
+    display: inline-block;
+}
+.breadcrumbs>li+li:before {
+    padding: 0 5px;
+    color: #ccc;
+    content: "/\00a0";
+}
+.breadcrumbs {
+    margin-bottom: 0px;
+}
+.breadcrumbs-title {
+    margin-top: 0px;
+}
+/*table.bordered td {
+    border: 1px solid #d6bfbf;
+}*/

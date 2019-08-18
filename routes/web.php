@@ -11,19 +11,16 @@
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+Auth::routes();
 
-Route::get('halo', function () {
-	return "Halo, Selamat Datang Di FHQ An-nashr";
-});
+Route::group(['middleware' => []], function () {
 
-Route::get('/', 'JwtLoginController@showLoginForm');
-Route::get('login', 'JwtLoginController@showLoginForm');
-Route::post('login', 'JwtLoginController@login')->name('login');
+	// Route::get('halo', function () {
+	// 	return "Halo, Selamat Datang Di FHQ An-nashr";
+	// });
 
-Route::group(['middleware' => ['jwtoken']], function () {
+	Route::get('/', 'HomeController@index');
+	Route::get('/home', 'HomeController@index')->name('home');
 	
 	/**
 	 * Lembaga
@@ -66,10 +63,19 @@ Route::group(['middleware' => ['jwtoken']], function () {
 	/**
 	 * Halaqoh
 	 */
+	Route::get('halaqoh', 'HalaqohController@lists');
 	Route::delete('halaqoh/remove', 'HalaqohController@remove');
 	Route::get('halaqoh/add', 'HalaqohController@add');
 	Route::post('halaqoh/add', 'HalaqohController@save');
 	Route::get('halaqoh/{reference}', 'HalaqohController@detail');
 	Route::put('halaqoh/{reference}', 'HalaqohController@save');
 
+
+	/**
+	 * Change Password
+	 */
+	Route::get('/change-password', 'HomeController@changePassword');
+	Route::post('/change-password', 'HomeController@changePasswordProcess');
+
 });
+

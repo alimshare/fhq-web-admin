@@ -8,6 +8,16 @@ use Ixudra\Curl\Facades\Curl;
 class SemesterController extends Controller
 {
     /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
+    /**
      * Public container data.
      * Variable ini untuk memudahkan penampungan data.
      * Jadi, cukup 1 variable ini saja yg di pakai, untuk data yg akan di passing ke view.
@@ -18,28 +28,31 @@ class SemesterController extends Controller
     //di sini isi controller semester
     public function index(Request $request, $lembaga_reference=null)
     {
-        $url = $lembaga_reference ? "lembaga/{$lembaga_reference}/semester" : "semester";
-        $this->data['semester'] = Curl::to(env('API_ENDPOINT').$url)
-            ->withHeaders([
-                'Content-type: application/json',
-                'Authorization: Bearer '.$this->token()
-            ])
-            ->asJson()
-            ->get();
+        // $url = $lembaga_reference ? "lembaga/{$lembaga_reference}/semester" : "semester";
+        // $this->data['semester'] = Curl::to(env('API_ENDPOINT').$url)
+        //     ->withHeaders([
+        //         'Content-type: application/json',
+        //         'Authorization: Bearer '.$this->token()
+        //     ])
+        //     ->asJson()
+        //     ->get();
 
-        if ($lembaga_reference) {
-            $this->data['lembaga'] = Curl::to(env('API_ENDPOINT')."lembaga/{$lembaga_reference}")
-                ->withHeaders([
-                    'Content-type: application/json',
-                    'Authorization: Bearer '.$this->token()
-                ])
-                ->asJson()
-                ->get();
-        }
+        // if ($lembaga_reference) {
+        //     $this->data['lembaga'] = Curl::to(env('API_ENDPOINT')."lembaga/{$lembaga_reference}")
+        //         ->withHeaders([
+        //             'Content-type: application/json',
+        //             'Authorization: Bearer '.$this->token()
+        //         ])
+        //         ->asJson()
+        //         ->get();
+        // }
 
-            // dd($this->data);
+        //     // dd($this->data);
 
-        return view('semester', $this->data);
+        // return view('semester', $this->data);
+
+        $this->data['list'] = \App\Model\Semester::getActive();
+        return view('pages.semester.list', $this->data);
 
 	}
 

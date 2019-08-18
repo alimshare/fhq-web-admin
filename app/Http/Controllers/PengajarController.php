@@ -8,6 +8,16 @@ use Ixudra\Curl\Facades\Curl;
 class PengajarController extends Controller
 {
     /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
+    /**
      * Public container data.
      * Variable ini untuk memudahkan penampungan data.
      * Jadi, cukup 1 variable ini saja yg di pakai, untuk data yg akan di passing ke view.
@@ -17,15 +27,18 @@ class PengajarController extends Controller
     public $data = array();
 
     public function index(){
-        $this->data['pengajar'] = Curl::to(env('API_ENDPOINT').'pengajar')
-            ->withHeaders([
-                'Content-type: application/x-www-form-urlencoded',
-                'Authorization: Bearer '.$this->token()
-            ])
-            ->asJson()
-            ->get();
+        // $this->data['pengajar'] = Curl::to(env('API_ENDPOINT').'pengajar')
+        //     ->withHeaders([
+        //         'Content-type: application/x-www-form-urlencoded',
+        //         'Authorization: Bearer '.$this->token()
+        //     ])
+        //     ->asJson()
+        //     ->get();
 
-        return view('pengajar', $this->data);
+        // return view('pengajar', $this->data);
+
+        $this->data['list'] = \App\Model\Pengajar::all();
+        return view('pages.pengajar.list', $this->data);
     }
 
     /**

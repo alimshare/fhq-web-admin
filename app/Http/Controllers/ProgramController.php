@@ -4,9 +4,20 @@ namespace App\Http\Controllers;
  
 use Illuminate\Http\Request;
 use Ixudra\Curl\Facades\Curl;
+use Illuminate\Support\Facades\DB;
  
 class ProgramController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     /**
      * Public container data.
      * Variable ini untuk memudahkan penampungan data.
@@ -17,16 +28,25 @@ class ProgramController extends Controller
     public $data = array();
 
     public function index(){
-        $token = $this->token();
+        // $this->data['list'] = \App\Model\Program::all();
 
-        $this->data['program'] = Curl::to(env('API_ENDPOINT').'program')
-            ->withHeaders([
-                'Content-type: application/x-www-form-urlencoded',
-                'Authorization: Bearer '.$token
-            ])
-            ->asJson()
-            ->get();
 
-        return view('program', $this->data);
+        $SQL = "SELECT program_name, halaqoh, ( SELECT COUNT(1) AS peserta FROM view_peserta WHERE program_id = T1.program_id) AS peserta
+                FROM (
+                    SELECT program_id, program_name, SUM(1) AS halaqoh FROM `view_halaqoh`
+                    GROUP BY program_id, program_name
+                ) T1";
+        $program = DB::select($SQL); // sementara pake native query
+
+        $colorList = array('#F7464A', '#46BFBD', '#FDB45C', '#0097a7', '#d84315', '#6d4c41','#283593', '#c2185b', '#00695c', '#9e9d24', '#01579b','#6a1b9a' ,'#ec407a', '#ea80fc');
+        for ($i=0; $i < count($program); $i++) { 
+            $colorIndex = array_rand($colorList, 1);
+            $program[$i]->color = $colorList[$colorIndex];
+            unset($colorList[$colorIndex]);
+        }
+
+        $this->data['list'] = (Object) $program;
+
+        return view('pages.program.list', $this->data);
     }
 }

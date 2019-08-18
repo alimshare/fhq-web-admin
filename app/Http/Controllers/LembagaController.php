@@ -7,15 +7,28 @@ use Ixudra\Curl\Facades\Curl;
  
 class LembagaController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     //di sini isi controller lembaga
     public function index(){
-        $token = $this->token();
-        $this->data['lembaga'] = Curl::to(env('API_ENDPOINT').'lembaga')
-        ->withHeaders(['Content-type: application/json', 'Authorization: Bearer '.$token ])
-        ->asJson()
-        ->get();
+        // $token = $this->token();
+        // $this->data['lembaga'] = Curl::to(env('API_ENDPOINT').'lembaga')
+        // ->withHeaders(['Content-type: application/json', 'Authorization: Bearer '.$token ])
+        // ->asJson()
+        // ->get();
 
-        return view('lembaga', $this->data);
+        // return view('lembaga', $this->data);
+
+        $this->data['list'] = \App\Model\Lembaga::all();
+        return view('pages.lembaga.list', $this->data);
 	}
 
 	public function showFormAdd(){
