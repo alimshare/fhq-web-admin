@@ -14,7 +14,7 @@
         <div id="breadcrumbs-wrapper">
           <div class="container">
             <div class="row">
-              <div class="col s12 m12 l12">
+              <div class="col s12">
                 <h5 class="breadcrumbs-title">Program</h5>
                 <ol class="breadcrumbs">
                     <li><a href="/" class="cyan-text">Dashboard</a></li>
@@ -39,7 +39,7 @@
                         </div>
                     </div> -->
                     @foreach($list as $o)
-                    <div class="col s6 l4">
+                    <div class="col s12 l4">
                       <div class="card white-text" style="background-color: {{ $o->color }}">
                         <div class="card-content white-text center-align">
                           <p class="card-title">{{ $o->program_name }}</p>

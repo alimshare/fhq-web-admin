@@ -50,10 +50,10 @@ window.onload = function() {
         <!--breadcrumbs start-->
         <div id="breadcrumbs-wrapper">
             <!-- Search for small screen -->
-            <div class="header-search-wrapper grey hide-on-large-only">
+            <!-- <div class="header-search-wrapper grey hide-on-large-only">
                 <i class="mdi-action-search active"></i>
                 <input type="text" name="Search" class="header-search-input z-depth-2" placeholder="Explore Materialize">
-            </div>
+            </div> -->
           <div class="container">
             <div class="row">
               <div class="col s12 m12 l12">
@@ -73,7 +73,7 @@ window.onload = function() {
           <div class="section">
 
               <div class="row">
-                  <div class="col s12 m6 l3">
+                  <div class="col s6 m6 l3">
                       <div class="card teal darken-3">
                         <div class="card-content white-text center-align">
                           <p class="card-title">{{ $data->count_halaqoh }}</p>
@@ -81,7 +81,7 @@ window.onload = function() {
                         </div>                  
                       </div>
                   </div>
-                  <div class="col s12 m6 l3">
+                  <div class="col s6 m6 l3">
                       <div class="card cyan darken-2">
                         <div class="card-content white-text center-align">
                           <p class="card-title">{{ $data->count_pengajar }}</p>
@@ -89,7 +89,7 @@ window.onload = function() {
                         </div>                  
                       </div>
                   </div>
-                  <div class="col s12 m6 l3">
+                  <div class="col s6 m6 l3">
                       <div class="card pink darken-2">
                         <div class="card-content white-text center-align">
                           <p class="card-title">{{ $data->count_santri }}</p>
@@ -97,7 +97,7 @@ window.onload = function() {
                         </div>                  
                       </div>
                   </div>
-                  <div class="col s12 m6 l3">
+                  <div class="col s6 m6 l3">
                       <div class="card indigo darken-3">
                         <div class="card-content white-text center-align">
                           <p class="card-title">{{ $data->count_program }}</p>
@@ -126,8 +126,8 @@ window.onload = function() {
                       </div> -->
                       <div class="row">
                            @foreach($data->count_peserta as $o)
-                            <div class="col s6 l4">
-                              <div class="card white-text" style="background-color: {{ $o->color }}">
+                            <div class="col s12 l4">
+                              <div class="card white-text" style="background-color: {{ $o->color }}; min-height: 100px">
                                 <div class="card-content white-text center-align">
                                   <p class="card-title">{{ $o->program_name }}</p>
                                   <p>{{ $o->halaqoh }} Halaqoh</p>

@@ -32,7 +32,7 @@ class HomeController extends Controller
 
         $SQL = "SELECT program_name, halaqoh, ( SELECT COUNT(1) AS peserta FROM view_peserta WHERE program_id = T1.program_id) AS peserta
                 FROM (
-                    SELECT program_id, program_name, SUM(1) AS halaqoh FROM `view_halaqoh`
+                    SELECT program_id, program_name, SUM(1) AS halaqoh FROM view_halaqoh
                     GROUP BY program_id, program_name
                 ) T1";
         $countPeserta = DB::select($SQL); // sementara pake native query
