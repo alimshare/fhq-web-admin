@@ -119,6 +119,10 @@
                           <option value="desc">DESC</option>
                         </select>
                     </div>
+					<div align="right" style="margin-right:12px">      
+						</br>
+						<button class="btn waves-effect cyan" type="submit"><i class="mdi-social-person-outline"></i><i class="mdi-content-add"></i></button> 
+					</div>
                   </div>
                 </div>
                 <div class="row">
