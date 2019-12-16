@@ -68,7 +68,9 @@ Route::group(['middleware' => []], function () {
 	Route::get('halaqoh/add', 'HalaqohController@add');
 	Route::post('halaqoh/add', 'HalaqohController@save');
 	Route::get('halaqoh/{reference}', 'HalaqohController@detail');
+	Route::get('halaqoh/{reference}/edit', 'HalaqohController@editDetail');
 	Route::put('halaqoh/{reference}', 'HalaqohController@save');
+	Route::post('halaqoh-detail/save', 'HalaqohController@saveDetail');
 
 
 	/**

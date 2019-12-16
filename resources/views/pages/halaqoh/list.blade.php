@@ -216,6 +216,7 @@
                                             <td>{{ $n->program_name }}</td>
                                             <td>{{ $n->pengajar_name }}</td>
                                             <td class="text-center">
+                                                <a href="/halaqoh/{{ $n->halaqoh_reference }}" class="btn-floating waves-effect waves-light primary tooltipped" data-position="bottom" data-tooltip="Detail"><i class="mdi-action-search"></i></a>
                                                 <a onclick="loadPeserta(`{{ $n->day }}`,`{{ $n->gender }}`,`{{ $n->program_name }}`,`{{ $n->pengajar_name }}`,`{{ $n->halaqoh_reference }}`)" class="btn-floating waves-effect waves-light green tooltipped modal-triggers" data-position="bottom" data-tooltip="Daftar Peserta"><i class="mdi-social-people"></i></a>
                                             </td>
                                         </tr>

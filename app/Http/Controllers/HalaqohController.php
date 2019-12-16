@@ -28,7 +28,7 @@ class HalaqohController extends Controller
     {
     	// $this->data['halaqoh'] = $this->hit_api("semester/{$reference}/halaqoh", "get");
     	// $this->data['semester_reference'] = $reference;
-
+        
         $this->data['list'] = \App\Model\View\ViewHalaqoh::all();
         return view('pages.halaqoh.list', $this->data);
     }
@@ -76,13 +76,44 @@ class HalaqohController extends Controller
      */
     public function detail(Request $request, $reference=null)
     {
-    	$this->data['program'] = $this->hit_api("program", "get");
-    	$this->data['pengajar'] = $this->hit_api("pengajar", "get");
-    	$this->data['halaqoh'] = $this->hit_api("halaqoh/{$reference}", "get");
-    	$this->data['reference'] = $reference;
+
+        $this->data['halaqoh'] = \App\Model\View\ViewHalaqoh::where('halaqoh_reference', $reference)->first();
+        $this->data['peserta'] = \App\Model\View\ViewPeserta::where('halaqoh_reference', $reference)->get();
 
     	// dd($this->data);
-    	return view('halaqoh-form', $this->data);
+    	return view('pages.halaqoh.form', $this->data);
+    }
+
+    public function editDetail(Request $request, $reference=null)
+    {
+
+        $this->data['halaqoh'] = \App\Model\View\ViewHalaqoh::where('halaqoh_reference', $reference)->first();
+        $this->data['peserta'] = \App\Model\View\ViewPeserta::where('halaqoh_reference', $reference)->get();
+
+        // dd($this->data);
+        return view('pages.halaqoh.form-edit', $this->data);
+    }
+
+    public function saveDetail(Request $request)
+    {
+        $halaqohReference = $request->halaqohReference;
+        // dd($request->all());
+        foreach ($request->data as $pesertaId => $nilai) {
+            $peserta = \App\Model\PendidikanSantri::find($pesertaId);
+            if ($peserta != null) {
+                $peserta->nilai_uts_teori = $nilai['nilai_uts_teori'];
+                $peserta->nilai_uts_praktek = $nilai['nilai_uts_praktek'];
+                $peserta->nilai_uas_teori = $nilai['nilai_uas_teori'];
+                $peserta->nilai_uas_praktek = $nilai['nilai_uas_praktek'];
+                $peserta->khatam = $nilai['khatam'];
+                $peserta->kehadiran = $nilai['kehadiran'];
+                $peserta->status = $nilai['status'];
+                $peserta->note = $nilai['note'];
+                $peserta->save();
+            }
+        }
+        
+        return redirect("/halaqoh/{$halaqohReference}");
     }
 
     /**
