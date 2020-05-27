@@ -76,6 +76,11 @@
     function order(columnIndex, type){
         table.order([columnIndex, type]).draw();
     }
+
+        $("#btn_add").click(function(){
+            $("form-daftar").show();
+        });
+
 </script>
 @endsection
 
@@ -121,7 +126,7 @@
                     </div>
 					<div align="right" style="margin-right:12px">      
 						</br>
-						<button class="btn waves-effect cyan" type="submit"><i class="mdi-social-person-outline"></i><i class="mdi-content-add"></i></button> 
+                        <a class="waves-effect waves-light btn cyan darken-1 modal-trigger" href="#modal-daftar-santri"><i class="mdi-social-person-outline"></i><i class="mdi-content-add"></i></a>
 					</div>
                   </div>
                 </div>
@@ -160,11 +165,45 @@
                                 </tfoot>
                             </table>                            
                         </div>
+						
+						<!-- <div id="form-daftar" class="modal" style="z-index:1003; opacity:1; transform: scaleX(1); top:10%;">
+							<nav class="task-modal-nav blue">
+                            TES
+							</nav>
+						</div> -->
+                        <div id="modal-daftar-santri" class="modal">
+                            <nav class="task-modal-nav blue">
+                                <label style="margin-left:10px;color:white;">Form Daftar Santri</label>
+                            </nav>
+                            <div class="modal-content">
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <input placeholder="nis" id="nis" type="text" class="validate">
+                                        <label for="nis" class="active">NIS</label>
+                                    </div>    
+                                    <div class="input-field col s12">
+                                        <input placeholder="name" id="name" type="text" class="validate">
+                                        <label for="name" class="active">Name</label>
+                                    </div>    
+                                    <div class="input-field col s12">
+                                        <select id="gender">
+                                            <option value="" disabled selected>Choose gender</option>
+                                            <option value="MALE">IKHWAN</option>
+                                            <option value="FEMALE">AKHWAT</option>
+                                        </select>
+                                        <label for="gender">Gender</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <a href="#!" class="modal-action modal-close waves-effect waves-red btn red lighten-1">Close</a>
+                                <button class="waves-effect waves-light btn cyan darken-1">Save</button>&nbsp
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
         <!--end container-->
-
 @endsection
 

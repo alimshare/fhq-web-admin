@@ -25,3 +25,6 @@
 <!-- <link href="/materialized/js/plugins/prism/prism.css" type="text/css" rel="stylesheet" media="screen,projection"> -->
 <link href="/materialized/js/plugins/perfect-scrollbar/perfect-scrollbar.css" type="text/css" rel="stylesheet" media="screen,projection">
 <!-- <link href="/materialized/js/plugins/chartist-js/chartist.min.css" type="text/css" rel="stylesheet" media="screen,projection"> -->
+
+<!-- Modal -->
+<link href="/materialized/sass/components/_modal.scss" type="text/scss" rel="stylesheet">
