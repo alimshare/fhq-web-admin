@@ -30,6 +30,36 @@ class SantriController extends Controller
     	$this->data['list'] = \App\Model\Santri::all();
         return view('pages.santri.list', $this->data);
 
+    }
 
-	}
+    public function edit($id)
+    {
+        $this->data['santri'] = \App\Model\Santri::find($id);
+        return view('pages.santri.form-edit', $this->data);
+    }
+    
+    public function save(Request $request)
+    {
+        $id     = $request->input('id');
+        $name   = $request->input('name');
+        $nis    = $request->input('nis');
+
+        $santri = \App\Model\Santri::find($id);
+        if (is_null($santri)) {
+            return redirect('santri');
+        }
+
+        $santri->nis    = $nis;
+        $santri->name   = $name;
+
+        $message = "";
+        if ($santri->save()) {
+            $message = "ubah data santri berhasil";
+        } else {
+            $message = "ubah data santri gagal";
+        }
+
+        return redirect('santri')->with('message', $message);
+
+    }
 }

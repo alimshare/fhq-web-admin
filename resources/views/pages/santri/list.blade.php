@@ -157,7 +157,7 @@
                                         <tr>
                                             <td>{{ ($n->gender=="FEMALE") ? "AKHWAT" : "IKHWAN" }}</td>
                                             <td>{{ $n->nis }}</td>
-                                            <td>{{ $n->name }}</td>
+                                            <td><a href="/santri/edit/{{ $n->id }}">{{ $n->name }}</a></td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -197,7 +197,7 @@
                             </div>
                             <div class="modal-footer">
                                 <a href="#!" class="modal-action modal-close waves-effect waves-red btn red lighten-1">Close</a>
-                                <button class="waves-effect waves-light btn cyan darken-1">Save</button>&nbsp
+                                <button class="waves-effect waves-light btn cyan darken-1">Save</button>&nbsp;
                             </div>
                         </div>
                     </div>

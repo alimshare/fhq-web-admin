@@ -36,6 +36,8 @@ Route::group(['middleware' => []], function () {
 	 * Santri
 	 */
 	Route::get('santri', 'SantriController@index');
+	Route::get('santri/edit/{id}', 'SantriController@edit');
+	Route::post('santri/save', 'SantriController@save');
 
 	/**
 	 * Pengajar
