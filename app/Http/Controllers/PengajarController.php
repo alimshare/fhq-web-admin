@@ -90,4 +90,35 @@ class PengajarController extends Controller
 
         return view('pengajardestroy', $this->data);
     }
+
+    public function edit($id)
+    {
+        $this->data['pengajar'] = \App\Model\Pengajar::find($id);
+        return view('pages.pengajar.form-edit', $this->data);
+    }
+    
+    public function save(Request $request)
+    {
+        $id     = $request->input('id');
+        $name   = $request->input('name');
+        $nip    = $request->input('nip');
+
+        $pengajar = \App\Model\Pengajar::find($id);
+        if (is_null($pengajar)) {
+            return redirect('pengajar');
+        }
+
+        $pengajar->nip    = $nip;
+        $pengajar->name   = $name;
+
+        $message = "";
+        if ($pengajar->save()) {
+            $message = "ubah data pengajar berhasil";
+        } else {
+            $message = "ubah data pengajar gagal";
+        }
+
+        return redirect('pengajar')->with('message', $message);
+
+    }
 }

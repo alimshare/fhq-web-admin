@@ -44,6 +44,8 @@ Route::group(['middleware' => []], function () {
 	 */
 	Route::get('pengajar', 'PengajarController@index');
 	Route::get('pengajar/{id}', 'PengajarController@show');
+	Route::get('pengajar/edit/{id}', 'PengajarController@edit');
+	Route::post('pengajar/save', 'PengajarController@save');
 	Route::delete('pengajar/remove/{id}', 'PengajarController@destroy');
 
 	/**

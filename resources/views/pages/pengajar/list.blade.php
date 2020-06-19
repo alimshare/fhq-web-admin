@@ -148,7 +148,7 @@
                                         <tr>
                                             <td>{{ ($n->gender=="FEMALE") ? "AKHWAT" : "IKHWAN" }}</td>
                                             <td>{{ $n->nip }}</td>
-                                            <td>{{ $n->name }}</td>
+                                            <td><a href="/pengajar/edit/{{ $n->id }}">{{ $n->name }}</a></td>
                                         </tr>
                                     @endforeach
                                 </tbody>
