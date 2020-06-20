@@ -86,8 +86,9 @@
         table.order([columnIndex, type]).draw();
     }
 
-    function loadPeserta(day, gender, program, pengajar, reference) {
+    function loadPeserta(day, gender, program, pengajar, reference, semester) {
 
+        $("#modalSemester").html(semester);
         $("#modalDay").html(day);
         $("#modalProgram").html(program);
         $("#modalPengajar").html(pengajar);
@@ -169,6 +170,7 @@
                                 <li class="collection-header">
                                   <h5>Daftar Peserta Halaqoh</h5>
                                   <p>
+                                    <div class="chip cyan white-text"> <i class="mdi-action-event"></i> <span id="modalSemester"></span> </div>
                                     <div class="chip cyan white-text"> <i class="mdi-action-event"></i> <span id="modalDay"></span> </div>
                                     <div class="chip cyan white-text"> <i class="mdi-content-flag"></i> <span id="modalProgram"></span> </div>
                                     <div class="chip cyan white-text"> <i class="mdi-social-person-outline"></i> <span id="modalPengajar"></span> </div>
@@ -233,7 +235,7 @@
                                             <td>{{ $n->pengajar_name }}</td>
                                             <td class="text-center">
                                                 <a href="/halaqoh/{{ $n->halaqoh_reference }}" class="btn-floating waves-effect waves-light primary tooltipped" data-position="bottom" data-tooltip="Detail"><i class="mdi-action-search"></i></a>
-                                                <a onclick="loadPeserta(`{{ $n->day }}`,`{{ $n->gender }}`,`{{ $n->program_name }}`,`{{ $n->pengajar_name }}`,`{{ $n->halaqoh_reference }}`)" class="btn-floating waves-effect waves-light green tooltipped modal-triggers" data-position="bottom" data-tooltip="Daftar Peserta"><i class="mdi-social-people"></i></a>
+                                                <a onclick="loadPeserta(`{{ $n->day }}`,`{{ $n->gender }}`,`{{ $n->program_name }}`,`{{ $n->pengajar_name }}`,`{{ $n->halaqoh_reference }}`,`{{ $n->semester_name }}`)" class="btn-floating waves-effect waves-light green tooltipped modal-triggers" data-position="bottom" data-tooltip="Daftar Peserta"><i class="mdi-social-people"></i></a>
                                             </td>
                                         </tr>
                                     @endforeach
