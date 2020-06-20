@@ -33,6 +33,10 @@
     .chip {
         margin-bottom: 0.5rem;
     }
+
+    #tblPeserta_wrapper .dataTables_filter {
+        display: block !important;
+    }
 </style>
 @endsection
 
@@ -41,14 +45,16 @@
 <script type="text/javascript">
     let table = $('#example').DataTable({
         "lengthChange": false,
-        "order" : [1, 'asc'],
+        "order" : [[0, 'asc'],[1,'asc'],[3,'asc'],[4,'asc']],
         "columnDefs": [
             {
-                targets : [0,1,2,3,4], 
+                targets : [0,1,2,3,4,5], 
                 orderable : false
             }
         ]
     });
+
+    $("#tblPeserta").DataTable();
 
     // Apply the search
     table.columns().every( function () {
@@ -138,10 +144,11 @@
                         <label>Order By</label>
                         <select id="orderBy">
                           <option value="" disabled selected>Choose your option</option>
-                          <option value="0" selected="">Hari</option>
-                          <option value="1">Gender</option>
-                          <option value="2">Program</option>
-                          <option value="3">Pengajar</option>
+                          <option value="0" selected="">Semester</option>
+                          <option value="1" selected="">Hari</option>
+                          <option value="2">Gender</option>
+                          <option value="3">Program</option>
+                          <option value="4">Pengajar</option>
                         </select>
                     </div>
                     <div class="col s12 l3">                        
@@ -182,6 +189,7 @@
                             <table id="example" class="cell-border" cellspacing="0" width="100%">
                                 <thead>
                                     <tr class="cyan darken-3 white-text" class="row-header">
+                                        <th>Semester</th>
                                         <th>Hari</th>
                                         <th>Gender</th>
                                         <th>Program</th>
@@ -189,6 +197,13 @@
                                         <th>Action</th>
                                     </tr>
                                     <tr class="row-filter">
+                                        <th>
+                                            <select id="paramHari">
+                                                <option value=""></option>
+                                                <option value="XXV">XXV</option>
+                                                <option value="XXVI">XXVI</option>
+                                            </select>
+                                        </th>
                                         <th>
                                             <select id="paramHari">
                                                 <option value=""></option>
@@ -211,6 +226,7 @@
                                 <tbody>
                                     @foreach ($list as $n)
                                         <tr>
+                                            <td>{{ $n->semester_name }}</td>
                                             <td>{{ $n->day }}</td>
                                             <td>{{ ($n->gender=="FEMALE") ? "AKHWAT" : "IKHWAN" }}</td>
                                             <td>{{ $n->program_name }}</td>
@@ -219,6 +235,39 @@
                                                 <a href="/halaqoh/{{ $n->halaqoh_reference }}" class="btn-floating waves-effect waves-light primary tooltipped" data-position="bottom" data-tooltip="Detail"><i class="mdi-action-search"></i></a>
                                                 <a onclick="loadPeserta(`{{ $n->day }}`,`{{ $n->gender }}`,`{{ $n->program_name }}`,`{{ $n->pengajar_name }}`,`{{ $n->halaqoh_reference }}`)" class="btn-floating waves-effect waves-light green tooltipped modal-triggers" data-position="bottom" data-tooltip="Daftar Peserta"><i class="mdi-social-people"></i></a>
                                             </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                                <tfoot>
+                                </tfoot>
+                            </table>                            
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 25px">
+                    <div class="col s12">
+                        <h4>Daftar Peserta Halaqoh</h4>
+                        <div style="overflow-x: scroll;">
+                            <table id="tblPeserta" class="cell-border" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr class="cyan darken-3 white-text" class="row-header">
+                                        <th>Semester</th>
+                                        <th>Hari</th>
+                                        <th>Gender</th>
+                                        <th>Program</th>
+                                        <th>Pengajar</th>
+                                        <th>Santri</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($peserta as $n)
+                                        <tr>
+                                            <td>{{ $n->semester_name }}</td>
+                                            <td>{{ $n->day }}</td>
+                                            <td>{{ ($n->gender=="FEMALE") ? "AKHWAT" : "IKHWAN" }}</td>
+                                            <td>{{ $n->program_name }}</td>
+                                            <td>{{ $n->pengajar_name }}</td>
+                                            <td>{{ $n->santri_name }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>

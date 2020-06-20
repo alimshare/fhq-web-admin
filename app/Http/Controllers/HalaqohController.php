@@ -29,7 +29,8 @@ class HalaqohController extends Controller
     	// $this->data['halaqoh'] = $this->hit_api("semester/{$reference}/halaqoh", "get");
     	// $this->data['semester_reference'] = $reference;
         
-        $this->data['list'] = \App\Model\View\ViewHalaqoh::all();
+        $this->data['list']         = \App\Model\View\ViewHalaqoh::all();
+        $this->data['peserta']      = \App\Model\View\ViewPeserta::all();
         return view('pages.halaqoh.list', $this->data);
     }
 
