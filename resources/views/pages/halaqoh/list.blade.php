@@ -258,6 +258,7 @@
                                         <th>Gender</th>
                                         <th>Program</th>
                                         <th>Pengajar</th>
+                                        <th>NIS</th>
                                         <th>Santri</th>
                                     </tr>
                                 </thead>
@@ -269,6 +270,7 @@
                                             <td>{{ ($n->gender=="FEMALE") ? "AKHWAT" : "IKHWAN" }}</td>
                                             <td>{{ $n->program_name }}</td>
                                             <td>{{ $n->pengajar_name }}</td>
+                                            <td>{{ $n->santri_nis }}</td>
                                             <td>{{ $n->santri_name }}</td>
                                         </tr>
                                     @endforeach
