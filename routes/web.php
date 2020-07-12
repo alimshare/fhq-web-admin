@@ -85,3 +85,5 @@ Route::group(['middleware' => []], function () {
 
 });
 
+Route::get('halaqoh-27', 'PublicController@index');
+
