@@ -24,14 +24,7 @@
     <!-- CORE CSS-->
     <link href="/materialized/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection">
     <link href="/materialized/css/style.css" type="text/css" rel="stylesheet" media="screen,projection">
-    <!-- Custome CSS-->    
-    <!-- <link href="/materialized/css/custom/custom-style.css" type="text/css" rel="stylesheet" media="screen,projection"> -->
-
-    <!-- INCLUDED PLUGIN CSS ON THIS PAGE -->
     <link href="/materialized/js/plugins/perfect-scrollbar/perfect-scrollbar.css" type="text/css" rel="stylesheet" media="screen,projection">
-
-    <!-- Modal -->
-    <!-- <link href="/materialized/sass/components/_modal.scss" type="text/scss" rel="stylesheet"> -->
     <link href="{{ asset('assets/plugins/datatables/css/jquery.dataTables.min.css') }}" rel="stylesheet">
     <style type="text/css">
         .dataTables_filter {
@@ -82,21 +75,24 @@
       <section id="content">        
 
         <!--start container-->
-        <div class="container" style="margin-bottom: 25px">
-            <div class="section">
+        <div class="" style="margin-bottom: 10px">
+            <div class="">
                 <div class="row">
-                    <div class="col s12">
+                    <div class="col s12" style="padding:0">
                         <div style="overflow-x: scroll;">
                             <table id="daftarHalaqoh" class="cell-border" cellspacing="0" width="100%">
                                 <thead>
                                     <tr class="cyan darken-3 white-text" class="row-header">
+                                        <th>Santri</th>
+                                        <th>Pengajar</th>
+                                        <th>Program</th>
                                         <th>Hari</th>
                                         <th>Jenis Kelamin</th>
-                                        <th>Program</th>
-                                        <th>Pengajar</th>
-                                        <th>Santri</th>
                                     </tr>
                                     <tr class="row-filter">
+                                        <th><input type="text" placeholder="Search Santri" id="paramSantri" class="input-text"></th>
+                                        <th><input type="text" placeholder="Search Pengajar" id="paramPengajar" class="input-text"></th>
+                                        <th><input type="text" placeholder="Search Program" id="paramProgram" class="input-text"></th>
                                         <th>
                                             <select id="paramHari">
                                                 <option value=""></option>
@@ -111,19 +107,16 @@
                                                 <option value="AKHWAT">AKHWAT</option>
                                             </select>
                                         </th>
-                                        <th><input type="text" placeholder="Search Program" id="paramProgram" class="input-text"></th>
-                                        <th><input type="text" placeholder="Search Pengajar" id="paramPengajar" class="input-text"></th>
-                                        <th><input type="text" placeholder="Search Santri" id="paramSantri" class="input-text"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($list as $n)
                                         <tr>
+                                            <td>{{ $n->nama_santri }}</td>
+                                            <td>{{ $n->nama_pengajar }}</td>
+                                            <td>{{ $n->program }}</td>
                                             <td>{{ $n->hari }}</td>
                                             <td>{{ $n->jenkel }}</td>
-                                            <td>{{ $n->program }}</td>
-                                            <td>{{ $n->nama_pengajar }}</td>
-                                            <td>{{ $n->nama_santri }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -144,7 +137,6 @@
 
     <script type="text/javascript" src="/materialized/js/plugins/jquery-1.11.2.min.js"></script>
     <script type="text/javascript" src="/materialized/js/materialize.js"></script>
-    <!-- <script type="text/javascript" src="/materialized/js/plugins/perfect-scrollbar/perfect-scrollbar.min.js"></script> -->
     <script type="text/javascript" src="/materialized/js/plugins.js"></script>
     <script type="text/javascript" src="/materialized/js/custom-script.js"></script>
     
