@@ -33,6 +33,10 @@
             <li class="bold"><a href="/santri" class="waves-effect waves-cyan"><i class="mdi-social-people-outline"></i> Santri</a></li>
             <li class="bold"><a href="/program" class="waves-effect waves-cyan"><i class="mdi-image-assistant-photo"></i> Program</a></li>
             <li class="bold"><a href="/lembaga" class="waves-effect waves-cyan"><i class="mdi-social-location-city"></i> Lembaga</a></li>
+            
+            <li class="li-hover"><div class="divider"></div></li>
+            <li class="bold"><a href="/role" class="waves-effect waves-cyan"><i class="mdi-social-location-city"></i> Role</a></li>
+
             <li class="li-hover"><div class="divider"></div></li>
             <!-- <li class="bold"><a href="/santri" class="waves-effect waves-cyan"><i class="mdi-action-account-circle"></i> User Aplikasi</a></li> -->
             <li class="bold"><a href="/change-password" class="waves-effect waves-cyan"><i class="mdi-communication-vpn-key"></i> Ubah Password</a></li>

@@ -38,7 +38,7 @@
                     {{ session('login_error') }}
                 </div>
               @endif
-              
+
               <div class="input-group mb-3">
                 <span class="input-group-addon"><i class="icon-envelope"></i></span>
                 <input id="email" type="email" class="form-control" name="email" value="" required autofocus placeholder="Email">
@@ -62,12 +62,13 @@
 
               <div class="row">
                 <div class="col-6">
-                  <button type="submit" class="btn btn-primary px-4">Login</button>
+                  <button type="submit" class="btn btn-primary px-4">Sign In</button>
                 </div>
-                {{-- <div class="col-6 text-right">
-                  <a href="{{ route('password.request') }}" class="btn btn-link px-0">Forgot password?</a>
+                <div class="col-6 text-right">
+{{--                  <a href="{{ route('password.request') }}" class="btn btn-link px-0">Forgot password?</a>--}}
+{{--                  <a href="{{ route('register') }}" class="btn btn-light">Sign Up</a>--}}
                 </div>
-                --}}
+
               </div>
               </form>
             </div>

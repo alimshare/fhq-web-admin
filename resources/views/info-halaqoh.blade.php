@@ -79,7 +79,7 @@
             <div class="">
                 <div class="row">
                     <div class="col s12" style="padding:0">
-                        <div style="overflow-x: scroll;">
+                        <div style="">
                             <table id="daftarHalaqoh" class="cell-border" cellspacing="0" width="100%">
                                 <thead>
                                     <tr class="cyan darken-3 white-text" class="row-header">

@@ -21,7 +21,7 @@ Route::group(['middleware' => []], function () {
 
 	Route::get('/', 'HomeController@index');
 	Route::get('/home', 'HomeController@index')->name('home');
-	
+
 	/**
 	 * Lembaga
 	 */
@@ -83,7 +83,14 @@ Route::group(['middleware' => []], function () {
 	Route::get('/change-password', 'HomeController@changePassword');
 	Route::post('/change-password', 'HomeController@changePasswordProcess');
 
+
+    /**
+     * Role & Permission
+     */
+    Route::get('/role/{id?}', 'RolePermissionController@index');
+
 });
 
 Route::get('halaqoh-27', 'PublicController@index');
+// Route::view('register', 'auth.register')->name('register');
 
