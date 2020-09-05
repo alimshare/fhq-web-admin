@@ -14,5 +14,9 @@ class Santri extends Model
 	use SoftDeletes;
 	
     protected 	$table 		= "santri";
-    
+      
+    public function user() 
+    { 
+        return $this->morphOne('App\User', 'profile');
+    }
 }

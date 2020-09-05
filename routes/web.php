@@ -21,6 +21,7 @@ Route::group(['middleware' => []], function () {
 
 	Route::get('/', 'HomeController@index');
 	Route::get('/home', 'HomeController@index')->name('home');
+	Route::get('/profile', 'HomeController@profile')->name('profile');
 
 	/**
 	 * Lembaga
@@ -35,28 +36,28 @@ Route::group(['middleware' => []], function () {
 	/**
 	 * Santri
 	 */
-	Route::get('santri', 'SantriController@index');
-	Route::get('santri/edit/{id}', 'SantriController@edit');
-	Route::post('santri/save', 'SantriController@save');
+	Route::get('santri', 'SantriController@index')->middleware(['permission:list-santri']);
+	Route::get('santri/edit/{id}', 'SantriController@edit')->middleware(['permission:edit-santri']);
+	Route::post('santri/save', 'SantriController@save')->middleware(['permission:edit-santri']);
 
 	/**
 	 * Pengajar
 	 */
-	Route::get('pengajar', 'PengajarController@index');
-	Route::get('pengajar/{id}', 'PengajarController@show');
-	Route::get('pengajar/edit/{id}', 'PengajarController@edit');
-	Route::post('pengajar/save', 'PengajarController@save');
-	Route::delete('pengajar/remove/{id}', 'PengajarController@destroy');
+	Route::get('pengajar', 'PengajarController@index')->middleware(['permission:list-pengajar']);
+	Route::get('pengajar/{id}', 'PengajarController@show')->middleware(['permission:detail-pengajar']);
+	Route::get('pengajar/edit/{id}', 'PengajarController@edit')->middleware(['permission:edit-pengajar']);
+	Route::post('pengajar/save', 'PengajarController@save')->middleware(['permission:add-pengajar']);
+	Route::delete('pengajar/remove/{id}', 'PengajarController@destroy')->middleware(['permission:delete-pengajar']);
 
 	/**
 	 * Semester
 	 */
 	Route::get('semester/add', 'SemesterController@add');
 	Route::post('semester/add', 'SemesterController@update');
-	Route::delete('semester/remove/{reference}', 'SemesterController@remove');
-	Route::get('semester/{reference}', 'SemesterController@detail');
-	Route::put('semester/{reference}', 'SemesterController@update');
-	Route::get('semester', 'SemesterController@index');
+	Route::delete('semester/remove/{reference}', 'SemesterController@remove')->middleware(['permission:delete-pengajar']);;
+	Route::get('semester/{reference}', 'SemesterController@detail')->middleware(['permission:detail-pengajar']);;
+	Route::put('semester/{reference}', 'SemesterController@update')->middleware(['permission:edit-pengajar']);;
+	Route::get('semester', 'SemesterController@index')->middleware(['permission:list-semester']);
 	Route::get('semester/{reference}/halaqoh', 'HalaqohController@lists');
 
 	/**
@@ -88,6 +89,7 @@ Route::group(['middleware' => []], function () {
      * Role & Permission
      */
     Route::get('/role/{id?}', 'RolePermissionController@index');
+    Route::post('/role/save', 'RolePermissionController@save');
 
 });
 

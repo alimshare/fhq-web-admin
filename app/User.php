@@ -6,6 +6,10 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Model\Permission;
+use App\Model\Pivot\RolePermission;
+use App\Model\Pivot\UserRole;
+use App\Model\Role;
 
 class User extends Authenticatable
 {
@@ -42,4 +46,36 @@ class User extends Authenticatable
     function role(){
         return $this->belongsTo('App\Model\Role');
     }
+
+
+    public function roles() {
+        return $this->belongsToMany(Role::class,'users_roles');
+    }
+
+    public function permissions() {
+        return Permission::join('roles_permissions', 'permissions.id', 'roles_permissions.permission_id')
+            ->join('users_roles', 'roles_permissions.role_id', 'users_roles.role_id')
+            ->where('users_roles.user_id', $this->id);
+            ;
+    }
+
+    public function hasPermission($slug)
+    {
+        return (bool) $this->permissions()->where('slug', $slug)->count();
+    }
+
+    public function profile()
+    {
+      return $this->morphTo();
+    }
+
+    public function isPengajar()
+    {
+      return $this->profile_type == 'App\Model\Pengajar';
+    }
+    public function isSantri()
+    {
+      return $this->profile_type == 'App\Model\Santri';
+    }
+    
 }

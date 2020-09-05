@@ -17,6 +17,6 @@ class Infaq extends Model
 
     public function getPeserta()
     {
-    	return PendidikanSantri::find($this->pendidikan_id);
+    	return Peserta::find($this->pendidikan_id);
     }
 }

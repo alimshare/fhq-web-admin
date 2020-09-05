@@ -14,5 +14,9 @@ class Pengajar extends Model
 	use SoftDeletes;
 	
     protected 	$table 		= "pengajar";
-    
+      
+    public function user() 
+    { 
+        return $this->morphOne('App\User', 'profile');
+    }
 }

@@ -20,26 +20,46 @@
                         <li><a href="#"><i class="mdi-hardware-keyboard-tab"></i> Logout</a>
                         </li>
                     </ul> -->
-                    <a class="btn-flat dropdown-button waves-effect waves-light white-text profile-btn" href="#" data-activates="profile-dropdown">
+                    <a class="btn-flat dropdown-button waves-effect waves-light white-text profile-btn" href="{{ route('profile') }}" data-activates="profile-dropdown">
                         {{ Auth::user()->name }}
                         <!-- <i class="mdi-navigation-arrow-drop-down right"></i> --></a>
-                    <p class="user-roal">{{ Auth::user()->role->name }}</p>
+                    <p class="user-roal">NIP : {{ Auth::user()->profile->nip }}</p>
                 </div>
             </div>
             </li>
             <li class="bold"><a href="/" class="waves-effect waves-cyan"><i class="mdi-action-dashboard"></i> Dashboard</a></li>
+            
+            @allow('list-halaqoh')
             <li class="bold"><a href="/halaqoh" class="waves-effect waves-cyan"><i class="mdi-toggle-radio-button-off"></i> Halaqoh</a></li>
+            @endallow
+            
+            @allow('list-pengajar')
             <li class="bold"><a href="/pengajar" class="waves-effect waves-cyan"><i class="mdi-social-person-outline"></i> Pengajar</a></li>
+            @endallow
+            
+            @allow('list-santri')
             <li class="bold"><a href="/santri" class="waves-effect waves-cyan"><i class="mdi-social-people-outline"></i> Santri</a></li>
+            @endallow
+            
+            @allow('list-program')
             <li class="bold"><a href="/program" class="waves-effect waves-cyan"><i class="mdi-image-assistant-photo"></i> Program</a></li>
+            @endallow
+            
+            @allow('list-lembaga')
             <li class="bold"><a href="/lembaga" class="waves-effect waves-cyan"><i class="mdi-social-location-city"></i> Lembaga</a></li>
+            @endallow
             
             <li class="li-hover"><div class="divider"></div></li>
+            @allow('list-role')
             <li class="bold"><a href="/role" class="waves-effect waves-cyan"><i class="mdi-social-location-city"></i> Role</a></li>
+            @endallow
 
             <li class="li-hover"><div class="divider"></div></li>
             <!-- <li class="bold"><a href="/santri" class="waves-effect waves-cyan"><i class="mdi-action-account-circle"></i> User Aplikasi</a></li> -->
+            
+            @allow('change-password')
             <li class="bold"><a href="/change-password" class="waves-effect waves-cyan"><i class="mdi-communication-vpn-key"></i> Ubah Password</a></li>
+            @endallow
             <li class="bold">
                 <a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();" class="waves-effect waves-cyan">
                     <i class="mdi-hardware-keyboard-tab"></i> Log Out</a>

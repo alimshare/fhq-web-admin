@@ -65,6 +65,7 @@ class Kernel extends HttpKernel
          * Custom middleware. - Hairil
          */
         'jwtoken' => \App\Http\Middleware\JWToken::class,
+        'permission' => \App\Http\Middleware\PermissionMiddleware::class,
     ];
 
     /**

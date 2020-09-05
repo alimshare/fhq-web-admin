@@ -31,7 +31,7 @@ class Halaqoh extends Model
     }
 
     public function getPeserta(){
-        return PendidikanSantri::where('halaqoh_id', '=', $this->id)->get();
+        return Peserta::where('halaqoh_id', '=', $this->id)->get();
     }
 
     public function getView(){

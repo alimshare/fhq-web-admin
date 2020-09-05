@@ -100,7 +100,7 @@ class HalaqohController extends Controller
         $halaqohReference = $request->halaqohReference;
         // dd($request->all());
         foreach ($request->data as $pesertaId => $nilai) {
-            $peserta = \App\Model\PendidikanSantri::find($pesertaId);
+            $peserta = \App\Model\Peserta::find($pesertaId);
             if ($peserta != null) {
                 $peserta->nilai_uts_teori = $nilai['nilai_uts_teori'];
                 $peserta->nilai_uts_praktek = $nilai['nilai_uts_praktek'];

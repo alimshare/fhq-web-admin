@@ -6,9 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Permission extends Model
 {
-    protected 	$table 		= "permission";
+    protected 	$table 	= "permissions";
+    public $timestamp   = false;
 
-    public function role() {
-        return $this->belongsTo('App\Model\Role');
-    }
+    public function roles() {
+        return $this->belongsToMany(Role::class,'roles_permissions');
+     }
 }

@@ -25,7 +25,7 @@ class Semester extends Model
     }
 
     public static function getActive(){
-    	return Semester::where('active', '=', 1)->get();
+    	return Semester::where('active', '=', 1)->first();
     }
 
     public function activate(){
