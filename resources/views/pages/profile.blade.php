@@ -107,7 +107,9 @@
                                     
                                 </div>
                             </div>
-                            
+                            <div class="card-footer text-right" style="margin-top: 1rem;">
+                                <a href="#" class="btn green">Edit</a>
+                            </div>
                         </div>
                     </div>
                     <div class="col s12 m6 l8">
