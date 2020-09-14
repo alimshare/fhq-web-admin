@@ -86,7 +86,8 @@ class HomeController extends Controller
 
     public function profile(Request $request)
     {
-        $user = auth()->user()->with(['profile','roles'])->first();
+        $userId = auth()->user()->id;
+        $user = \App\User::where('id', $userId)->with(['profile','roles'])->first();
         $halaqoh = \App\Model\View\ViewHalaqoh::where('pengajar_id', $user->profile->id)->WithCount(['peserta'])->get();
 
         $halaqohAktif = [];
@@ -109,7 +110,8 @@ class HomeController extends Controller
 
     public function profile_edit(Request $request)
     {
-        $user = auth()->user()->with(['profile','roles'])->first();
+        $userId = auth()->user()->id;
+        $user = \App\User::where('id', $userId)->with(['profile','roles'])->first();
 
         $data['profile']        = $user->profile;
         $data['roles']          = $user->roles->pluck('name')->toArray();
