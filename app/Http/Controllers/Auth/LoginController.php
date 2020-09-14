@@ -20,6 +20,11 @@ class LoginController extends Controller
     */
 
     use AuthenticatesUsers;
+    
+    public function username(){
+        return 'username';
+    }
+
 
     protected function authenticated(Request $request, $user)
     {

@@ -41,11 +41,11 @@
 
               <div class="input-group mb-3">
                 <span class="input-group-addon"><i class="icon-envelope"></i></span>
-                <input id="email" type="email" class="form-control" name="email" value="" required autofocus placeholder="Email">
+                <input id="username" type="text" class="form-control" name="username" value="" required autofocus placeholder="Username">
               </div>
-              @if ($errors->has('email'))
+              @if ($errors->has('username'))
               <p class="invalid-feedback">
-                {{ $errors->first('email') }}
+                {{ $errors->first('username') }}
               </p>
               @endif
 
