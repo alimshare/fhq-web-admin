@@ -19,9 +19,10 @@ Route::group(['middleware' => []], function () {
 	// 	return "Halo, Selamat Datang Di FHQ An-nashr";
 	// });
 
-	Route::get('/', 'HomeController@index');
+	Route::get('/', 'HomeController@index')->name('home');
 	Route::get('/home', 'HomeController@index')->name('home');
 	Route::get('/profile', 'HomeController@profile')->name('profile');
+	Route::get('/profile/edit', 'HomeController@profile_edit')->name('profile.edit');
 
 	/**
 	 * Lembaga
@@ -36,7 +37,7 @@ Route::group(['middleware' => []], function () {
 	/**
 	 * Santri
 	 */
-	Route::get('santri', 'SantriController@index')->middleware(['permission:list-santri']);
+	Route::get('santri', 'SantriController@index')->name('santri.index')->middleware(['permission:list-santri']);
 	Route::get('santri/edit/{id}', 'SantriController@edit')->middleware(['permission:edit-santri']);
 	Route::post('santri/save', 'SantriController@save')->middleware(['permission:edit-santri']);
 
@@ -72,10 +73,10 @@ Route::group(['middleware' => []], function () {
 	Route::delete('halaqoh/remove', 'HalaqohController@remove');
 	Route::get('halaqoh/add', 'HalaqohController@add');
 	Route::post('halaqoh/add', 'HalaqohController@save');
-	Route::get('halaqoh/{reference}', 'HalaqohController@detail');
-	Route::get('halaqoh/{reference}/edit', 'HalaqohController@editDetail');
+	Route::get('halaqoh/{reference}', 'HalaqohController@detail')->middleware(['permission:detail-halaqoh']);
+	Route::get('halaqoh/{reference}/edit', 'HalaqohController@editDetail')->middleware(['permission:input-nilai']);
 	Route::put('halaqoh/{reference}', 'HalaqohController@save');
-	Route::post('halaqoh-detail/save', 'HalaqohController@saveDetail');
+	Route::post('halaqoh-detail/save', 'HalaqohController@saveDetail')->middleware(['permission:input-nilai']);
 
 
 	/**

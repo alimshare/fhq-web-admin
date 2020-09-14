@@ -59,6 +59,10 @@ class User extends Authenticatable
             ;
     }
 
+    public function hasRole($role) {
+        return (bool) $this->roles()->where('slug', $role)->count();
+    }
+
     public function hasPermission($slug)
     {
         return (bool) $this->permissions()->where('slug', $slug)->count();

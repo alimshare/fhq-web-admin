@@ -23,7 +23,7 @@ class RolePermissionController extends Controller
         $data['roles'] = Role::orderBy('name','asc')->get();
 
         if ($id) {
-            $permissions = \App\Model\Permission::orderBy('category','asc')->orderBy('sequance','asc')->get();
+            $permissions = \App\Model\Permission::orderBy('sequance','asc')->get();
             $role = Role::find($id);
             $allowedPermissions = $role->permissions()->pluck('id')->toArray();
             foreach ($permissions as $permission) {

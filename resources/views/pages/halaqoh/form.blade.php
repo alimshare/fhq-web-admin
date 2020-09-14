@@ -60,7 +60,10 @@
 					@if (Request::get('referer'))
 						<a href="{{ Request::get('referer') }}" class="waves-effect waves-light btn btn-small">Kembali</a>
 					@endif
-    				<a href="/halaqoh/{{ $halaqoh->halaqoh_reference }}/edit" class="waves-effect waves-light green btn btn-small"><i class="mdi-editor-border-color right"></i>Edit</a>
+
+					@allow('input-nilai')
+						<a href="/halaqoh/{{ $halaqoh->halaqoh_reference }}/edit" class="waves-effect waves-light green btn btn-small"><i class="mdi-editor-border-color right"></i>Edit</a>
+					@endallow
     			</div>
     		</div>
         	<div class="row"> 

@@ -86,27 +86,34 @@ class HomeController extends Controller
 
     public function profile(Request $request)
     {
-        $data['profile'] = $profile = auth()->user()->profile()->first();
-        $data['roles'] = auth()->user()->roles()->pluck('name')->toArray();
+        $user = auth()->user()->with(['profile','roles'])->first();
+        $halaqoh = \App\Model\View\ViewHalaqoh::where('pengajar_id', $user->profile->id)->WithCount(['peserta'])->get();
 
         $halaqohAktif = [];
         $halaqohLampau = [];
-
-        $halaqoh = \App\Model\View\ViewHalaqoh::where('pengajar_id', $profile->id)->get();
         foreach ($halaqoh as $row) {
-            $row->jumlah_peserta = Peserta::where('halaqoh_id', $row->halaqoh_id)->count();
-
             if ($row->semester_id == Semester::getActive()->id) {
                 $halaqohAktif[] = $row;
             } else {
                 $halaqohLampau[] = $row;
-            }
-            
+            }            
         }
 
-        $data['halaqoh_aktif'] = $halaqohAktif;
+        $data['profile']        = $user->profile;
+        $data['roles']          = $user->roles->pluck('name')->toArray();
+        $data['halaqoh_aktif']  = $halaqohAktif;
         $data['halaqoh_lampau'] = $halaqohLampau;
 
-        return view('pages.profile',$data);
+        return view('pages.profile.profile',$data);
+    }
+
+    public function profile_edit(Request $request)
+    {
+        $user = auth()->user()->with(['profile','roles'])->first();
+
+        $data['profile']        = $user->profile;
+        $data['roles']          = $user->roles->pluck('name')->toArray();
+
+        return view('pages.profile.profile_edit',$data);
     }
 }

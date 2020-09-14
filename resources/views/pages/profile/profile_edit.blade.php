@@ -38,11 +38,12 @@
 			<div class="row">
 				<div class="col s10 m6 l6">
 					<h5 class="breadcrumbs-title mt-0 mb-0">
-						<span>Profil</span>
+						<span>Profil <small>Edit</small></span>
 					</h5>
 					<ol class="breadcrumbs mb-0">
-						<li class="breadcrumb-item "><a href="/">Home</a></li>
-						<li class="breadcrumb-item active">Profile</li>
+                    <li class="breadcrumb-item "><a href="{{ route('home') }}">Home</a></li>
+                    <li class="breadcrumb-item "><a href="{{ route('profile') }}">Profile</a></li>
+						<li class="breadcrumb-item active">Edit</li>
 					</ol>
 				</div>
 			</div>
@@ -108,70 +109,9 @@
                                 </div>
                             </div>
                             <div class="card-footer text-right" style="margin-top: 1rem;">
-                                <a href="#" class="btn green">Edit</a>
+                            <a href="{{ route('profile') }}" class="btn">Back</a>
+                            <a href="{{ route('profile.edit') }}" class="btn green">Save</a>
                             </div>
-                        </div>
-                    </div>
-                    <div class="col s12 m6 l8">
-                        <div class="card-panel" id="card-halaqoh-active">
-                            <h5 class="h5">Daftar Halaqoh Aktif</h5>
-                            <table id="daftar_halaqoh_aktif" class="bordered" cellspacing="0" width="100%">
-                                <thead>
-                                    <tr class="cyan darken-3 white-text" class="row-header">
-                                        <th>Semester</th>
-                                        <th>Hari</th>
-                                        <th>Program</th>
-                                        <th>Jumlah Santri</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($halaqoh_aktif as $n)
-                                        <tr>
-                                            <td>{{ $n->semester_name }}</td>
-                                            <td>{{ $n->day }}</td>
-                                            <td>{{ $n->program_name }}</td>
-                                            <td>{{ $n->jumlah_peserta }}</td>
-                                            <td class="text-center">
-                                                <a href="/halaqoh/{{ $n->halaqoh_reference }}?referer=/profile" class="btn-floating waves-effect waves-light primary tooltipped" data-position="bottom" data-tooltip="Detail"><i class="mdi-action-search"></i></a>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                                <tfoot>
-                                </tfoot>
-                            </table>
-                        </div>
-
-                        <div class="card-panel" id="card-halaqoh-history">
-                            <h5 class="h5">Daftar Halaqoh Lampau</h5>
-
-                            <table id="daftar_halaqoh_lampau" class="bordered" cellspacing="0" width="100%">
-                                <thead>
-                                    <tr class="cyan darken-3 white-text" class="row-header">
-                                        <th>Semester</th>
-                                        <th>Hari</th>
-                                        <th>Program</th>
-                                        <th>Jumlah Santri</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($halaqoh_lampau as $n)
-                                        <tr>
-                                            <td>{{ $n->semester_name }}</td>
-                                            <td>{{ $n->day }}</td>
-                                            <td>{{ $n->program_name }}</td>
-                                            <td>{{ $n->jumlah_peserta }}</td>
-                                            <td class="text-center">
-                                                <a href="/halaqoh/{{ $n->halaqoh_reference }}?referer=/profile" class="btn-floating waves-effect waves-light primary tooltipped" data-position="bottom" data-tooltip="Detail"><i class="mdi-action-search"></i></a>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                                <tfoot>
-                                </tfoot>
-                            </table>
                         </div>
                     </div>
                 </div>

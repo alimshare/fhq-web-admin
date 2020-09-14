@@ -27,8 +27,13 @@
                 </div>
             </div>
             </li>
-            <li class="bold"><a href="/" class="waves-effect waves-cyan"><i class="mdi-action-dashboard"></i> Dashboard</a></li>
-            
+
+            @if (Auth::user()->hasRole('admin'))
+                <li class="bold"><a href="/" class="waves-effect waves-cyan"><i class="mdi-action-dashboard"></i> Dashboard</a></li>
+            @else
+                <li class="bold"><a href="/profile" class="waves-effect waves-cyan"><i class="mdi-action-account-circle"></i> Profile</a></li>
+            @endif
+
             @allow('list-halaqoh')
             <li class="bold"><a href="/halaqoh" class="waves-effect waves-cyan"><i class="mdi-toggle-radio-button-off"></i> Halaqoh</a></li>
             @endallow
