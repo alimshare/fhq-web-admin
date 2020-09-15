@@ -80,11 +80,11 @@
                                 <table class="striped">
                                     <tbody>
                                       <tr>
-                                        <td>Jenis Kelamin</td>
+                                        <td width="30%">Jenis Kelamin:</td>
                                         <td>{{ $profile->gender == 'MALE' ? 'Laki-laki' : 'Perempuan' }}</td>
                                       </tr>
                                       <tr>
-                                        <td>Telepon</td>
+                                        <td>Telepon:</td>
                                         <td class="">{{ $profile->phone }}</td>
                                       </tr>
                                       <tr>
@@ -101,10 +101,10 @@
                                             {{ implode(", ", $roles) }}
                                         </td>
                                       </tr>
-                                      <tr>
+                                      {{-- <tr>
                                         <td width="30%">Join Date</td>
                                         <td>{{ date('d/m/Y', strtotime($profile->join_date)) }}</td>
-                                      </tr>
+                                      </tr> --}}
                                       <tr>
                                         <td>Status:</td>
                                         <td><span class=" users-view-status chip green lighten-5 green-text">Active</span></td>

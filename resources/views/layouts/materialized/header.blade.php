@@ -5,7 +5,7 @@
                 <div class="nav-wrapper">
                     <ul class="left">                      
                       <li><h1 class="logo-wrapper">
-                        <a href="index.html" class="brand-logo darken-1">
+                      <a href="{{ route('home') }}" class="brand-logo darken-1">
                           <img src="/images/logo_web.png" alt="FHQ logo">
                         </a> 
                         <span class="logo-text">FHQ</span></h1></li>

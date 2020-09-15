@@ -73,6 +73,11 @@ class User extends Authenticatable
       return $this->morphTo();
     }
 
+    public function isAdmin()
+    {
+        return $this->hasRole('admin');
+    }
+
     public function isPengajar()
     {
       return $this->profile_type == 'App\Model\Pengajar';

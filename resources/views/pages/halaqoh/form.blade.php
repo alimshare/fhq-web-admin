@@ -37,14 +37,14 @@
             <h5 class="breadcrumbs-title">Halaqoh <small>Detail</small></h5>
             <ol class="breadcrumbs">
                 <li><a href="/" class="cyan-text">Dashboard</a></li>
-                <li><a href="/halaqoh" class="cyan-text">Halaqoh</a></li>
+				<li><a href="{{ Request::get('referer') ? "#" : "/halaqoh" }}" class="cyan-text">Halaqoh</a></li>
                 <li class="active">Detail</li>
             </ol>
 			<p>
-            	<div class="chip cyan white-text"> <i class="mdi-action-event"></i> <span id="modalSemester">{{ $halaqoh->semester_name }}</span> </div>
+            	<div class="chip cyan white-text"> <i class="mdi-action-event"></i> <span id="modalSemester">Semester {{ $halaqoh->semester_name }}</span> </div>
             	<div class="chip cyan white-text"> <i class="mdi-action-event"></i> <span id="modalDay">{{ $halaqoh->day }}</span> </div>
             	<div class="chip cyan white-text"> <i class="mdi-content-flag"></i> <span id="modalProgram">{{ $halaqoh->program_name }}</span> </div>
-            	<div class="chip cyan white-text"> <i class="mdi-social-person-outline"></i> <span id="modalPengajar">{{ $halaqoh->pengajar_name }}</span> </div>
+            	{{-- <div class="chip cyan white-text"> <i class="mdi-social-person-outline"></i> <span id="modalPengajar">{{ $halaqoh->pengajar_name }}</span> </div> --}}
             </p>
           </div>
         </div>

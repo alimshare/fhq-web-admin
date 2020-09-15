@@ -68,7 +68,6 @@ class HomeController extends Controller
             'old_password'  => 'required',
             'new_password'  => 'required|min:6|same:confirm_password'
         ]);
-        // dd('aaa');
 
         if (Hash::check($req->input('old_password'), auth()->user()->password)) {
             $currentUser = \App\User::find(auth()->user()->id);
@@ -115,7 +114,53 @@ class HomeController extends Controller
 
         $data['profile']        = $user->profile;
         $data['roles']          = $user->roles->pluck('name')->toArray();
+        $data['lookup']['marital_status'] = HomeController::MaritalStatus_Lookup();
+        $data['lookup']['educational_background'] = HomeController::EducationalBackground_Lookup();
 
         return view('pages.profile.profile_edit',$data);
+    }
+
+    public function profile_edit_save(Request $request)
+    {
+        $profileType = $request->profile_type;
+        $profileID = $request->profile_id;
+
+
+        $updateData = $request->only([
+            'name','father_name','birth_place',
+            'birth_date','phone','email','marital_status','spouse',
+            'address','city','district','village','educational_background',
+            'educational_field','occupation'
+        ]);
+
+        $profile = $profileType::find($profileID);
+        foreach ($updateData as $field => $value) {
+            $profile->$field = $value;
+        }
+
+        if ($profile->save()){
+            return redirect()->route('profile');
+        }
+        return redirect()->back();
+    }
+
+    public static function MaritalStatus_Lookup(){
+        return [
+            ['name' => 'Lajang', 'value' => '1'],
+            ['name' => 'Menikah', 'value' => '2'],
+            ['name' => 'Janda/Duda', 'value' => '3']
+        ];
+    }
+
+    public static function EducationalBackground_Lookup(){
+        return [
+            ['name' => 'SMP', 'value' => 'SMP'],
+            ['name' => 'SMA/SMK', 'value' => 'SMA/SMK'],
+            ['name' => 'D1/D2', 'value' => 'D1/D2'],
+            ['name' => 'D3', 'value' => 'D3'],
+            ['name' => 'S1/D4', 'value' => 'S1/D4'],
+            ['name' => 'S2', 'value' => 'S2'],
+            ['name' => 'S3', 'value' => 'S3']
+        ];
     }
 }

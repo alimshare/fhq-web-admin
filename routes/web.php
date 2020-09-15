@@ -19,10 +19,12 @@ Route::group(['middleware' => []], function () {
 	// 	return "Halo, Selamat Datang Di FHQ An-nashr";
 	// });
 
-	Route::get('/', 'HomeController@index')->name('home');
+	Route::get('/', 'HomeController@profile')->name('home');
 	Route::get('/home', 'HomeController@index')->name('home');
+
 	Route::get('/profile', 'HomeController@profile')->name('profile');
 	Route::get('/profile/edit', 'HomeController@profile_edit')->name('profile.edit');
+	Route::post('/profile/edit', 'HomeController@profile_edit_save')->name('profile.edit.save');
 
 	/**
 	 * Lembaga
@@ -69,7 +71,7 @@ Route::group(['middleware' => []], function () {
 	/**
 	 * Halaqoh
 	 */
-	Route::get('halaqoh', 'HalaqohController@lists');
+	Route::get('halaqoh', 'HalaqohController@lists')->name('halaqoh.index')->middleware(['permission:list-halaqoh']);
 	Route::delete('halaqoh/remove', 'HalaqohController@remove');
 	Route::get('halaqoh/add', 'HalaqohController@add');
 	Route::post('halaqoh/add', 'HalaqohController@save');

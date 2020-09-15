@@ -112,7 +112,7 @@
                 <div class="col s12">
                     @csrf
                     <input type="hidden" name="halaqohReference" value="{{ $halaqoh->halaqoh_reference }}">
-                    <button type="submit" class="waves-effect waves-light btn btn-small"><i class="mdi-content-save right"></i>Save</button>
+                    <button type="submit" class="waves-effect waves-light btn btn-small"><i class="mdi-content-save right"></i>Simpan</button>
                 </div>
             </div>
             </form>
