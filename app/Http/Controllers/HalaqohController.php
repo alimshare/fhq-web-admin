@@ -130,4 +130,9 @@ class HalaqohController extends Controller
     	$this->data['halaqoh'] = $this->hit_api("halaqoh/remove/{$reference}", "delete", $with_data);
     	return redirect(url()->previous());
     }
+
+    public function viewRaport(Request $request, $peserta_id = null)
+    {
+        dd('cetak raport');
+    }
 }

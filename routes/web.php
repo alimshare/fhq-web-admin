@@ -79,7 +79,7 @@ Route::group(['middleware' => []], function () {
 	Route::get('halaqoh/{reference}/edit', 'HalaqohController@editDetail')->middleware(['permission:input-nilai']);
 	Route::put('halaqoh/{reference}', 'HalaqohController@save');
 	Route::post('halaqoh-detail/save', 'HalaqohController@saveDetail')->middleware(['permission:input-nilai']);
-
+	Route::get('/raport-peserta/{pesertaId?}', 'HalaqohController@viewRaport')->name('peserta.raport.print');
 
 	/**
 	 * Change Password

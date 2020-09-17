@@ -57,8 +57,8 @@
     <div class="container" style="margin-bottom: 25px; padding-top: 10px;">
     		<div class="row" style="margin-bottom: 10px; text-align: right;">
     			<div class="col s12">
-					@if (Request::get('referer'))
-						<a href="{{ Request::get('referer') }}" class="waves-effect waves-light btn btn-small">Kembali</a>
+					@if (Auth::user()->isPengajar())
+						<a href="{{ route('profile') }}" class="waves-effect waves-light btn btn-small">Profile</a>
 					@endif
 
 					@allow('input-nilai')
@@ -72,7 +72,7 @@
         				<table class="dataTable" border="1px" width="100%"> 
         					<thead class="cyan white-text"> 
         						<tr> 
-        							<th rowspan="2">NO</th>
+        							{{-- <th rowspan="2">Rapot</th> --}}
         							<th rowspan="2">NIS</th>
         							<th rowspan="2">Nama Santri</th>
         							<th colspan="2">UTS</th>
@@ -90,10 +90,13 @@
         						</tr>
         					</thead>
         					<tbody> 
-        						<?php  $no = 1; ?>
         						@foreach ($peserta as $santri)
         						<tr> 
-        							<td>{{ $no++ }}</td>
+									{{-- <td class="text-center">
+										<a href="{{ route('peserta.raport.print', ['pesertaId' => $santri->peserta_id]) }}" class="">
+											<i class="mdi-file-file-download small"></i>
+										</a>
+									</td> --}}
         							<td>{{ $santri->nis }}</td>
         							<td>{{ $santri->santri_name }}</td>
         							<td class="text-right">{{ $santri->nilai_uts_teori }}</td>
