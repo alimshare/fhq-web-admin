@@ -60,13 +60,13 @@ Route::group(['middleware' => []], function () {
 	Route::delete('semester/remove/{reference}', 'SemesterController@remove')->middleware(['permission:delete-pengajar']);;
 	Route::get('semester/{reference}', 'SemesterController@detail')->middleware(['permission:detail-pengajar']);;
 	Route::put('semester/{reference}', 'SemesterController@update')->middleware(['permission:edit-pengajar']);;
-	Route::get('semester', 'SemesterController@index')->middleware(['permission:list-semester']);
+	Route::get('semester', 'SemesterController@index')->name('semester.index')->middleware(['permission:list-semester']);
 	Route::get('semester/{reference}/halaqoh', 'HalaqohController@lists');
 
 	/**
 	 * Program
 	 */
-	Route::get('program', 'ProgramController@index');
+	Route::get('program', 'ProgramController@index')->name('program.index')->middleware(['permission:list-program']);;
 
 	/**
 	 * Halaqoh

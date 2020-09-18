@@ -25,40 +25,16 @@ class SemesterController extends Controller
      */
     public $data = array();
 
-    //di sini isi controller semester
-    public function index(Request $request, $lembaga_reference=null)
+
+    public function index(Request $request)
     {
-        // $url = $lembaga_reference ? "lembaga/{$lembaga_reference}/semester" : "semester";
-        // $this->data['semester'] = Curl::to(env('API_ENDPOINT').$url)
-        //     ->withHeaders([
-        //         'Content-type: application/json',
-        //         'Authorization: Bearer '.$this->token()
-        //     ])
-        //     ->asJson()
-        //     ->get();
-
-        // if ($lembaga_reference) {
-        //     $this->data['lembaga'] = Curl::to(env('API_ENDPOINT')."lembaga/{$lembaga_reference}")
-        //         ->withHeaders([
-        //             'Content-type: application/json',
-        //             'Authorization: Bearer '.$this->token()
-        //         ])
-        //         ->asJson()
-        //         ->get();
-        // }
-
-        //     // dd($this->data);
-
-        // return view('semester', $this->data);
-
-        $this->data['list'] = \App\Model\Semester::getActive();
+        $this->data['list'] = \App\Model\Semester::orderBy('name','desc')->get();
         return view('pages.semester.list', $this->data);
 
 	}
 
     public function add(Request $request)
     {
-        // $this->data['semester'] = null;
         $this->data['lembaga'] = $this->get_lembaga_list();
         return view('semester-form', $this->data);
     }
