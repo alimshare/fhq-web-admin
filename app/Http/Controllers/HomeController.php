@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use \App\Model\Peserta;
 use \App\Model\Semester;
+use \App\Model\Halaqoh;
 
 class HomeController extends Controller
 {
@@ -27,14 +28,19 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $data['count_halaqoh']  = \App\Model\Halaqoh::count();
-        $data['count_pengajar'] = \App\Model\Pengajar::count();
-        $data['count_santri']   = \App\Model\Santri::count();
-        $data['count_program']  = \App\Model\Program::count();
 
-        $SQL = "SELECT program_name, halaqoh, ( SELECT COUNT(1) AS peserta FROM view_peserta WHERE program_id = T1.program_id) AS peserta
+        $semesterActive = Semester::getActive();
+        $halaqoh = Halaqoh::where('semester_id', $semesterActive->id);
+
+        $data['count_halaqoh']  = $halaqoh->count();
+        $data['count_pengajar'] = $halaqoh->distinct('pengajar_id')->count('pengajar_id');
+        $data['count_program']  = $halaqoh->count('program_id');
+        $data['count_santri']   = \App\Model\View\ViewPeserta::where('semester_id', $semesterActive->id)->count();
+
+        $SQL = "SELECT program_name, halaqoh, ( SELECT COUNT(1) AS peserta FROM view_peserta WHERE semester_id = '".$semesterActive->id."' AND program_id = T1.program_id) AS peserta
                 FROM (
                     SELECT program_id, program_name, SUM(1) AS halaqoh FROM view_halaqoh
+                    WHERE semester_id = '". $semesterActive->id ."'
                     GROUP BY program_id, program_name
                 ) T1";
         $countPeserta = DB::select($SQL); // sementara pake native query
