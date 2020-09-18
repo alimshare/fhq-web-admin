@@ -98,7 +98,13 @@
 										</a>
 									</td> --}}
         							<td>{{ $santri->nis }}</td>
-        							<td>{{ $santri->santri_name }}</td>
+									<td>
+										@allow('detail-santri')
+										<a href="{{ route('santri.profile', ['santriId'=>$santri->santri_id]) }}?referer=/halaqoh/{{ $halaqoh->halaqoh_reference }}">{{ $santri->santri_name }}</a>
+										@else
+										{{ $santri->santri_name }}
+										@endallow
+									</td>
         							<td class="text-right">{{ $santri->nilai_uts_teori }}</td>
         							<td class="text-right">{{ $santri->nilai_uts_praktek }}</td>
         							<td class="text-right">{{ $santri->nilai_uas_teori }}</td>

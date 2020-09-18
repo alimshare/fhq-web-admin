@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
  
 use Illuminate\Http\Request;
 use Ixudra\Curl\Facades\Curl;
+use App\Model\Santri;
  
 class SantriController extends Controller
 {
@@ -19,14 +20,6 @@ class SantriController extends Controller
 
     //di sini isi controller santri
     public function index(){
-	    // $token = $this->token();
-     //    $this->data['santri'] = Curl::to(env('API_ENDPOINT').'santri')
-     //    ->withHeaders(['Content-type: application/json', 'Authorization: Bearer '.$token])
-     //    ->asJson()
-     //    ->get();
-     //    dd($this->data);
-     
-
     	$this->data['list'] = \App\Model\Santri::all();
         return view('pages.santri.list', $this->data);
 
@@ -60,6 +53,16 @@ class SantriController extends Controller
         }
 
         return redirect('santri')->with('message', $message);
+    }
 
+    public function profile(Request $request, $santriId = null)
+    {
+        $user = Santri::where('id', $santriId)->first();
+        $halaqoh = \App\Model\View\ViewPeserta::where('santri_id', $user->id)->orderBy('semester_name','desc')->get();
+
+        $data['profile']  = $user;
+        $data['halaqoh']  = $halaqoh;
+
+        return view('pages.profile.profile_santri',$data);
     }
 }
