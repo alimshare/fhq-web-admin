@@ -28,12 +28,12 @@ class ProgramController extends Controller
     public $data = array();
 
     public function index(){
-        // $this->data['list'] = \App\Model\Program::all();
-
+        $semesterActive = \App\Model\Semester::getActive();
 
         $SQL = "SELECT program_name, halaqoh, ( SELECT COUNT(1) AS peserta FROM view_peserta WHERE program_id = T1.program_id) AS peserta
                 FROM (
                     SELECT program_id, program_name, SUM(1) AS halaqoh FROM `view_halaqoh`
+                    WHERE semester_id = '". $semesterActive->id ."'
                     GROUP BY program_id, program_name
                 ) T1";
         $program = DB::select($SQL); // sementara pake native query
