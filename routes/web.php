@@ -23,6 +23,9 @@ Route::group(['middleware' => []], function () {
 	Route::get('/home', 'HomeController@profile')->name('home');
 	Route::get('/dashboard', 'HomeController@index')->name('dashboard');
 
+	Route::get('/rekap-nilai', 'HomeController@rekapNilai')->name('rekap.nilai')->middleware(['permission:rekap-nilai.view']);
+	Route::get('/rekap-nilai/download', 'HomeController@exportRekapNilai')->name('rekap.nilai.download')->middleware(['permission:rekap-nilai.download']);
+
 	Route::get('/profile', 'HomeController@profile')->name('profile');
 	Route::get('/profile/edit', 'HomeController@profile_edit')->name('profile.edit');
 	Route::post('/profile/edit', 'HomeController@profile_edit_save')->name('profile.edit.save');
@@ -93,7 +96,8 @@ Route::group(['middleware' => []], function () {
     /**
      * Role & Permission
      */
-    Route::get('/role/{id?}', 'RolePermissionController@index');
+    Route::get('/role/{id?}', 'RolePermissionController@index')->name('role');
+    // Route::post('/role/save', 'RolePermissionController@save');
     Route::post('/role/save', 'RolePermissionController@save');
 
 });
