@@ -58,9 +58,26 @@
             <li class="li-hover"><div class="divider"></div></li>
             <!-- <li class="bold"><a href="/santri" class="waves-effect waves-cyan"><i class="mdi-action-account-circle"></i> User Aplikasi</a></li> -->
             
+            @allow('rekap-nilai.view')
+            <li class="no-padding">
+                <ul class="collapsible collapsible-accordion">
+                    <li class="bold"><a class="collapsible-header waves-effect waves-cyan"><i class="mdi-action-view-carousel"></i> Monitor</a>
+                        <div class="collapsible-body">
+                            <ul>
+                                <li><a href="{{ route('rekap.nilai') }}">Rekap Nilai</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </li>
+            @endallow
+
+            <li class="li-hover"><div class="divider"></div></li>
+
             @allow('change-password')
             <li class="bold"><a href="/change-password" class="waves-effect waves-cyan"><i class="mdi-communication-vpn-key"></i> Ubah Password</a></li>
             @endallow
+            
             <li class="bold">
                 <a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();" class="waves-effect waves-cyan">
                     <i class="mdi-hardware-keyboard-tab"></i> Log Out</a>

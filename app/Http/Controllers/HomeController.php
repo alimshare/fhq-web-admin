@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\DB;
 use \App\Model\Peserta;
 use \App\Model\Semester;
 use \App\Model\Halaqoh;
+use \App\Exports\RekapNilaiExport;
+use Excel;
 
 class HomeController extends Controller
 {
@@ -148,6 +150,19 @@ class HomeController extends Controller
             return redirect()->route('profile');
         }
         return redirect()->back();
+    }
+
+    public function rekapNilai(Request $request)
+    {
+        $data['list'] = \App\Model\View\ViewPeserta::where('semester_id', Semester::getActive()->id)
+            ->orderBy('pengajar_name', 'asc')->orderBy('santri_name','asc')->get();
+        return view('pages.report.rekap_nilai',$data);
+    }
+
+    public function exportRekapNilai(Request $request)
+    {
+        $semester = Semester::getActive();
+        return (new RekapNilaiExport)->forSemester($semester->id)->download('rekap-nilai-'.$semester->name.'-'.date('Ymd_Hi').'.xlsx');
     }
 
     public static function MaritalStatus_Lookup(){

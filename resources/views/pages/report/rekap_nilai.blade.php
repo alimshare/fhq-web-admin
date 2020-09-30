@@ -37,11 +37,12 @@
 <script src="{{ asset('assets/plugins/datatables/js/jquery.dataTables.min.js') }}"></script>
 <script type="text/javascript">
     let table = $('#example').DataTable({
-        "lengthChange": false,
+        "paging":false,
+        "lengthChange": true,
         "order" : [1, 'asc'],
         "columnDefs": [
             {
-                targets : [0,1,2], 
+                targets : [0,1,2,12,13], 
                 orderable : false
             }
         ]
@@ -91,10 +92,11 @@
           <div class="container">
             <div class="row">
               <div class="col s12 m12 l12">
-                <h5 class="breadcrumbs-title">Santri</h5>
+                <h5 class="breadcrumbs-title">Rekap Nilai</h5>
                 <ol class="breadcrumbs">
-                    <li><a href="/" class="cyan-text">Dashboard</a></li>
-                    <li class="active">Santri</li>
+                    <li><a href="/" class="cyan-text">Beranda</a></li>
+                    <li class="active">Monitor</li>
+                    <li class="active">Rekap Nilai</li>
                 </ol>
               </div>
             </div>
@@ -105,30 +107,10 @@
 
         <!--start container-->
         <div class="container" style="margin-bottom: 25px">
-            <div class="section">
-                <div class="row" id="input-select">
-                    <div class="col s12 l3">                        
-                        <label>Order By</label>
-                        <select id="orderBy">
-                          <option value="" disabled selected>Choose your option</option>
-                          <option value="1" selected="">NIS</option>
-                          <option value="2">Name</option>
-                          <option value="0">Gender</option>
-                        </select>
-                    </div>
-                    <div class="col s12 l3">                        
-                        <label>&nbsp;</label>
-                        <select id="orderType">
-                          <option value="" disabled selected>Choose your option</option>
-                          <option value="asc" selected="">ASC</option>
-                          <option value="desc">DESC</option>
-                        </select>
-                    </div>
-					{{-- <div align="right" style="margin-right:12px">      
-						</br>
-                        <a class="waves-effect waves-light btn cyan darken-1 modal-trigger" href="#modal-daftar-santri"><i class="mdi-social-person-outline"></i><i class="mdi-content-add"></i></a>
-					</div> --}}
-                  </div>
+            <div class="section text-right">
+                @allow('rekap-nilai.download')
+                <a href="{{ route('rekap.nilai.download') }}" class="btn cyan darken-2">Download</a>
+                @endallow
                 </div>
                 <div class="row">
                     <div class="col s12">
@@ -136,11 +118,29 @@
                             <table id="example" class="cell-border" cellspacing="0" width="100%">
                                 <thead>
                                     <tr class="cyan darken-3 white-text" class="row-header">
+                                        <th>Hari</th>
                                         <th>Gender</th>
+                                        <th>Program</th>
+                                        <th>Pengajar</th>
                                         <th>NIS</th>
-                                        <th>Name</th>
+                                        <th>Santri</th>
+                                        <th>UTS Praktek</th>
+                                        <th>UTS Teori</th>
+                                        <th>UAS Praktek</th>
+                                        <th>UAS Teori</th>
+                                        <th>Khatam</th>
+                                        <th>Kehadiran</th>
+                                        <th>Status</th>
+                                        <th>Catatan</th>
                                     </tr>
                                     <tr class="row-filter">
+                                        <th>
+                                            <select id="paramHari">
+                                                <option value=""></option>
+                                                <option value="SABTU">SABTU</option>
+                                                <option value="AHAD">AHAD</option>
+                                            </select>
+                                        </th>
                                         <th>
                                             <select id="paramGender">
                                                 <option value=""></option>
@@ -148,16 +148,43 @@
                                                 <option value="AKHWAT">AKHWAT</option>
                                             </select>
                                         </th>
-                                        <th><input type="text" placeholder="Search NIP" id="paramNip" class="input-text"></th>
-                                        <th><input type="text" placeholder="Search Name" id="paramName" class="input-text"></th>
+                                        <th><input type="text" placeholder="Cari Program" id="paramProgram" class="input-text"></th>
+                                        <th><input type="text" placeholder="Cari Pengajar" id="paramPengajar" class="input-text"></th>
+                                        <th><input type="text" placeholder="Cari NIS" id="paramNIS" class="input-text"></th>
+                                        <th><input type="text" placeholder="Cari Santri" id="paramSantri" class="input-text"></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th>
+                                            <select id="paramStatus">
+                                                <option value=""></option>
+                                                <option value="NAIK">NAIK</option>
+                                                <option value="TETAP">TETAP</option>
+                                            </select>
+                                        </th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($list as $n)
                                         <tr>
+                                            <td>{{ $n->day }}</td>
                                             <td>{{ ($n->gender=="FEMALE") ? "AKHWAT" : "IKHWAN" }}</td>
+                                            <td>{{ $n->program_name }}</td>
+                                            <td>{{ $n->pengajar_name }}</td>
                                             <td>{{ $n->nis }}</td>
-                                            <td><a href="/santri/edit/{{ $n->id }}">{{ $n->name }}</a></td>
+                                            <td>{{ $n->santri_name }}</td>
+                                            <td>{{ $n->nilai_uts_praktek }}</td>
+                                            <td>{{ $n->nilai_uts_teori }}</td>
+                                            <td>{{ $n->nilai_uas_praktek }}</td>
+                                            <td>{{ $n->nilai_uas_teori }}</td>
+                                            <td>{{ $n->khatam }}</td>
+                                            <td>{{ $n->kehadiran }}</td>
+                                            <td>{{ $n->status }}</td>
+                                            <td>{{ $n->catatan }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -166,40 +193,6 @@
                             </table>                            
                         </div>
 						
-						<!-- <div id="form-daftar" class="modal" style="z-index:1003; opacity:1; transform: scaleX(1); top:10%;">
-							<nav class="task-modal-nav blue">
-                            TES
-							</nav>
-						</div> -->
-                        <div id="modal-daftar-santri" class="modal">
-                            <nav class="task-modal-nav blue">
-                                <label style="margin-left:10px;color:white;">Form Daftar Santri</label>
-                            </nav>
-                            <div class="modal-content">
-                                <div class="row">
-                                    <div class="input-field col s12">
-                                        <input placeholder="nis" id="nis" type="text" class="validate">
-                                        <label for="nis" class="active">NIS</label>
-                                    </div>    
-                                    <div class="input-field col s12">
-                                        <input placeholder="name" id="name" type="text" class="validate">
-                                        <label for="name" class="active">Name</label>
-                                    </div>    
-                                    <div class="input-field col s12">
-                                        <select id="gender">
-                                            <option value="" disabled selected>Choose gender</option>
-                                            <option value="MALE">IKHWAN</option>
-                                            <option value="FEMALE">AKHWAT</option>
-                                        </select>
-                                        <label for="gender">Gender</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <a href="#!" class="modal-action modal-close waves-effect waves-red btn red lighten-1">Close</a>
-                                <button class="waves-effect waves-light btn cyan darken-1">Save</button>&nbsp;
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
