@@ -32,10 +32,13 @@
               {{ csrf_field() }}
               <h1>Login</h1>
               <p class="text-muted">Sign In to your account</p>
-              @if(session()->has('login_error'))
+              
+              @if($errors->any())
                 <div class="alert alert-warning alert-dismissible" id="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true" onclick="document.getElementById('alert').remove()">×</button>
-                    {{ session('login_error') }}
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true" onclick="document.getElementById('alert').remove()">×</button>              
+                    @foreach ($errors->all() as $error)
+                        <label>{{ $error }}</label>
+                    @endforeach
                 </div>
               @endif
 
@@ -43,21 +46,11 @@
                 <span class="input-group-addon"><i class="icon-envelope"></i></span>
                 <input id="username" type="text" class="form-control" name="username" value="" required autofocus placeholder="Username">
               </div>
-              @if ($errors->has('username'))
-              <p class="invalid-feedback">
-                {{ $errors->first('username') }}
-              </p>
-              @endif
 
               <div class="input-group mb-4">
                 <span class="input-group-addon"><i class="icon-lock"></i></span>
                 <input id="password" type="password" class="form-control" name="password" required placeholder="Password" value="">
               </div>
-              @if ($errors->has('password'))
-              <p class="invalid-feedback">
-                {{ $errors->first('password') }}
-              </p>
-              @endif
 
 
               <div class="row">
