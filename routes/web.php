@@ -22,6 +22,7 @@ Route::group(['middleware' => []], function () {
 	Route::get('/', 'HomeController@profile');
 	Route::get('/home', 'HomeController@profile')->name('home');
 	Route::get('/dashboard', 'HomeController@index')->name('dashboard');
+	Route::get('/admin/clear-cache/{key?}', 'HomeController@clearCache')->name('clear.cache');
 
 	Route::get('/rekap-nilai', 'HomeController@rekapNilai')->name('rekap.nilai')->middleware(['permission:rekap-nilai.view']);
 	Route::get('/rekap-nilai/download', 'HomeController@exportRekapNilai')->name('rekap.nilai.download')->middleware(['permission:rekap-nilai.download']);

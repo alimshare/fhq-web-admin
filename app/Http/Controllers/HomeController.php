@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 use \App\Model\Peserta;
 use \App\Model\Semester;
 use \App\Model\Halaqoh;
 use \App\Exports\RekapNilaiExport;
 use Excel;
+
 
 class HomeController extends Controller
 {
@@ -184,4 +186,15 @@ class HomeController extends Controller
             ['name' => 'S3', 'value' => 'S3']
         ];
     }
+
+    public function clearCache($key = null) {
+        if ($key) {
+            Cache::forget($key);
+            dd("forget cache key : ". $key);
+        } else {
+            Cache::flush();
+            dd("cache flush");
+        }
+    }
+
 }
