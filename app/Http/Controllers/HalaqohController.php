@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class HalaqohController extends Controller
 {
@@ -26,11 +27,16 @@ class HalaqohController extends Controller
      */
     public function lists(Request $request, $reference=null)
     {
-    	// $this->data['halaqoh'] = $this->hit_api("semester/{$reference}/halaqoh", "get");
-    	// $this->data['semester_reference'] = $reference;
-        
-        $this->data['list']         = \App\Model\View\ViewHalaqoh::all();
-        $this->data['peserta']      = \App\Model\View\ViewPeserta::all();
+        # cache for a hour
+        $this->data['list'] = Cache::remember('viewHalaqoh.all', 60*60*24, function () {
+            return \App\Model\View\ViewHalaqoh::all();
+        });
+
+        # cache for a hour
+        $this->data['peserta']      = Cache::remember('viewPeserta.all', 60*60*24, function () {
+            return \App\Model\View\ViewPeserta::all();
+        });
+
         return view('pages.halaqoh.list', $this->data);
     }
 

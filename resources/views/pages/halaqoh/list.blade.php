@@ -199,13 +199,7 @@
                                         <th>Action</th>
                                     </tr>
                                     <tr class="row-filter">
-                                        <th>
-                                            <select id="paramHari">
-                                                <option value=""></option>
-                                                <option value="XXV">XXV</option>
-                                                <option value="XXVI">XXVI</option>
-                                            </select>
-                                        </th>
+                                        <th><input type="text" placeholder="Cari Semester" id="paramSemester" class="input-text"></th>
                                         <th>
                                             <select id="paramHari">
                                                 <option value=""></option>
@@ -220,8 +214,8 @@
                                                 <option value="AKHWAT">AKHWAT</option>
                                             </select>
                                         </th>
-                                        <th><input type="text" placeholder="Search Program" id="paramProgram" class="input-text"></th>
-                                        <th><input type="text" placeholder="Search Pengajar" id="paramPengajar" class="input-text"></th>
+                                        <th><input type="text" placeholder="Cari Program" id="paramProgram" class="input-text"></th>
+                                        <th><input type="text" placeholder="Cari Pengajar" id="paramPengajar" class="input-text"></th>
                                         <th></th>
                                     </tr>
                                 </thead>

@@ -52,6 +52,12 @@
     <!--breadcrumbs end-->
 
 
+    <div class="row">
+        <div class="col s12">
+           @include('layouts.materialized.components.alert')
+        </div>
+     </div>
+
     <!--start container-->
     <div class="container" style="margin-bottom: 25px; padding-top: 10px;">
             <form action="/halaqoh-detail/save" method="POST">
