@@ -124,10 +124,10 @@
                                         <th>Pengajar</th>
                                         <th>NIS</th>
                                         <th>Santri</th>
-                                        <th>UTS Praktek</th>
-                                        <th>UTS Teori</th>
-                                        <th>UAS Praktek</th>
-                                        <th>UAS Teori</th>
+                                        <th>UTS Praktek / Tahfidz</th>
+                                        <th>UTS Teori / Tadribat</th>
+                                        <th>UAS Praktek / Tahfidz</th>
+                                        <th>UAS Teori / Tadribat</th>
                                         <th>Khatam</th>
                                         <th>Kehadiran</th>
                                         <th>Status</th>
@@ -165,7 +165,7 @@
                                                 <option value="TETAP">TETAP</option>
                                             </select>
                                         </th>
-                                        <th></th>
+                                        <th><input type="text" placeholder="Cari Catatan" id="paramCatatan" class="input-text"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
