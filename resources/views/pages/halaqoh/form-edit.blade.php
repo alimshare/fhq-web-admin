@@ -25,6 +25,17 @@
 </style>
 @endsection
 @section('footer-script')
+<script>
+    /**
+     * solution from https://stackoverflow.com/questions/13952686/how-to-make-html-input-tag-only-accept-numerical-values/13952761
+    */
+    function isNumberKey(evt){
+        var charCode = (evt.which) ? evt.which : evt.keyCode
+        if (charCode > 31 && (charCode != 46 &&(charCode < 48 || charCode > 57)))
+            return false;
+        return true;
+    }
+</script>
 @endsection
 
 @section('content')
@@ -60,7 +71,7 @@
 
     <!--start container-->
     <div class="container" style="margin-bottom: 25px; padding-top: 10px;">
-            <form action="/halaqoh-detail/save" method="POST">
+            <form action="/halaqoh-detail/save" method="POST" name="form-input-nilai">
             <div class="row"> 
                 <div class="col s12"> 
         			<div class="" style="overflow-x: scroll;"> 
@@ -100,12 +111,12 @@
         							<td>{{ $no++ }}</td>
         							<td>{{ $santri->nis }}</td>
         							<td>{{ $santri->santri_name }}</td>
-                                    <td class="text-right"><input type="text" name="data[{{$santri->peserta_id}}][nilai_uts_teori]" value="{{ $santri->nilai_uts_teori }}" ></td>
-                                    <td class="text-right"><input type="text" name="data[{{$santri->peserta_id}}][nilai_uts_praktek]" value="{{ $santri->nilai_uts_praktek }}"></td>
-                                    <td class="text-right"><input type="text" name="data[{{$santri->peserta_id}}][nilai_uas_teori]" value="{{ $santri->nilai_uas_teori }}"></td>
-                                    <td class="text-right"><input type="text" name="data[{{$santri->peserta_id}}][nilai_uas_praktek]"  value="{{ $santri->nilai_uas_praktek }}"></td>
+                                    <td class="text-right"><input type="text" name="data[{{$santri->peserta_id}}][nilai_uts_teori]" value="{{ $santri->nilai_uts_teori }}" onkeypress="return isNumberKey(event)"></td>
+                                    <td class="text-right"><input type="text" name="data[{{$santri->peserta_id}}][nilai_uts_praktek]" value="{{ $santri->nilai_uts_praktek }}" onkeypress="return isNumberKey(event)"></td>
+                                    <td class="text-right"><input type="text" name="data[{{$santri->peserta_id}}][nilai_uas_teori]" value="{{ $santri->nilai_uas_teori }}" onkeypress="return isNumberKey(event)"></td>
+                                    <td class="text-right"><input type="text" name="data[{{$santri->peserta_id}}][nilai_uas_praktek]"  value="{{ $santri->nilai_uas_praktek }}" onkeypress="return isNumberKey(event)"></td>
                                     <td class="text-right"><input type="text" name="data[{{$santri->peserta_id}}][khatam]" value="{{ $santri->khatam }}"></td>
-                                    <td class="text-right"><input type="text" name="data[{{$santri->peserta_id}}][kehadiran]" value="{{ $santri->kehadiran }}"></td>
+                                    <td class="text-right"><input type="text" name="data[{{$santri->peserta_id}}][kehadiran]" value="{{ $santri->kehadiran }}" onkeypress="return isNumberKey(event)"></td>
         							<td class="text-right">
                                         <select name="data[{{$santri->peserta_id}}][status]">
                                             <option value=""></option>    
