@@ -98,8 +98,9 @@ Route::group(['middleware' => []], function () {
      * Role & Permission
      */
     Route::get('/role/{id?}', 'RolePermissionController@index')->name('role');
-    // Route::post('/role/save', 'RolePermissionController@save');
-    Route::post('/role/save', 'RolePermissionController@save');
+    Route::post('/role/save', 'RolePermissionController@save')->name('role.save');
+    Route::post('/user-role/save', 'RolePermissionController@userRoleSave')->name('user-role.save')->middleware(['permission:user-role.save']);
+    Route::get('/user-role/remove/{userId}/{roleId}', 'RolePermissionController@userRoleRemove')->name('user-role.remove')->middleware(['permission:user-role.remove']);
 
 });
 
