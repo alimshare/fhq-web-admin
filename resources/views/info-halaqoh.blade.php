@@ -83,6 +83,7 @@
                             <table id="daftarHalaqoh" class="cell-border" cellspacing="0" width="100%">
                                 <thead>
                                     <tr class="cyan darken-3 white-text" class="row-header">
+                                        <th>NIS</th>
                                         <th>Santri</th>
                                         <th>Pengajar</th>
                                         <th>Program</th>
@@ -90,6 +91,7 @@
                                         <th>Jenis Kelamin</th>
                                     </tr>
                                     <tr class="row-filter">
+                                        <th><input type="text" placeholder="Search NIS" id="paramNIS" class="input-text"></th>
                                         <th><input type="text" placeholder="Search Santri" id="paramSantri" class="input-text"></th>
                                         <th><input type="text" placeholder="Search Pengajar" id="paramPengajar" class="input-text"></th>
                                         <th><input type="text" placeholder="Search Program" id="paramProgram" class="input-text"></th>
@@ -112,11 +114,12 @@
                                 <tbody>
                                     @foreach ($list as $n)
                                         <tr>
-                                            <td>{{ $n->nama_santri }}</td>
-                                            <td>{{ $n->nama_pengajar }}</td>
-                                            <td>{{ $n->program }}</td>
-                                            <td>{{ $n->hari }}</td>
-                                            <td>{{ $n->jenkel }}</td>
+                                            <td>{{ $n->nis }}</td>
+                                            <td>{{ $n->santri_name }}</td>
+                                            <td>{{ $n->pengajar_name }}</td>
+                                            <td>{{ $n->program_name }}</td>
+                                            <td>{{ $n->day }}</td>
+                                            <td>{{ $n->gender == "MALE" ? "IKHWAN" : "AKHWAT" }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -145,7 +148,7 @@
         let table = $('#daftarHalaqoh').DataTable({
             "lengthChange": false,
             "pageLength" : 15,
-            "order" : [[0, 'asc'],[1,'asc'],[2,'asc'],[3,'asc'],[4,'asc']],
+            "order" : [[1,'asc'],[2,'asc'],[3,'asc'],[4,'asc']],
             "columnDefs": [
                 {
                     targets : [0,1,2,3,4], 

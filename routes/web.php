@@ -104,6 +104,6 @@ Route::group(['middleware' => []], function () {
 
 });
 
-Route::get('halaqoh-27', 'PublicController@index');
+Route::get('halaqoh-27', 'PublicController@halaqoh27');
 // Route::view('register', 'auth.register')->name('register');
 
