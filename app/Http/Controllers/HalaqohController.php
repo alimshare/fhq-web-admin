@@ -191,7 +191,7 @@ class HalaqohController extends Controller
         $template->setValue('khatam_text', $this->get_grade_description($khatamGrade));
         
         $template->setValue('catatan', $peserta->catatan);
-        $template->setValue('status', $peserta->status == 'TETAP' ? 'Mengulang' : 'Naik');
+        $template->setValue('status', $peserta->status ?? 'Mengulang');
         $template->setValue('pengajar_name', $peserta->pengajar_name);
         $template->setValue('program_next', $this->get_next_program($peserta->program_name, $peserta->status));
         $currentDate = date('d').' '.$this->get_month_description(date('m')). ' '. date('Y');
