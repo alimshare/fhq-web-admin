@@ -197,7 +197,7 @@ class HalaqohController extends Controller
         $currentDate = date('d').' '.$this->get_month_description(date('m')). ' '. date('Y');
         $template->setValue('date', $currentDate);
 
-        $filename = 'rapor_'.$peserta->santri_name.'_'.$peserta->semester_name.'.docx';
+        $filename = 'rapor-'.$peserta->santri_name.'-'.$peserta->semester_name.'.docx';
         header("Content-Type: application/octet-stream");
         header("Content-Disposition: attachment; filename=$filename");
         $template->saveAs('php://output');
