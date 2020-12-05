@@ -197,10 +197,22 @@ class HalaqohController extends Controller
         $currentDate = date('d').' '.$this->get_month_description(date('m')). ' '. date('Y');
         $template->setValue('date', $currentDate);
 
-        $filename = 'rapor-'.$peserta->santri_name.'-'.$peserta->semester_name.'.docx';
-        header("Content-Type: application/octet-stream");
-        header("Content-Disposition: attachment; filename=$filename");
-        $template->saveAs('php://output');
+        $filename = 'rapor_'.$peserta->santri_name.'_'.$peserta->semester_name.'.docx';
+
+        $filePath = storage_path('export/'.$filename);
+        $template->saveAs($filePath);
+
+        header('Content-Description: File Transfer');
+        header('Content-Type: application/octet-stream');
+        header('Content-Disposition: attachment; filename="'.basename($filePath).'"');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate');
+        header('Pragma: public');
+        header('Content-Length: ' . filesize($filePath));
+        flush();
+        
+        readfile($filePath);
+
     }
 
     function get_template($program) {
