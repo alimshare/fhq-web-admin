@@ -199,20 +199,10 @@ class HalaqohController extends Controller
 
         $filename = 'rapor_'.$peserta->santri_name.'_'.$peserta->semester_name.'.docx';
 
-        $filePath = storage_path('export/'.$filename);
-        $template->saveAs($filePath);
+        $pathToFile = storage_path('export/'.$filename);
+        $template->saveAs($pathToFile);
 
-        header('Content-Description: File Transfer');
-        header('Content-Type: application/octet-stream');
-        header('Content-Disposition: attachment; filename="'.basename($filePath).'"');
-        header('Expires: 0');
-        header('Cache-Control: must-revalidate');
-        header('Pragma: public');
-        header('Content-Length: ' . filesize($filePath));
-        flush();
-        
-        readfile($filePath);
-
+        return response()->download($pathToFile)->deleteFileAfterSend(true);
     }
 
     function get_template($program) {
