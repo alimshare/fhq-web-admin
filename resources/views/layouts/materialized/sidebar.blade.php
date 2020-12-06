@@ -55,6 +55,10 @@
             <li class="bold"><a href="/role" class="waves-effect waves-cyan"><i class="mdi-social-location-city"></i> Role</a></li>
             @endallow
 
+            @allow('users')
+            <li class="bold"><a href="{{ route('users') }}" class="waves-effect waves-cyan"><i class="mdi-social-people"></i> Users</a></li>
+            @endallow
+
             <li class="li-hover"><div class="divider"></div></li>
             <!-- <li class="bold"><a href="/santri" class="waves-effect waves-cyan"><i class="mdi-action-account-circle"></i> User Aplikasi</a></li> -->
             
