@@ -115,10 +115,10 @@
                                     @foreach ($list as $n)
                                         <tr>
                                             <td>{{ $n->nis }}</td>
-                                            <td>{{ $n->santri_name }}</td>
-                                            <td>{{ $n->pengajar_name }}</td>
-                                            <td>{{ $n->program_name }}</td>
-                                            <td>{{ $n->day }}</td>
+                                            <td>{{ strtoupper($n->santri_name) }}</td>
+                                            <td>{{ strtoupper($n->pengajar_name) }}</td>
+                                            <td>{{ strtoupper($n->program_name) }}</td>
+                                            <td>{{ strtoupper($n->day) }}</td>
                                             <td>{{ $n->gender == "MALE" ? "IKHWAN" : "AKHWAT" }}</td>
                                         </tr>
                                     @endforeach
