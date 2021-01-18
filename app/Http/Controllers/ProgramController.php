@@ -30,7 +30,7 @@ class ProgramController extends Controller
     public function index(){
         $semesterActive = \App\Model\Semester::getActive();
 
-        $SQL = "SELECT program_name, halaqoh, ( SELECT COUNT(1) AS peserta FROM view_peserta WHERE program_id = T1.program_id) AS peserta
+        $SQL = "SELECT program_name, halaqoh, ( SELECT COUNT(1) AS peserta FROM view_peserta WHERE program_id = T1.program_id AND semester_id = '".$semesterActive->id."') AS peserta
                 FROM (
                     SELECT program_id, program_name, SUM(1) AS halaqoh FROM `view_halaqoh`
                     WHERE semester_id = '". $semesterActive->id ."'
