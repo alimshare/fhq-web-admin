@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use DB;
 
 class HalaqohController extends Controller
 {
@@ -374,6 +375,42 @@ class HalaqohController extends Controller
             return redirect('/halaqoh/pindah')->with('alert', ['message'=>"Santri <b>$santri->name</b> berhasil dipindahkan ke halaqoh  :  <em>$halaqohTujuan->pengajar_name ($halaqohTujuan->program_name)</em> ", 'type'=>'success']);
         } else {
             return redirect('/halaqoh/pindah')->with('alert', ['message'=>"Pindah Halaqoh gagal dilakukan", 'type'=>'danger']);
+        }
+    }
+
+    function addPeserta($halaqohId = null)
+    {
+        $semesterActive = \App\Model\Semester::getActive();
+        $this->data['halaqoh'] = \App\Model\View\ViewHalaqoh::where('semester_id', $semesterActive->id)->orderBy('pengajar_name')->get();
+        $this->data['peserta'] = \App\Model\Santri::whereRaw("id not in (select santri_id from view_peserta where semester_id = $semesterActive->id )")->get();
+
+        return view('pages.halaqoh.form-tambah-peserta', $this->data);
+    }
+
+    function addPesertaPost(Request $request)
+    {
+        $halaqoh = \App\Model\View\ViewHalaqoh::where('halaqoh_id', $request->halaqoh)->first();
+        if (!$halaqoh) {
+            return redirect('/halaqoh/peserta/add')->with('alert', ['message'=>"Halaqoh tidak ditemukan", 'type'=>'warning']);
+        }
+
+        $santri = \App\Model\Santri::where('id', $request->santri)->first();
+        if (!$santri) {
+            return redirect('/halaqoh/peserta/add')->with('alert', ['message'=>"Santri tidak ditemukan", 'type'=>'warning']);
+        }
+
+        $peserta = new \App\Model\Peserta;
+        $peserta->halaqoh_id = $request->halaqoh;
+        $peserta->santri_id = $request->santri;
+
+        if ($peserta->save()){
+
+            $peserta->reference = $peserta->id;
+            $peserta->save();
+
+            return redirect('/halaqoh/peserta/add')->with('alert', ['message'=>"Santri <b>$santri->name</b> berhasil ditambakan ke halaqoh  :  <b>$halaqoh->pengajar_name ($halaqoh->program_name)</b> ", 'type'=>'success']);
+        } else {
+            return redirect('/halaqoh/peserta/add')->with('alert', ['message'=>"Menambahkan peserta ke halaqoh gagal dilakukan", 'type'=>'danger']);
         }
     }
 }
