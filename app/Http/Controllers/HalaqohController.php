@@ -339,4 +339,41 @@ class HalaqohController extends Controller
     {
         return is_numeric( $val ) && floor( $val ) != $val;
     }
+
+    function pindah($halaqohId = null, $pesertaId = null)
+    {
+        $this->data['currentHalaqoh'] = '';
+        $semesterActive = \App\Model\Semester::getActive();
+        $this->data['halaqoh'] = \App\Model\View\ViewHalaqoh::where('semester_id', $semesterActive->id)->orderBy('pengajar_name')->get();
+
+        if (!empty($halaqohId)) {
+            $this->data['peserta'] = \App\Model\View\ViewPeserta::where('halaqoh_id', $halaqohId)->get();
+            $this->data['currentHalaqoh'] = $halaqohId;
+        }
+
+
+        return view('pages.halaqoh.form-pindah', $this->data);
+    }
+
+    function pindahPost(Request $request)
+    {
+        $halaqohAwal = \App\Model\View\ViewHalaqoh::where('halaqoh_id', $request->old_halaqoh)->first();
+        if (!$halaqohAwal) {
+            return redirect('/halaqoh/pindah')->with('alert', ['message'=>"Halaqoh Awal tidak valid", 'type'=>'warning']);
+        }
+
+        $halaqohTujuan = \App\Model\View\ViewHalaqoh::where('halaqoh_id', $request->new_halaqoh)->first();
+        if (!$halaqohTujuan) {
+            return redirect('/halaqoh/pindah')->with('alert', ['message'=>"Halaqoh Tujuan tidak ditemukan", 'type'=>'warning']);
+        }
+
+        $peserta = \App\Model\Peserta::where('id', $request->peserta)->first();
+        $santri = $peserta->getSantri();
+        $peserta->halaqoh_id = $request->new_halaqoh;
+        if ($peserta->save()){
+            return redirect('/halaqoh/pindah')->with('alert', ['message'=>"Santri <b>$santri->name</b> berhasil dipindahkan ke halaqoh  :  <em>$halaqohTujuan->pengajar_name ($halaqohTujuan->program_name)</em> ", 'type'=>'success']);
+        } else {
+            return redirect('/halaqoh/pindah')->with('alert', ['message'=>"Pindah Halaqoh gagal dilakukan", 'type'=>'danger']);
+        }
+    }
 }

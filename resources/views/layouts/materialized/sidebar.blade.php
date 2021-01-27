@@ -33,6 +33,19 @@
             @allow('list-halaqoh')
             <li class="bold"><a href="/halaqoh" class="waves-effect waves-cyan"><i class="mdi-toggle-radio-button-off"></i> Halaqoh</a></li>
             @endallow
+            @allow('edit-halaqoh')
+            <li class="no-padding">
+                <ul class="collapsible collapsible-accordion">
+                    <li class="bold"><a class="collapsible-header waves-effect waves-cyan"><i class="mdi-action-view-carousel"></i> Manajemen Halaqoh</a>
+                        <div class="collapsible-body">
+                            <ul>
+                                <li><a href="{{ route('halaqoh.pindah') }}">Pindah Halaqoh</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </li>
+            @endallow
             
             @allow('list-pengajar')
             <li class="bold"><a href="/pengajar" class="waves-effect waves-cyan"><i class="mdi-social-person-outline"></i> Pengajar</a></li>
