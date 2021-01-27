@@ -106,6 +106,11 @@
         <!--start container-->
         <div class="container" style="margin-bottom: 25px">
             <div class="section">
+                <div class="row">
+                    <div class="col s12">
+                        @include('layouts.materialized.components.alert')
+                    </div>
+                </div>
                 <div class="row" id="input-select">
                     <div class="col s12 l3">                        
                         <label>Order By</label>
