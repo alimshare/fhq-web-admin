@@ -80,8 +80,8 @@ Route::group(['middleware' => []], function () {
 	 */
 	Route::get('halaqoh', 'HalaqohController@lists')->name('halaqoh.index')->middleware(['permission:list-halaqoh']);
 	Route::delete('halaqoh/remove', 'HalaqohController@remove');
-	Route::get('halaqoh/add', 'HalaqohController@add');
-	Route::post('halaqoh/add', 'HalaqohController@save');
+	Route::get('halaqoh/add', 'HalaqohController@add')->name('halaqoh.add');
+	Route::post('halaqoh/add', 'HalaqohController@save')->name('halaqoh.addPost');;
 	Route::get('halaqoh/pindah/{halaqohId?}/{pesertaId?}', 'HalaqohController@pindah')->name('halaqoh.pindah')->middleware(['permission:edit-halaqoh']);
 	Route::post('halaqoh/pindah', 'HalaqohController@pindahPost')->name('halaqoh.pindahPost')->middleware(['permission:edit-halaqoh']);
 

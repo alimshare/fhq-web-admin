@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use DB;
+use App\Model\{Semester, Halaqoh};
 
 class HalaqohController extends Controller
 {
@@ -46,36 +47,49 @@ class HalaqohController extends Controller
      */
     public function add(Request $request)
     {
-    	$this->data['program'] = $this->hit_api("program", "get");
-    	$this->data['pengajar'] = $this->hit_api("pengajar", "get");
+    	$this->data['program']  = \App\Model\Program::orderBy('name','asc')->get();
+    	$this->data['pengajar'] = \App\Model\Pengajar::orderBy('name','asc')->get();
 
     	// dd($this->data);
-    	return view('halaqoh-form', $this->data);
+    	return view('pages.halaqoh.form-add', $this->data);
     }
 
     /**
      * Save/update halaqoh
      */
-    public function save(Request $request, $reference=null)
-    {
-    	$with_data = [
-    		'program' => $request->input('program'),
-    		'nip' => $request->input('nip'),
-    		'day' => $request->input('day'),
-    		'start_hour' => $request->input('start_hour'),
-    		'semester' => $request->input('semester')
-    	];
+    public function save(Request $request )
+    {        
+        $hari           = $request->day;
+        $program_id     = $request->program;
+        $pengajar_id    = $request->pengajar;
+        $semester_id    = Semester::getActive()->id;
 
-    	if ($reference) 
-    	{
-	    	$halaqoh = $this->hit_api("halaqoh/edit/{$reference}", "put", $with_data);
-	    	return redirect("halaqoh/{$reference}");
-    	}
-    	else
-    	{
-	    	$halaqoh = $this->hit_api("halaqoh/add", "post", $with_data);
-	    	return redirect("semester/{$request->input('semester')}/halaqoh");
-    	}
+        $halaqoh = Halaqoh::where('semester_id', $semester_id)
+            ->where('pengajar_id', $pengajar_id)
+            ->where('program_id', $program_id)
+            ->where('day', $hari)
+            ->first();
+            
+        if (!is_null($halaqoh)) {
+            return redirect('/halaqoh/add')
+                ->with('alert', ['message'=>"Halaqoh sudah tersedia!", 'type'=>'danger']);
+        }
+
+        $halaqoh = new Halaqoh;
+        $halaqoh->day           = $hari;
+        $halaqoh->program_id    = $program_id;
+        $halaqoh->pengajar_id   = $pengajar_id;
+        $halaqoh->semester_id   = $semester_id;
+        $halaqoh->start_hour    = '07:00';
+        $halaqoh->created_at    = date('Y-m-d H:i:s');
+
+        if ($halaqoh->save()){
+            $halaqoh->reference = $halaqoh->id;
+            $halaqoh->save();
+            return redirect('/halaqoh/add')->with('alert', ['message'=>"Halaqoh berhasil dibuat", 'type'=>'success']);
+        } else {
+            return redirect('/halaqoh/add')->with('alert', ['message'=>"Menambahkan peserta ke halaqoh gagal dilakukan", 'type'=>'danger']);
+        }
 
     }
 
@@ -382,7 +396,7 @@ class HalaqohController extends Controller
     {
         $semesterActive = \App\Model\Semester::getActive();
         $this->data['halaqoh'] = \App\Model\View\ViewHalaqoh::where('semester_id', $semesterActive->id)->orderBy('pengajar_name')->get();
-        $this->data['peserta'] = \App\Model\Santri::whereRaw("id not in (select santri_id from view_peserta where semester_id = $semesterActive->id )")->get();
+        $this->data['peserta'] = \App\Model\Santri::whereRaw("id not in (select santri_id from view_peserta where semester_id = $semesterActive->id )")->orderBy('name','asc')->get();
 
         return view('pages.halaqoh.form-tambah-peserta', $this->data);
     }

@@ -39,6 +39,7 @@
                     <li class="bold"><a class="collapsible-header waves-effect waves-cyan"><i class="mdi-action-view-carousel"></i> Manajemen Halaqoh</a>
                         <div class="collapsible-body">
                             <ul>
+                                <li><a href="{{ route('halaqoh.add') }}">Tambah Halaqoh</a></li>
                                 <li><a href="{{ route('halaqoh.peserta.add') }}">Tambah Peserta</a></li>
                                 <li><a href="{{ route('halaqoh.pindah') }}">Pindah Halaqoh</a></li>
                             </ul>
