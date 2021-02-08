@@ -35,6 +35,7 @@
                         <label for="halaqoh" class="col s12">Halaqoh</label>    
                         <div class="input-field col s12">
                            <select name="halaqoh" id="halaqoh" class="select2">
+                           <option disabled selected>-- Pilih Halaqoh --</option>
                               @foreach($halaqoh as $h)
                                  <option value="{{ $h->halaqoh_id }}">{{ $h->pengajar_name. ' - ' . $h->program_name .' ('. $h->day . ')'   }}</option>
                               @endforeach
@@ -47,6 +48,7 @@
                         <label for="santri" class="col s12">Peserta</label>    
                         <div class="input-field col s12">
                            <select name="santri" id="santri" class="select2">
+                           <option disabled selected>-- Pilih Santri --</option>
                               @foreach($peserta as $santri)
                                  <option value="{{ $santri->id }}">{{ $santri->name . ' - ' .$santri->nis  }}</option>
                               @endforeach

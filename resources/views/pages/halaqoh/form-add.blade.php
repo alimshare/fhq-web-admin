@@ -48,6 +48,7 @@
                     <div class="row">
                        <div class="input-field col s12">
                           <select name="program" id="program" class="select2">
+                           <option disabled selected>-- Pilih Program --</option>
                             @foreach($program as $p)
                                 <option value="{{ $p->id }}">{{ $p->name }}</option>
                             @endforeach
@@ -58,6 +59,7 @@
                     <div class="row">
                        <div class="input-field col s12">
                           <select name="pengajar" id="pengajar" class="select2">
+                           <option disabled selected>-- Pilih Pengajar --</option>
                             @foreach($pengajar as $p)
                                 <option value="{{ $p->id }}">{{ $p->name }}</option>
                             @endforeach
