@@ -38,7 +38,7 @@ class ProgramController extends Controller
                 ) T1";
         $program = DB::select($SQL); // sementara pake native query
 
-        $colorList = array('#F7464A', '#46BFBD', '#FDB45C', '#0097a7', '#d84315', '#6d4c41','#283593', '#c2185b', '#00695c', '#9e9d24', '#01579b','#6a1b9a' ,'#ec407a', '#ea80fc');
+        $colorList = array('#F7464A', '#46BFBD', '#FDB45C', '#0097a7', '#d84315', '#6d4c41','#283593', '#c2185b', '#00695c', '#9e9d24', '#01579b','#6a1b9a' ,'#ec407a', '#ea80fc', '#b0bed6', '#f5b3f3', '#ff8269');
         for ($i=0; $i < count($program); $i++) { 
             $colorIndex = array_rand($colorList, 1);
             $program[$i]->color = $colorList[$colorIndex];
