@@ -1,16 +1,5 @@
 @extends('layouts.materialized')
 
-@section('header-script')
-<style type="text/css">
-    table td, table th {
-        border : 1px solid #ddd;
-    }
-    .error {
-        color : red;
-    }
-</style>
-@endsection
-
 @section('content')
 
 <!--breadcrumbs start-->
@@ -42,48 +31,51 @@
                  <div class="card-panel" id="profile-card">
                     @csrf
                     <div class="row">
-                       <div class="input-field col s12">
-                          <select name="old_halaqoh" id="old_halaqoh" onchange="cek()">
-                            @foreach($halaqoh as $h)
-                                @if($currentHalaqoh == $h->halaqoh_id) 
-                                    <option value="{{ $h->halaqoh_id }}" selected="selected">{{ $h->pengajar_name. ' - ' . $h->program_name .' ('. $h->day . ')'   }}</option>
-                                @else
-                                    <option value="{{ $h->halaqoh_id }}">{{ $h->pengajar_name. ' - ' . $h->program_name .' ('. $h->day . ')'   }}</option>
-                                @endif
-                            @endforeach
-                          </select>
-                          <label for="old_halaqoh">Halaqoh Awal</label>
-                          <div id="old-halaqoh-error" class="error"></div>
-                       </div>
+                        <label for="old_halaqoh" class="col s12">Halaqoh Awal</label>
+                        <div class="input-field col s12">
+                           <select name="old_halaqoh" id="old_halaqoh" onchange="cek()" class="select2">
+                              <option disabled selected>-- Pilih Halaqoh Awal --</option>
+                              @foreach($halaqoh as $h)
+                                 @if($currentHalaqoh == $h->halaqoh_id) 
+                                       <option value="{{ $h->halaqoh_id }}" selected="selected">{{ $h->pengajar_name. ' - ' . $h->program_name .' ('. $h->day . ')'   }}</option>
+                                 @else
+                                       <option value="{{ $h->halaqoh_id }}">{{ $h->pengajar_name. ' - ' . $h->program_name .' ('. $h->day . ')'   }}</option>
+                                 @endif
+                              @endforeach
+                           </select>
+                           <div id="old-halaqoh-error" class="error"></div>
+                        </div>
                     </div>
                     @isset($peserta)
-                    <div class="row">
+                    <div class="row mt-1">
+                          <label for="peserta" class="col s12">Peserta</label>
                        <div class="input-field col s12">
-                          <select name="peserta" id="peserta">
+                          <select name="peserta" id="peserta" class="select2">
+                           <option disabled selected>-- Pilih Peserta --</option>
                             @foreach($peserta as $p)
                                 <option value="{{ $p->peserta_id }}">{{ $p->nis . ' - ' .$p->santri_name  }}</option>
                             @endforeach
                           </select>
-                          <label for="peserta">Peserta</label>
                           <div id="peserta-error" class="error"></div>
                        </div>
                     </div>
-                    <div class="row">
+                    <div class="row mt-1 mb-1">
+                        <label for="new_halaqoh" class="col s12">Halaqoh Tujuan</label>
                        <div class="input-field col s12">
-                          <select name="new_halaqoh" id="new_halaqoh">
+                          <select name="new_halaqoh" id="new_halaqoh" class="select2">
+                           <option disabled selected>-- Pilih Halaqoh Tujuan --</option>
                             @foreach($halaqoh as $h)
                                 @if ($h->halaqoh_id != $currentHalaqoh)
                                     <option value="{{ $h->halaqoh_id }}">{{ $h->pengajar_name. ' - ' . $h->program_name .' ('. $h->day . ')'   }}</option>
                                 @endif
                             @endforeach
                           </select>
-                          <label for="new_halaqoh">Halaqoh Tujuan</label>
                           <div id="new_halaqoh-error" class="error"></div>
                        </div>
                     </div>
                     @endisset
 
-                    <div class="card-footer text-right" style="margin-top: 1rem;">
+                    <div class="card-footer text-right" style="margin-top: 2rem;">
                        
                         @isset($peserta)
                             <button class="btn waves-effect waves-light light-blue darken-4" type="submit" name="submit" id="submit">
@@ -105,6 +97,22 @@
        
 @endsection
 
+@section('header-script')
+<style type="text/css">
+    table td, table th {
+        border : 1px solid #ddd;
+    }
+    .error {
+        color : red;
+    }
+    .mt-1 {
+       margin-top: 1em;
+    }
+</style>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+@endsection
+
+
 @section('footer-script')
     <script>
         document.getElementById("cek").addEventListener("click", cek);
@@ -123,4 +131,12 @@
             }
         }
     </script>
+   <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+   <script>
+      // Basic Select2 select
+      $(".select2").select2({
+         dropdownAutoWidth: true,
+         width: '100%'
+      });
+   </script>
 @endsection
