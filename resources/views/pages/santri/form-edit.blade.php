@@ -40,6 +40,27 @@
                     <input type="text" name="name" value="{{ $santri->name }}">
                 </div>
             </div>
+            <div class="row"> 
+                <div class="col s12 m6"> 
+                    <label for="name">Nomor Handphone</label>
+                    <input type="text" name="phone" value="{{ $santri->phone }}">
+                </div>
+            </div>
+            <div class="row">
+                <label class="col s12">Jenis Kelamin</label>
+                <div class="col s12" style="margin-bottom:1em; text-align:left; margin-top:15px">
+                    <span>
+                        <input class="with-gap" name="gender" type="radio" value="MALE" id="gender-male" {{ ($santri->gender == 'MALE') ? 'checked' : '' }} />
+                        <label for="gender-male">IKHWAN</label>
+                    </span>
+
+                    <span>
+                        <input class="with-gap" name="gender" type="radio" value="FEMALE" id="gender-female"  {{ ($santri->gender == 'FEMALE') ? 'checked' : '' }} />
+                        <label for="gender-female">AKHWAT</label>
+                    </span>
+                    <div id="day-error" class="error"></div>
+                </div>
+            </div>
             <div class="row" style="margin-bottom: 10px; text-align: right;">
                 <div class="col s12 m6">
                     @csrf

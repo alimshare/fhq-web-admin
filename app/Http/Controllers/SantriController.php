@@ -38,9 +38,11 @@ class SantriController extends Controller
     
     public function save(Request $request)
     {
-        $id     = $request->input('id');
-        $name   = $request->input('name');
-        $nis    = $request->input('nis');
+        $id         = $request->input('id');
+        $name       = $request->input('name');
+        $nis        = $request->input('nis');
+        $gender     = $request->input('gender');
+        $phone      = $request->input('phone');
 
         $message = "";
         $messageType = "success";
@@ -50,9 +52,8 @@ class SantriController extends Controller
             $santri = new \App\Model\Santri;
             $santri->nis    = $nis;
             $santri->name   = $name;
-
-            $santri->gender   = $request->input('gender');
-            $santri->phone    = $request->input('phone');
+            $santri->gender = $gender;
+            $santri->phone  = $phone;
 
             if ($santri->save()) {
                 $message = "simpan data santri berhasil";
@@ -70,6 +71,8 @@ class SantriController extends Controller
 
             $santri->nis    = $nis;
             $santri->name   = $name;
+            $santri->gender = $gender;
+            $santri->phone  = $phone;
 
             if ($santri->save()) {
                 $message = "ubah data santri berhasil";
