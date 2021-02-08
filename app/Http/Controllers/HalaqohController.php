@@ -394,9 +394,21 @@ class HalaqohController extends Controller
 
     function addPeserta($halaqohId = null)
     {
+
         $semesterActive = \App\Model\Semester::getActive();
         $this->data['halaqoh'] = \App\Model\View\ViewHalaqoh::where('semester_id', $semesterActive->id)->orderBy('pengajar_name')->get();
-        $this->data['peserta'] = \App\Model\Santri::whereRaw("id not in (select santri_id from view_peserta where semester_id = $semesterActive->id )")->orderBy('name','asc')->get();
+        
+
+        $queryExclude = "id not in (select santri_id from view_peserta where semester_id = $semesterActive->id)";
+        if (!empty($halaqohId)) {
+            /**
+             *  Tampilkan nama santri yang belum ada di semester yang aktif pada program yang dipilih.
+             *  cth : Abdullah 'Alim - Tahsin 2 , tidak akan bisa di assign lagi ke halaqoh Tahsin 2 lainnya, tapi bisa di assign ke Halaqoh lain seperti Bhs. Arab
+             */
+            $this->data['selectedHalaqoh'] = $selectedHalaqoh = \App\Model\View\ViewHalaqoh::where('halaqoh_id', $halaqohId)->first();
+            $queryExclude = "id not in (select santri_id from view_peserta where semester_id = $semesterActive->id and program_id = $selectedHalaqoh->program_id)";
+        }
+        $this->data['peserta'] = \App\Model\Santri::whereRaw($queryExclude)->orderBy('name','asc')->get();
 
         return view('pages.halaqoh.form-tambah-peserta', $this->data);
     }

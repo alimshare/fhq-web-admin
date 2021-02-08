@@ -91,5 +91,9 @@
          dropdownAutoWidth: true,
          width: '100%'
       });
+
+      @if (!empty($selectedHalaqoh)) 
+         $('#halaqoh').val({{ $selectedHalaqoh->halaqoh_id }}).trigger('change');
+      @endif
    </script>
 @endsection
