@@ -119,7 +119,7 @@
                                             <td>{{ strtoupper($n->pengajar_name) }}</td>
                                             <td>{{ strtoupper($n->program_name) }}</td>
                                             <td>{{ strtoupper($n->day) }}</td>
-                                            <td>{{ $n->gender == "MALE" ? "IKHWAN" : "AKHWAT" }}</td>
+                                            <td>{{ $n->gender_santri == "MALE" ? "IKHWAN" : "AKHWAT" }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>

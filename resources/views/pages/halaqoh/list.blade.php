@@ -261,7 +261,7 @@
                                         <tr>
                                             <td>{{ $n->semester_name }}</td>
                                             <td>{{ $n->day }}</td>
-                                            <td>{{ ($n->gender=="FEMALE") ? "AKHWAT" : "IKHWAN" }}</td>
+                                            <td>{{ ($n->gender_santri=="FEMALE") ? "AKHWAT" : "IKHWAN" }}</td>
                                             <td>{{ $n->program_name }}</td>
                                             <td>{{ $n->pengajar_name }}</td>
                                             <td>{{ $n->nis }}</td>

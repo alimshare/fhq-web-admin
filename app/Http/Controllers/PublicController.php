@@ -10,7 +10,7 @@ class PublicController extends Controller
     public function halaqoh27()
     {
         $this->data['list'] = Cache::remember('viewPeserta.27', 60*60*24*7, function () {
-            return \App\Model\View\ViewPeserta::select('nis','santri_name','pengajar_name','program_name','day','gender')
+            return \App\Model\View\ViewPeserta::select('nis','santri_name','pengajar_name','program_name','day','gender_santri')
                 ->where('semester_id', 12)
                 ->orderBy('santri_name','asc')
                 ->get();
@@ -21,7 +21,7 @@ class PublicController extends Controller
     public function halaqoh28()
     {
         $this->data['list'] = Cache::remember('viewPeserta.28', 60*60*24*7, function () {
-            return \App\Model\View\ViewPeserta::select('nis','santri_name','pengajar_name','program_name','day','gender')
+            return \App\Model\View\ViewPeserta::select('nis','santri_name','pengajar_name','program_name','day','gender_santri')
                 ->where('semester_id', 13)
                 ->orderBy('santri_name','asc')
                 ->get();
