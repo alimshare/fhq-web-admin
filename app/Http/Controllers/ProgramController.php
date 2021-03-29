@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
  
 use Illuminate\Http\Request;
 use Ixudra\Curl\Facades\Curl;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\{DB, Cache};
  
 class ProgramController extends Controller
 {
@@ -28,15 +28,17 @@ class ProgramController extends Controller
     public $data = array();
 
     public function index(){
-        $semesterActive = \App\Model\Semester::getActive();
 
-        $SQL = "SELECT program_name, halaqoh, ( SELECT COUNT(1) AS peserta FROM view_peserta WHERE program_id = T1.program_id AND semester_id = '".$semesterActive->id."') AS peserta
-                FROM (
-                    SELECT program_id, program_name, SUM(1) AS halaqoh FROM `view_halaqoh`
-                    WHERE semester_id = '". $semesterActive->id ."'
-                    GROUP BY program_id, program_name
-                ) T1";
-        $program = DB::select($SQL); // sementara pake native query
+        $program = Cache::remember('program.all', 60*60*24, function(){
+            $semesterActive = \App\Model\Semester::getActive();
+            $SQL = "SELECT program_name, halaqoh, ( SELECT COUNT(1) AS peserta FROM view_peserta WHERE program_id = T1.program_id AND semester_id = '".$semesterActive->id."') AS peserta
+                    FROM (
+                        SELECT program_id, program_name, SUM(1) AS halaqoh FROM `view_halaqoh`
+                        WHERE semester_id = '". $semesterActive->id ."'
+                        GROUP BY program_id, program_name
+                    ) T1";
+            return DB::select($SQL); // sementara pake native query
+        });
 
         $colorList = array('#F7464A', '#46BFBD', '#FDB45C', '#0097a7', '#d84315', '#6d4c41','#283593', '#c2185b', '#00695c', '#9e9d24', '#01579b','#6a1b9a' ,'#ec407a', '#ea80fc', '#b0bed6', '#f5b3f3', '#ff8269');
         for ($i=0; $i < count($program); $i++) { 

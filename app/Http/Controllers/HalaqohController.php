@@ -439,4 +439,19 @@ class HalaqohController extends Controller
             return redirect('/halaqoh/peserta/add')->with('alert', ['message'=>"Menambahkan peserta ke halaqoh gagal dilakukan", 'type'=>'danger']);
         }
     }
+
+    public function manage(Request $request)
+    {
+        $semesterActive = \App\Model\Semester::getActive();
+        $program = \App\Model\Program::select('id','name')->orderBy('sequence','asc')->get();
+        $halaqohs = \App\Model\View\ViewHalaqoh::select('program_id', 'pengajar_name', 'day')->where('semester_id', $semesterActive->id)->orderBy('pengajar_name','asc')->get();
+        // dd($halaqoh);
+
+        $data = [];
+        foreach ($halaqohs as $key => $halaqoh) {
+            $data[$halaqoh->day][$halaqoh->program_id][] = $halaqoh->pengajar_name;
+        }
+
+        return view('pages.halaqoh.manage', compact('program', 'data'));
+    }
 }
