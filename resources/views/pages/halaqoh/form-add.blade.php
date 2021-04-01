@@ -30,16 +30,17 @@
               <form class="" action="{{ route('halaqoh.addPost') }}" method="POST" id="formValidate" autocomplete="off">
                  <div class="card-panel" id="profile-card">
                     @csrf
+                    <input type="hidden" name="redirectTo" value="{{ $redirectTo }}">
                     <div class="row">
                        <div class="col s12" style="margin-bottom:1em">
 
                             <span>
-                                <input class="with-gap" name="day" type="radio" checked value="AHAD" id="day-ahad"/>
+                                <input class="with-gap" name="day" type="radio" {{ strtolower($hari) == 'ahad' ? 'checked' : '' }} value="AHAD" id="day-ahad"/>
                                 <label for="day-ahad">AHAD</label>
                             </span>
 
                             <span>
-                                <input class="with-gap" name="day" type="radio" value="SABTU" id="day-sabtu"/>
+                                <input class="with-gap" name="day" type="radio" {{ strtolower($hari) == 'sabtu' ? 'checked' : '' }} value="SABTU" id="day-sabtu"/>
                                 <label for="day-sabtu">SABTU</label>
                             </span>
                             <div id="day-error" class="error"></div>
@@ -50,7 +51,11 @@
                           <select name="program" id="program" class="select2">
                            <option disabled selected>-- Pilih Program --</option>
                             @foreach($program as $p)
-                                <option value="{{ $p->id }}">{{ $p->name }}</option>
+                                 @if(!empty($program_id) && $program_id == $p->id)
+                                    <option value="{{ $p->id }}" selected>{{ $p->name }}</option>
+                                 @else 
+                                    <option value="{{ $p->id }}">{{ $p->name }}</option>
+                                 @endif
                             @endforeach
                           </select>
                           <div id="program-error" class="error"></div>

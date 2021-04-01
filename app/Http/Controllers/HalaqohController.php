@@ -48,9 +48,12 @@ class HalaqohController extends Controller
     public function add(Request $request)
     {
     	$this->data['program']  = \App\Model\Program::orderBy('name','asc')->get();
-    	$this->data['pengajar'] = \App\Model\Pengajar::orderBy('name','asc')->get();
+        $this->data['pengajar'] = \App\Model\Pengajar::orderBy('name','asc')->get();
+        
+        $this->data['hari']       = $request->get('hari');
+        $this->data['program_id'] = $request->get('program');
+        $this->data['redirectTo'] = $request->get('ref');
 
-    	// dd($this->data);
     	return view('pages.halaqoh.form-add', $this->data);
     }
 
@@ -63,6 +66,7 @@ class HalaqohController extends Controller
         $program_id     = $request->program;
         $pengajar_id    = $request->pengajar;
         $semester_id    = Semester::getActive()->id;
+        $redirectTo     = !empty($request->redirectTo) ? $request->redirectTo : '/halaqoh/add';
 
         $halaqoh = Halaqoh::where('semester_id', $semester_id)
             ->where('pengajar_id', $pengajar_id)
@@ -71,7 +75,7 @@ class HalaqohController extends Controller
             ->first();
             
         if (!is_null($halaqoh)) {
-            return redirect('/halaqoh/add')
+            return redirect($redirectTo)
                 ->with('alert', ['message'=>"Halaqoh sudah tersedia!", 'type'=>'danger']);
         }
 
@@ -86,9 +90,10 @@ class HalaqohController extends Controller
         if ($halaqoh->save()){
             $halaqoh->reference = $halaqoh->id;
             $halaqoh->save();
-            return redirect('/halaqoh/add')->with('alert', ['message'=>"Halaqoh berhasil dibuat", 'type'=>'success']);
+
+            return redirect($redirectTo)->with('alert', ['message'=>"Halaqoh berhasil dibuat", 'type'=>'success']);
         } else {
-            return redirect('/halaqoh/add')->with('alert', ['message'=>"Menambahkan peserta ke halaqoh gagal dilakukan", 'type'=>'danger']);
+            return redirect($redirectTo)->with('alert', ['message'=>"Menambahkan peserta ke halaqoh gagal dilakukan", 'type'=>'danger']);
         }
 
     }

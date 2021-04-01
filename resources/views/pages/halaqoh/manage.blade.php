@@ -109,34 +109,28 @@
             <div class="row">
                 <div class="col s12">
                 <ul class="tabs tab-demo-active z-depth-1 cyan" style="width: 100%;">
-                    <li class="tab col s3"><a class="white-text waves-effect waves-light" href="#role-permission-container">SABTU</a></li>
-                    <li class="tab col s3"><a class="white-text waves-effect waves-light" href="#user-role-container">AHAD</a></li>
+                    <li class="tab col s3"><a class="white-text waves-effect waves-light" href="#sabtu-container">SABTU</a></li>
+                    <li class="tab col s3"><a class="white-text waves-effect waves-light" href="#ahad-container">AHAD</a></li>
                     <div class="indicator" style="right: 0px; left: 588px;"></div><div class="indicator" style="right: 0px; left: 588px;"></div>
                 </ul>
             </div>
 
             <div class="col s12" style="padding: 10px">
-              <div id="role-permission-container" class="col s12" style="display: block;">
+              <div id="sabtu-container" class="col s12" style="display: block;">
                 
                     @foreach($program as $o)
                     <div class="col s6 m4 l3">
                         
                         <div class="cyan white-text" style="width:100%; padding:15px;">
                             <h6 class="mb-3" style="font-weight:300;">{{ $o->name }}</h6>
-                            <a class="btn-floating activator btn-move-up waves-effect waves-light red accent-2 z-depth-4 right">
+                            <small class="mb-3" style="font-weight:300;">@if(!empty($data['SABTU'][$o->id])) {{ count($data['SABTU'][$o->id]) }} @else 0 @endif Halaqoh</small>
+                            <a class="btn-floating activator btn-move-up waves-effect waves-light red accent-2 z-depth-4 right" href="/halaqoh/add?hari=sabtu&program={{ $o->id }}&ref=/halaqoh/manage">
                                 <i class="mdi-social-person-add"></i>
                             </a>
                         </div>
 
                         <ul class="collection" style="width:100%;height:270px;overflow-y:scroll">
-                            <!-- <li class="collection-header cyan" style="">
-                                <h6 class="task-card-title mb-3">{{ $o->name }}</h6>
-                                <a class="btn-floating activator btn-move-up waves-effect waves-light red accent-2 z-depth-4 right">
-                                    <i class="mdi-social-person-add"></i>
-                                </a>
-                            </li> -->
 
-                            <!-- <div style="max-height:300px;overflow-y:scroll;width:100%;margin-top:0"> -->
                             @isset($data['SABTU'][$o->id])
                                 @foreach($data['SABTU'][$o->id] as $p)
                                 <li class="collection-item">
@@ -151,45 +145,28 @@
                                 </li>
                                 @endforeach
                             @endisset
-                            <!-- </div> -->
+
                         </ul>    
                     </div>
                     @endforeach
 
               </div>
-              <div id="user-role-container" class="col s12" style="display: none;">
+              <div id="ahad-container" class="col s12" style="display: none;">
 
-              @foreach($program as $o)
-                    <!-- <div class="col s12 l4">
-                      <div class="card" style="">
-                        <div class="card-content center-align">
-                          <p class="card-title">{{ $o->name }}</p>
-                        </div>                  
-                      </div>
-                    </div> -->
+                    @foreach($program as $o)
                     <div class="col s6 m4 l3">
                         
-                        <ul id="task-card" class="collection with-header">
-                            <li class="collection-header cyan">
-                                <h6 class="task-card-title mb-3">{{ $o->name }}</h6>
-                                <a class="btn-floating activator btn-move-up waves-effect waves-light red accent-2 z-depth-4 right">
-                                    <i class="mdi-social-person-add"></i>
-                                </a>
-                            </li>
-<!-- 
-                            <li class="collection-item">
-                                <div class="row">
-                                    <div class="col s10">
-                                        <label for="task">Create Mobile App UI.</label>
-                                    </div>
-                                    <div class="col s2">
-                                        <a href="#" class="secondary-content"> <span class="ultra-small">Lihat</span></a>
-                                    </div>
-                                </div>
-                            </li> -->
-                            
-                            @isset($data['SABTU'][$o->id])
-                                @foreach($data['SABTU'][$o->id] as $p)
+                        <div class="cyan white-text" style="width:100%; padding:15px;">
+                            <h6 class="mb-3" style="font-weight:300;">{{ $o->name }}</h6>
+                            <a class="btn-floating activator btn-move-up waves-effect waves-light red accent-2 z-depth-4 right" href="/halaqoh/add?hari=ahad&program={{ $o->id }}&ref=/halaqoh/manage">
+                                <i class="mdi-social-person-add"></i>
+                            </a>
+                        </div>
+
+                        <ul class="collection" style="width:100%;height:270px;overflow-y:scroll">
+
+                            @isset($data['AHAD'][$o->id])
+                                @foreach($data['AHAD'][$o->id] as $p)
                                 <li class="collection-item">
                                     <div class="row">
                                         <div class="col s10">
@@ -202,9 +179,11 @@
                                 </li>
                                 @endforeach
                             @endisset
+
                         </ul>    
                     </div>
                     @endforeach
+
               </div> 
             </div>
           </div>
