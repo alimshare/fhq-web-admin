@@ -132,14 +132,14 @@
                         <ul class="collection" style="width:100%;height:270px;overflow-y:scroll">
 
                             @isset($data['SABTU'][$o->id])
-                                @foreach($data['SABTU'][$o->id] as $p)
+                                @foreach($data['SABTU'][$o->id] as $h)
                                 <li class="collection-item">
                                     <div class="row">
                                         <div class="col s10">
-                                            <label for="task">{{ $p }}</label>
+                                            <label for="task">{{ $h->pengajar }}</label>
                                         </div>
                                         <div class="col s2">
-                                            <a href="#" class="secondary-content"> <span class="ultra-small">Lihat</span></a>
+                                            <a href="/halaqoh/{{ $h->reference }}" class="secondary-content"> <span class="ultra-small">Lihat</span></a>
                                         </div>
                                     </div>
                                 </li>
@@ -166,14 +166,14 @@
                         <ul class="collection" style="width:100%;height:270px;overflow-y:scroll">
 
                             @isset($data['AHAD'][$o->id])
-                                @foreach($data['AHAD'][$o->id] as $p)
+                                @foreach($data['AHAD'][$o->id] as $h)
                                 <li class="collection-item">
                                     <div class="row">
                                         <div class="col s10">
-                                            <label for="task">{{ $p }}</label>
+                                            <label for="task">{{ $h->pengajar }}</label>
                                         </div>
                                         <div class="col s2">
-                                            <a href="#" class="secondary-content"> <span class="ultra-small">Lihat</span></a>
+                                            <a href="/halaqoh/{{ $h->reference }}" class="secondary-content"> <span class="ultra-small">Lihat</span></a>
                                         </div>
                                     </div>
                                 </li>

@@ -449,12 +449,11 @@ class HalaqohController extends Controller
     {
         $semesterActive = \App\Model\Semester::getActive();
         $program = \App\Model\Program::select('id','name')->orderBy('sequence','asc')->get();
-        $halaqohs = \App\Model\View\ViewHalaqoh::select('program_id', 'pengajar_name', 'day')->where('semester_id', $semesterActive->id)->orderBy('pengajar_name','asc')->get();
-        // dd($halaqoh);
+        $halaqohs = \App\Model\View\ViewHalaqoh::select('program_id', 'pengajar_name', 'day','halaqoh_reference')->where('semester_id', $semesterActive->id)->orderBy('pengajar_name','asc')->get();
 
         $data = [];
         foreach ($halaqohs as $key => $halaqoh) {
-            $data[$halaqoh->day][$halaqoh->program_id][] = $halaqoh->pengajar_name;
+            $data[$halaqoh->day][$halaqoh->program_id][] = (object)['pengajar'=> $halaqoh->pengajar_name, 'reference'=> $halaqoh->halaqoh_reference];
         }
 
         return view('pages.halaqoh.manage', compact('program', 'data'));
