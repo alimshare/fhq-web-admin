@@ -158,6 +158,7 @@
                         
                         <div class="cyan white-text" style="width:100%; padding:15px;">
                             <h6 class="mb-3" style="font-weight:300;">{{ $o->name }}</h6>
+                            <small class="mb-3" style="font-weight:300;">@if(!empty($data['AHAD'][$o->id])) {{ count($data['AHAD'][$o->id]) }} @else 0 @endif Halaqoh</small>
                             <a class="btn-floating activator btn-move-up waves-effect waves-light red accent-2 z-depth-4 right" href="/halaqoh/add?hari=ahad&program={{ $o->id }}&ref=/halaqoh/manage">
                                 <i class="mdi-social-person-add"></i>
                             </a>
