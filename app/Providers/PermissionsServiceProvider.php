@@ -48,5 +48,15 @@ class PermissionsServiceProvider extends ServiceProvider
             return auth()->check() && auth()->user()->hasPermission($permission);
        });
 
+       Blade::if('allows', function () {
+            for ($i=0; $i < func_num_args(); $i++) { 
+                $permission = func_get_arg($i);
+                if (auth()->check() && auth()->user()->hasPermission($permission)){
+                    return true;
+                }
+            }
+            return false;
+       });
+
     }
 }

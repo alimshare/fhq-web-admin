@@ -78,7 +78,6 @@
 @endsection
 
 @section('content')
-
     <!--breadcrumbs start-->
     <div id="breadcrumbs-wrapper">
         <div class="container">
@@ -124,9 +123,11 @@
                         <div class="cyan white-text" style="width:100%; padding:15px;">
                             <h6 class="mb-3" style="font-weight:300;">{{ $o->name }}</h6>
                             <small class="mb-3" style="font-weight:300;">@if(!empty($data['SABTU'][$o->id])) {{ count($data['SABTU'][$o->id]) }} @else 0 @endif Halaqoh</small>
+                            @allow('add-halaqoh')
                             <a class="btn-floating activator btn-move-up waves-effect waves-light red accent-2 z-depth-4 right" href="/halaqoh/add?hari=sabtu&program={{ $o->id }}&ref=/halaqoh/manage">
                                 <i class="mdi-social-person-add"></i>
                             </a>
+                            @endallow
                         </div>
 
                         <ul class="collection" style="width:100%;height:270px;overflow-y:scroll">
@@ -138,9 +139,11 @@
                                         <div class="col s10">
                                             <label for="task">{{ $h->pengajar }}</label>
                                         </div>
+                                        @allows('manage::halaqoh::other')
                                         <div class="col s2">
                                             <a href="/halaqoh/{{ $h->reference }}" class="secondary-content"> <span class="ultra-small">Lihat</span></a>
                                         </div>
+                                        @endallow
                                     </div>
                                 </li>
                                 @endforeach
@@ -159,9 +162,11 @@
                         <div class="cyan white-text" style="width:100%; padding:15px;">
                             <h6 class="mb-3" style="font-weight:300;">{{ $o->name }}</h6>
                             <small class="mb-3" style="font-weight:300;">@if(!empty($data['AHAD'][$o->id])) {{ count($data['AHAD'][$o->id]) }} @else 0 @endif Halaqoh</small>
+                            @allow('add-halaqoh')
                             <a class="btn-floating activator btn-move-up waves-effect waves-light red accent-2 z-depth-4 right" href="/halaqoh/add?hari=ahad&program={{ $o->id }}&ref=/halaqoh/manage">
                                 <i class="mdi-social-person-add"></i>
                             </a>
+                            @endallow
                         </div>
 
                         <ul class="collection" style="width:100%;height:270px;overflow-y:scroll">
@@ -173,9 +178,11 @@
                                         <div class="col s10">
                                             <label for="task">{{ $h->pengajar }}</label>
                                         </div>
+                                        @allow('admin::manage::halaqoh')
                                         <div class="col s2">
                                             <a href="/halaqoh/{{ $h->reference }}" class="secondary-content"> <span class="ultra-small">Lihat</span></a>
                                         </div>
+                                        @endallow
                                     </div>
                                 </li>
                                 @endforeach
