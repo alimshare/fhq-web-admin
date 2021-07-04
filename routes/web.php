@@ -109,7 +109,10 @@ Route::group(['middleware' => []], function () {
     Route::post('/role/save', 'RolePermissionController@save')->name('role.save');
     Route::post('/user-role/save', 'RolePermissionController@userRoleSave')->name('user-role.save')->middleware(['permission:user-role.save']);
 	Route::get('/user-role/remove/{userId}/{roleId}', 'RolePermissionController@userRoleRemove')->name('user-role.remove')->middleware(['permission:user-role.remove']);
-	
+    Route::get('/permissions', 'RolePermissionController@permissions')->name('permissions');
+    Route::view('/permissions/add', 'pages.permission.form')->name('permissions.add');
+    Route::post('/permissions/save', 'RolePermissionController@permissionsPost')->name('permissions.save');
+
 	Route::get('/users','UserController@index')->name('users')->middleware(['permission:users']);
 	Route::get('/users/reset-password/{userId}','UserController@resetPassword')->name('users.reset-password')->middleware(['permission:users.reset-password']);
 

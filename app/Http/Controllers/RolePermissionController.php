@@ -119,4 +119,37 @@ class RolePermissionController extends Controller
         return redirect()->back()->with('alert', ['type'=> 'danger', 'message'=>$message]);
 
     }
+
+    public function permissions()
+    {
+        $data['list'] = \App\Model\Permission::orderBy('sequance','asc')->get();
+        return view('pages.permission.list', $data);
+    }
+
+    public function permissionsPost(Request $request)
+    {
+        $name = $request->input('name');
+        $slug = $request->input('slug');
+        $category = $request->input('category');
+        $sequance = $request->input('sequance');
+
+        $permission =  \App\Model\Permission::where('slug', $slug)->first();
+        if ($permission) {
+            return redirect()->back()->with('alert', ['type'=> 'danger', 'message'=>'Slug sudah digunakan, mohon gunakan slug lainnya karena slug harus unique.']);
+        }
+
+        $permission = new \App\Model\Permission;
+        $permission->name = $name;
+        $permission->slug = $slug;
+        $permission->category = $category;
+        $permission->sequance = $sequance;
+
+        if ($permission->save()) {
+            $message = "Menambahkan Permission <b>$slug</b> berhasil.";
+            return redirect()->route('permissions')->with('alert', ['type'=> 'success', 'message'=> $message]);
+        }
+
+        $message = "Gagal Menambahkan Permission <b>$slug</b>";
+        return redirect()->route('permissions')->with('alert', ['type'=> 'danger', 'message'=> $message]);
+    }
 }
