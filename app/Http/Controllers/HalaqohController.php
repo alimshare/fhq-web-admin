@@ -136,6 +136,7 @@ class HalaqohController extends Controller
                 $peserta->kehadiran = $nilai['kehadiran'];
                 $peserta->status = $nilai['status'];
                 $peserta->note = $nilai['note'];
+                $peserta->management_note = $nilai['management_note'];
                 $peserta->save();
             }
         }

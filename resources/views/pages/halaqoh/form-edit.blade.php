@@ -86,7 +86,8 @@
         							<th rowspan="2">Khatam</th>
         							<th rowspan="2">Kehadiran</th>
         							<th rowspan="2">Status</th>
-        							<th rowspan="2">Catatan</th>        							
+        							<th rowspan="2">Catatan</th>
+        							<th rowspan="2">Catatan Manajemen</th>				
         						</tr>
 								@if($halaqoh->program_id == "11" || $halaqoh->program_name == "TAKHASSUS")
         						<tr> 
@@ -126,6 +127,9 @@
                                     </td>
         							<td class="text-center">
         								<textarea name="data[{{$santri->peserta_id}}][note]">{{ $santri->catatan }}</textarea>
+        							</td>
+        							<td class="text-center">
+        								<textarea name="data[{{$santri->peserta_id}}][management_note]">{{ $santri->catatan_manajemen }}</textarea>
         							</td>
         						</tr>
         						@endforeach

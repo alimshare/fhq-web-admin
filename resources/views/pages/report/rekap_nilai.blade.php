@@ -132,6 +132,7 @@
                                         <th>Kehadiran</th>
                                         <th>Status</th>
                                         <th>Catatan</th>
+                                        <th>Catatan Manajemen</th>
                                     </tr>
                                     <tr class="row-filter">
                                         <th>
@@ -166,6 +167,7 @@
                                             </select>
                                         </th>
                                         <th><input type="text" placeholder="Cari Catatan" id="paramCatatan" class="input-text"></th>
+                                        <th><input type="text" placeholder="Cari Catatan" id="paramCatatanManajemen" class="input-text"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -185,6 +187,7 @@
                                             <td>{{ $n->kehadiran }}</td>
                                             <td>{{ $n->status }}</td>
                                             <td>{{ $n->catatan }}</td>
+                                            <td>{{ $n->catatan_manajemen }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>
