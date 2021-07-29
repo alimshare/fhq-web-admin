@@ -33,6 +33,9 @@
             @allow('list-halaqoh')
             <li class="bold"><a href="/halaqoh" class="waves-effect waves-cyan"><i class="mdi-toggle-radio-button-off"></i> Halaqoh</a></li>
             @endallow
+
+            <li class="bold"><a href="/halaqoh" class="waves-effect waves-cyan"><i class="mdi-toggle-radio-button-off"></i> Halaqoh Aktif</a></li>
+
             @allow('edit-halaqoh')
             <li class="no-padding">
                 <ul class="collapsible collapsible-accordion">

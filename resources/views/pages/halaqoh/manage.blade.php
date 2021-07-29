@@ -139,7 +139,7 @@
                                         <div class="col s10">
                                             <label for="task">{{ $h->pengajar }}</label>
                                         </div>
-                                        @allows('manage::halaqoh::other')
+                                        @allows('admin::manage::halaqoh')
                                         <div class="col s2">
                                             <a href="/halaqoh/{{ $h->reference }}" class="secondary-content"> <span class="ultra-small">Lihat</span></a>
                                         </div>
