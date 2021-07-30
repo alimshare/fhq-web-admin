@@ -16,4 +16,17 @@ class ActivityReport extends Model
     	return Attendance::whereActivityId($this->id)->get();
     }
 
+    public function attendances() {
+        return $this->hasMany(Attendance::class, 'activity_id');
+     }
+
+    public function halaqoh() {
+        return $this->hasOne(View\ViewHalaqoh::class, 'halaqoh_id', 'halaqoh_id');
+    }
+
+    public function hadir()
+    {
+        return $this->attendances()->where('status', '1');
+    }
+
 }

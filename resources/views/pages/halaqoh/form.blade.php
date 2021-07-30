@@ -81,7 +81,8 @@
 										<th rowspan="2">Khatam</th>
 										<th rowspan="2">Kehadiran</th>
 										<th rowspan="2">Status</th>
-										<th rowspan="2">Catatan</th>        							
+										<th rowspan="2">Catatan</th>
+										<th rowspan="2">Catatan Manajemen</th>
 									</tr>
 									@if($halaqoh->program_id == "11" || $halaqoh->program_name == "TAKHASSUS")
 									<tr> 
@@ -122,6 +123,11 @@
 										<td class="text-center">{{ $santri->status }}</td>
 										<td class="text-center">
 											@if ($santri->catatan != null)
+											<a class="btn-floating waves-effect waves-light primary tooltipped" data-position="bottom" data-tooltip="{{ $santri->catatan }}"><i class="mdi-communication-comment"></i></a>
+											@endif
+										</td>
+										<td class="text-center">
+											@if ($santri->catatan_manajemen != null)
 											<a class="btn-floating waves-effect waves-light primary tooltipped" data-position="bottom" data-tooltip="{{ $santri->catatan }}"><i class="mdi-communication-comment"></i></a>
 											@endif
 										</td>

@@ -9,12 +9,15 @@ use Illuminate\Support\Facades\Cache;
 use \App\Model\Peserta;
 use \App\Model\Semester;
 use \App\Model\Halaqoh;
+use \App\Model\ActivityReport;
 use \App\Exports\RekapNilaiExport;
 use Excel;
 
 
 class HomeController extends Controller
 {
+    private $data = [];
+
     /**
      * Create a new controller instance.
      *

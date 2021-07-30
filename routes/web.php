@@ -32,6 +32,15 @@ Route::group(['middleware' => []], function () {
 	Route::post('/profile/edit', 'HomeController@profile_edit_save')->name('profile.edit.save');
 
 	/**
+	 * Absensi KBM
+	 */
+	Route::get('/absensi', 'AbsensiController@absensi')->name('absensi');
+	Route::get('/absensi/add', 'AbsensiController@absensi_form')->name('absensi.add');
+	Route::post('/absensi/save', 'AbsensiController@save')->name('absensi.save');
+	Route::get('/absensi/edit/{id}', 'AbsensiController@edit')->name('absensi.edit');
+	Route::post('/absensi/update', 'AbsensiController@update')->name('absensi.update');
+
+	/**
 	 * Lembaga
 	 */
 	Route::get('lembaga', 'LembagaController@index');
