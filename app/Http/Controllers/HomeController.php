@@ -100,7 +100,7 @@ class HomeController extends Controller
     {
         $userId = auth()->user()->id;
         $user = \App\User::where('id', $userId)->with(['profile','roles'])->first();
-        $halaqoh = \App\Model\View\ViewHalaqoh::where('pengajar_id', $user->profile->id)->WithCount(['peserta'])->get();
+        $halaqoh = \App\Model\View\ViewHalaqoh::where('pengajar_id', $user->profile->id)->WithCount(['peserta'])->orderBy('halaqoh_id', 'desc')->get();
 
         $halaqohAktif = [];
         $halaqohLampau = [];
