@@ -128,7 +128,7 @@
 										</td>
 										<td class="text-center">
 											@if ($santri->catatan_manajemen != null)
-											<a class="btn-floating waves-effect waves-light primary tooltipped" data-position="bottom" data-tooltip="{{ $santri->catatan }}"><i class="mdi-communication-comment"></i></a>
+											<a class="btn-floating waves-effect waves-light primary tooltipped" data-position="bottom" data-tooltip="{{ $santri->catatan_manajemen }}"><i class="mdi-communication-comment"></i></a>
 											@endif
 										</td>
 									</tr>
