@@ -24,6 +24,7 @@ class AbsensiController extends Controller
                 })
                 ->where('status', 1)
                 ->groupBy('peserta_id')
+                ->orderBy('count_kehadiran', 'desc')
                 ->get();
             $this->data['kbm'] = ActivityReport::where('halaqoh_id', $halaqohId)->with('halaqoh')->withCount(['attendances', 'hadir'])->orderBy('tgl', 'desc')->get();
         } 
