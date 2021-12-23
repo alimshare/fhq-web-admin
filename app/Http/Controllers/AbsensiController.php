@@ -17,6 +17,13 @@ class AbsensiController extends Controller
         if (!empty($request->input('halaqohRef'))) 
         {
             $this->data['halaqohId'] = $halaqohId = $request->input('halaqohRef');
+            $this->data['kehadiran'] = $kehadiran = Attendance::selectRaw('peserta_id, COUNT(1) count_kehadiran')
+                ->with('peserta')
+                ->whereIn('peserta_id', function ($query) use ($halaqohId) {
+                    $query->select('id')->from('peserta')->where('halaqoh_id', $halaqohId);
+                })
+                ->groupBy('peserta_id')
+                ->get();
             $this->data['kbm'] = ActivityReport::where('halaqoh_id', $halaqohId)->with('halaqoh')->withCount(['attendances', 'hadir'])->orderBy('tgl', 'desc')->get();
         } 
         else 

@@ -81,6 +81,38 @@
            </div>
         </div>
      </div>
+
+     @isset($kehadiran)
+     @php $i = 1; @endphp
+     <div class="section">
+      <div class="row">
+         <div class="col s12 l6">
+
+            <h5>Rekap Kehadiran Peserta</h5>
+            <table class="table" cellpadding="1px" width="100%">
+                <thead>
+                   <tr class="cyan darken-3 white-text">
+                      <th>No.</th>
+                      <th>Nama Santri</th>
+                      <th>Total Kehadiran</th>
+                   </tr>
+                </thead>
+
+                <tbody>
+                   @foreach($kehadiran as $k)
+                      <tr>
+                         <td>{{ $i++ }}</td>
+                         <td class="text-left">{{ $k->peserta->santri_name }} </td>
+                         <td>{{ $k->count_kehadiran }}</td>
+                      </tr>
+                   @endforeach
+                </tbody>
+            </table>
+         </div>
+      </div>
+      @endisset
+
+     </div>
   </div>
 </div>
        
