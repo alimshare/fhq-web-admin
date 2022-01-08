@@ -8,6 +8,19 @@
     }
     table thead th {
     }
+
+   .mobile .collection {
+      display: none;
+   }
+
+    @media(max-width: 430px) {
+        .desktop .table {
+           display: none;
+        }
+        .mobile .collection {
+           display: block;
+        }
+    }
 </style>
 @endsection
 
@@ -34,7 +47,7 @@
 <!--breadcrumbs end-->
 <div class="col s12">
   <div class="container">
-      <div class="section text-center" style="margin-top:50px">
+      <div class="section text-center" style="margin-top:35px">
          <a href='/absensi/add{{ !empty($halaqohId) ? "?halaqohRef=$halaqohId" : "" }}' class="btn btn-large cyan darken-2">Isi Absensi</a>
       </div>
      <div class="section">
@@ -44,7 +57,7 @@
            </div>
         </div>
         <div class="row">
-           <div class="col s12">
+           <div class="col s12 desktop">
               <table class="table" cellpadding="5px" width="100%">
                   <thead>
                      <tr class="cyan darken-3 white-text">
@@ -78,6 +91,25 @@
                      @endforeach
                   </tbody>
               </table>
+           </div>
+           <div class="col s12 mobile no-padding">
+               <div class="collection">
+                  @foreach($kbm as $k)
+                     <div class="row collection-item" style="">
+                        <div class="col s3 teal white-text" style="padding: 8px 12px;">
+                           {{ date('M',strtotime($k->tgl)) }} <br>
+                           {{ date('d',strtotime($k->tgl)) }} <br>
+                           {{ date('Y',strtotime($k->tgl)) }} <br>
+                        </div>
+                        <div class="col s3">{{ $k->halaqoh->program_name }}</div>
+                        <div class="col s3 text-center" style="display: flex; ">{{ count($k->hadir) }} / {{ $k->attendances_count }}</div>
+                        <div class="col s3 no-padding text-right">
+                           <a href="/absensi/edit/{{ $k->id }}{{ !empty($halaqohId) ? "?halaqohRef=$halaqohId" : "" }}" class="btn-floating waves-effect waves-light primary" data-position="bottom" data-tooltip="Detail"><i class="mdi-action-search"></i></a>
+                           <a class="btn-floating green waves-effect waves-light primary" data-position="bottom" data-tooltip="Catatan"><i class="mdi-communication-comment"></i></a>
+                        </div>
+                     </div>
+                  @endforeach
+               </div>
            </div>
         </div>
      </div>

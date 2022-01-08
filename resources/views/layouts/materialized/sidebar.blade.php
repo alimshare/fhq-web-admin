@@ -29,7 +29,8 @@
             </li>
 
             <li class="bold"><a href="/profile" class="waves-effect waves-cyan"><i class="mdi-action-account-circle"></i> Profile</a></li>
-
+            <li class="bold"><a href="/absensi" class="waves-effect waves-cyan"><i class="mdi-action-assignment-ind"></i> Absensi</a></li>
+            
             @allow('list-halaqoh')
             <li class="bold"><a href="/halaqoh" class="waves-effect waves-cyan"><i class="mdi-toggle-radio-button-off"></i> Halaqoh</a></li>
             @endallow
@@ -87,6 +88,8 @@
                         <div class="collapsible-body">
                             <ul>
                                 <li><a href="{{ route('rekap.nilai') }}">Rekap Nilai</a></li>
+                                <li><a href="{{ route('rekap.kbm') }}">Rekap KBM</a></li>
+                                <li><a href="{{ route('rekap.kehadiran') }}">Rekap Kehadiran</a></li>
                             </ul>
                         </div>
                     </li>
@@ -105,6 +108,7 @@
                     <i class="mdi-hardware-keyboard-tab"></i> Log Out</a>
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">@csrf</form>
             </li>
+            
            <!--  <li class="no-padding">
                 <ul class="collapsible collapsible-accordion">
                     <li class="bold"><a class="collapsible-header waves-effect waves-cyan"><i class="mdi-action-view-carousel"></i> Layouts</a>

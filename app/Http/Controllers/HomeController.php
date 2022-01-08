@@ -10,6 +10,7 @@ use \App\Model\Peserta;
 use \App\Model\Semester;
 use \App\Model\Halaqoh;
 use \App\Model\ActivityReport;
+use \App\Model\Attendance;
 use \App\Exports\RekapNilaiExport;
 use Excel;
 
@@ -198,6 +199,41 @@ class HomeController extends Controller
             Cache::flush();
             dd("cache flush");
         }
+    }
+
+    public function rekapKBM(Request $request)
+    {
+        $semesterActive = \App\Model\Semester::getActive();
+        $data['kbm']    = ActivityReport::whereIn('halaqoh_id', function ($query) use ($semesterActive) {
+                $query->select('id')->from('halaqoh')->where('semester_id', $semesterActive->id);
+            })
+            ->with('halaqoh')
+            ->withCount(['attendances', 'hadir'])
+            ->orderBy('tgl', 'desc')
+            ->get();
+
+        
+        // TODO bikin view untuk kbm
+
+        return view('pages.report.rekap_kbm',$data);
+    }
+
+    public function rekapKehadiran(Request $request)
+    {
+        $semesterActive = \App\Model\Semester::getActive();
+        $data['kehadiran'] = Attendance::selectRaw('peserta_id, COUNT(1) count_kehadiran')
+            ->with('peserta')
+            ->whereIn('peserta_id', function ($query) use ($semesterActive) {
+                $query->select('peserta_id')->from('view_peserta')->where('semester_id', $semesterActive->id);
+            })
+            ->where('status', 1)
+            ->groupBy('peserta_id')
+            ->orderBy('count_kehadiran', 'desc')
+            ->get();
+
+        // TODO bikin view untuk kehadiran
+
+        return view('pages.report.rekap_kehadiran',$data);
     }
 
 }

@@ -144,7 +144,7 @@
                                             @allow('detail-halaqoh')
                                             <td class="text-center">
                                                 <a href="/halaqoh/{{ $n->halaqoh_reference }}?referer=/profile" class="btn-floating waves-effect waves-light primary tooltipped" data-position="bottom" data-tooltip="Detail"><i class="mdi-action-search"></i></a>
-                                                <a href="/absensi?halaqohRef={{ $n->halaqoh_reference }}" class="btn-floating green waves-effect waves-light primary tooltipped" data-position="bottom" data-tooltip="Absensi"><i class="mdi-action-list"></i></a>
+                                                <a href="/absensi?halaqohRef={{ $n->halaqoh_reference }}" class="btn-floating green waves-effect waves-light primary tooltipped" data-position="bottom" data-tooltip="Absensi"><i class="mdi-action-assignment"></i></a>
                                             </td>
                                             @endallow
                                         </tr>

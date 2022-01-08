@@ -27,6 +27,9 @@ Route::group(['middleware' => []], function () {
 	Route::get('/rekap-nilai', 'HomeController@rekapNilai')->name('rekap.nilai')->middleware(['permission:rekap-nilai.view']);
 	Route::get('/rekap-nilai/download', 'HomeController@exportRekapNilai')->name('rekap.nilai.download')->middleware(['permission:rekap-nilai.download']);
 
+	Route::get('/rekap-kbm', 		'HomeController@rekapKBM')->name('rekap.kbm');//->middleware(['permission:rekap-nilai.view']);
+	Route::get('/rekap-kehadiran', 	'HomeController@rekapKehadiran')->name('rekap.kehadiran');//->middleware(['permission:rekap-nilai.view']);
+
 	Route::get('/profile', 'HomeController@profile')->name('profile');
 	Route::get('/profile/edit', 'HomeController@profile_edit')->name('profile.edit');
 	Route::post('/profile/edit', 'HomeController@profile_edit_save')->name('profile.edit.save');
