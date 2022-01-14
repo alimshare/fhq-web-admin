@@ -135,5 +135,6 @@ Route::get('halaqoh-26', 'PublicController@halaqoh26');
 Route::get('halaqoh-27', 'PublicController@halaqoh27');
 Route::get('halaqoh-28', 'PublicController@halaqoh28');
 Route::get('halaqoh-29', 'PublicController@halaqoh29');
+Route::get('halaqoh-30', 'PublicController@halaqoh30');
 // Route::view('register', 'auth.register')->name('register');
 
