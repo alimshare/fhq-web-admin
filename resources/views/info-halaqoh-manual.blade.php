@@ -127,7 +127,7 @@
                                             <td>{{ strtoupper($n->santri_name) }}</td>
                                             <td>{{ strtoupper($n->pengajar_name) }}</td>
                                             <td>{{ strtoupper($n->program_name) }}</td>
-                                            <td>{{ strtoupper($n->jenis_kbm) }} - {{ strtoupper($n->lokasi_kbm) }}</td>
+                                            <td>{{ strtoupper($n->jenis_kbm) }} @if(!empty($n->lokasi_kbm))- {{ strtoupper($n->lokasi_kbm) }} @endif</td>
                                             <td>{{ strtoupper($n->day) }}</td>
                                             <td>{{ $n->gender_santri == "MALE" ? "IKHWAN" : "AKHWAT" }}</td>
                                         </tr>
