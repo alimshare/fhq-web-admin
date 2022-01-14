@@ -124,12 +124,12 @@
                                     @foreach ($list as $n)
                                         <tr>
                                             <td>{{ $n->nis }}</td>
-                                            <td>{{ strtoupper($n->nama_santri) }}</td>
-                                            <td>{{ strtoupper($n->nama_pengajar) }}</td>
-                                            <td>{{ strtoupper($n->program) }}</td>
-                                            <td>{{ strtoupper($n->kbm) }}</td>
-                                            <td>{{ strtoupper($n->hari) }}</td>
-                                            <td>{{ $n->jenkel == "MALE" ? "IKHWAN" : "AKHWAT" }}</td>
+                                            <td>{{ strtoupper($n->santri_name) }}</td>
+                                            <td>{{ strtoupper($n->pengajar_name) }}</td>
+                                            <td>{{ strtoupper($n->program_name) }}</td>
+                                            <td>{{ strtoupper($n->jenis_kbm) }} - {{ strtoupper($n->lokasi_kbm) }}</td>
+                                            <td>{{ strtoupper($n->day) }}</td>
+                                            <td>{{ $n->gender_santri == "MALE" ? "IKHWAN" : "AKHWAT" }}</td>
                                         </tr>
                                     @endforeach
                                 </tbody>
