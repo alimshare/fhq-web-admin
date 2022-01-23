@@ -107,6 +107,14 @@
              </div>
           </div>
 
+          <div class="row text-right">
+              <div class="col s12">
+                @allow('rekap-kbm.download')
+                <a href="{{ route('rekap.kbm.download') }}" class="btn cyan darken-2">Download</a>
+                @endallow
+              </div>
+          </div>
+
           <div class="row">
              <div class="col s12">
                 <div class="card-panel no-padding">

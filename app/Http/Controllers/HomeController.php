@@ -201,23 +201,6 @@ class HomeController extends Controller
         }
     }
 
-    public function rekapKBM(Request $request)
-    {
-        $semesterActive = \App\Model\Semester::getActive();
-        $data['kbm']    = ActivityReport::whereIn('halaqoh_id', function ($query) use ($semesterActive) {
-                $query->select('id')->from('halaqoh')->where('semester_id', $semesterActive->id);
-            })
-            ->with('halaqoh')
-            ->withCount(['attendances', 'hadir'])
-            ->orderBy('tgl', 'desc')
-            ->get();
-
-        
-        // TODO bikin view untuk kbm
-
-        return view('pages.report.rekap_kbm',$data);
-    }
-
     public function rekapKehadiran(Request $request)
     {
         $semesterActive = \App\Model\Semester::getActive();

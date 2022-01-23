@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\RekapKbmExport;
 use Illuminate\Http\Request;
 use \App\Model\Peserta;
 use \App\Model\Semester;
@@ -172,4 +173,28 @@ class AbsensiController extends Controller
             return redirect("/absensi/add?halaqohRef=$halaqohId")->with('alert', ['message'=>"Gagal menyimpan absensi untuk tanggal <b>$tgl</b>", 'type'=>'danger']);
         }
     }
+
+    public function rekapKBM(Request $request)
+    {
+        $semesterActive = \App\Model\Semester::getActive();
+        $data['kbm']    = ActivityReport::whereIn('halaqoh_id', function ($query) use ($semesterActive) {
+                $query->select('id')->from('halaqoh')->where('semester_id', $semesterActive->id);
+            })
+            ->with('halaqoh')
+            ->withCount(['attendances', 'hadir'])
+            ->orderBy('tgl', 'desc')
+            ->get();
+
+        
+        // TODO bikin view untuk kbm
+
+        return view('pages.report.rekap_kbm',$data);
+    }
+
+    public function exportRekapKBM(Request $request)
+    {
+        $semester = Semester::getActive();
+        return (new RekapKbmExport)->forSemester($semester->id)->download('rekap-kbm-'.$semester->name.'-'.date('Ymd_Hi').'.xlsx');
+    }
+
 }
