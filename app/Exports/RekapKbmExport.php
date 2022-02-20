@@ -13,6 +13,8 @@ class RekapKbmExport implements FromQuery, WithTitle, WithHeadings
     use Exportable;
 
     private $semesterId;
+    private $startDate;
+    private $endDate;
 
     public function __construct()
     {
@@ -26,12 +28,23 @@ class RekapKbmExport implements FromQuery, WithTitle, WithHeadings
         return $this;
     }
 
+    public function filterPeriod($startDate, $endDate)
+    {
+        $this->startDate    = $startDate;
+        $this->endDate      = $endDate;
+        return $this;
+    }
+
     public function query()
     {
         $query = ViewKbm::select('tgl','program_name','pengajar_name','description','management_note','jumlah_peserta','hadir','tidak_hadir');
 
         if ($this->semesterId) {
             $query->where('semester_id', $this->semesterId);
+        }
+
+        if (!empty($this->startDate) && !empty($this->endDate)) {
+            $query->whereBetween('tgl', [$this->startDate, $this->endDate]);
         }
 
         return $query->orderBy('tgl','desc');

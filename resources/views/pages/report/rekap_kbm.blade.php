@@ -40,7 +40,7 @@
     let table = $('#table-kbm').DataTable({
         "paging":true,
         "lengthChange": false,
-        "pageLength": 50,
+        "pageLength": 25,
         "ordering": false,
         initComplete: function () {
             this.api().columns().every( function () {
@@ -72,7 +72,6 @@
             } );
         }
     });
-
 </script>
 @endsection
 
@@ -130,10 +129,10 @@
                                 <th>Jumlah Peserta Hadir</th>
                             </tr>
                             <tr class="row-filter">
-                                <th><input type="text" placeholder="yyyy-mm-dd" class="input-text"></th>
-                                <th><input type="text" placeholder="SABTU / AHAD" class="input-text"></th>
-                                <th><input type="text" placeholder="program" class="input-text"></th>
-                                <th><input type="text" placeholder="pengajar" class="input-text"></th>
+                                <th><input type="text" placeholder="yyyy-mm-dd" class="input-text" id="paramTanggal"></th>
+                                <th><input type="text" placeholder="SABTU / AHAD" class="input-text" id="paramHari"></th>
+                                <th><input type="text" placeholder="program" class="input-text" id="paramProgram"></th>
+                                <th><input type="text" placeholder="pengajar" class="input-text" id="paramPengajar"></th>
                                 <th></th>
                                 <th></th>
                                 <th></th>
@@ -157,6 +156,33 @@
                 </div>
              </div>
           </div>
+
+          <div class="row">
+                <div class="col s12 l4">
+                    <div class="card-panel">
+                        <h5>Download berdasarkan tanggal</h5>
+                        <form action="{{ route('rekap.kbm.download') }}" method="GET">
+
+                            <div class="row">
+                                <div class="input-field col s12">
+                                    <input id="tgl" name="start_date" type="text" value="{{ date('Y-m-d') }}" maxlength="10">
+                                    <label for="tgl">Tanggal Awal</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="input-field col s12">
+                                    <input id="tgl" name="end_date" type="text" value="{{ date('Y-m-d') }}" maxlength="10">
+                                    <label for="tgl">Tanggal Akhir</label>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn cyan darken-2">Download</button>
+
+                        </form>
+                    </div>
+                </div>
+          </div>
+
        </div>
     </div>
 </div>

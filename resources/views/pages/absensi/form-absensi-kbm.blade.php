@@ -27,6 +27,21 @@
         getPeserta(data.id);
     });
 
+    // if($("input:radio[class='jenis-kbm']").is(":checked")) {
+    //     console.log($(this).val());
+    // }
+    $( "input:radio[class='jenis-kbm']" ).on( "click", function() {
+        var $jenisKbm = $( "input:radio[class='jenis-kbm']:checked" ).val();
+
+        if ($jenisKbm == "normal") {
+
+        }
+
+        if ($jenisKbm == "badal") {
+
+        }
+    });
+
     const getPeserta = (id) => {
 
         $.get("/api/halaqoh/"+id+"/peserta", function(res){
@@ -94,8 +109,18 @@
                             
                                 @csrf
 
+                                <div class="row" style="margin-bottom:1rem">
+                                    <label for="halaqoh" class="col s12" style="margin-bottom:0.6rem">Jenis KBM</label>
+                                    <div class="col s6">
+                                        <input type="radio" name="status" value="normal" id="normal" class="jenis-kbm" checked> <label for="rutin">Rutin</label>
+                                    </div>
+                                    <div class="col s6">
+                                        <input type="radio" name="status" value="badal" id="badal" class="jenis-kbm"> <label for="badal">Badal</label>
+                                    </div>
+                                </div>
+
                                 <div class="row">
-                                    <label for="halaqoh" class="col s12">Halaqoh</label>    
+                                    <label for="halaqoh" class="col s12">Halaqoh</label>
                                     <div class="input-field col s12">
                                         <select name="halaqoh" id="halaqoh" class="select2">
                                         <option disabled selected>-- Pilih Halaqoh --</option>

@@ -194,7 +194,17 @@ class AbsensiController extends Controller
     public function exportRekapKBM(Request $request)
     {
         $semester = Semester::getActive();
-        return (new RekapKbmExport)->forSemester($semester->id)->download('rekap-kbm-'.$semester->name.'-'.date('Ymd_Hi').'.xlsx');
+
+        $export = (new RekapKbmExport)->forSemester($semester->id);
+
+        $startDate  = $request->start_date;
+        $endDate    = $request->end_date;
+
+        if (!empty($startDate) && !empty($endDate)) {
+            $export->filterPeriod($startDate, $endDate);
+        }
+
+        return $export->download('rekap-kbm-'.$semester->name.'-'.date('Ymd_Hi').'.xlsx');
     }
 
 }
