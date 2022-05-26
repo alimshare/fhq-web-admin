@@ -11,7 +11,7 @@
   <!-- <link rel="shortcut icon" href="assets/ico/favicon.png"> -->
   <!-- <link rel="shortcut icon" href="{{ url('/') }}/dist/img/favicon.png"> -->
 
-  <title>FHQ - Login</title>
+  <title>{{ env('APP_NAME', 'FHQ') }} - Login</title>
 
   <!-- Icons -->
   <link href="css/simple-line-icons.min.css" rel="stylesheet">
@@ -69,7 +69,7 @@
           <div class="card text-white py-5 d-md-down-none" style="width:44%;background-color: #00bcd4">
             <div class="card-body text-center">
               <div>
-                <h2>FHQ</h2>
+                <h2>{{ env('APP_NAME','FHQ') }}</h2>
                 <p style="margin-top: 15px">Rasullullah shallallahu 'alaihi wa sallam bersabda, <strong><em>"Sebaik-baik kalian adalah yang belajar Al-Qur'an dan mengajarkannya"</em></strong> (HR. Bukhari)</p>
               </div>
             </div>

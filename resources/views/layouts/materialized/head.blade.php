@@ -4,7 +4,7 @@
 <meta name="msapplication-tap-highlight" content="no">
 <meta name="description" content="FHQ Web Admin">
 <meta name="keywords" content="fhq, fhq annashr, fhq bintaro jaya, fhq mrbj, forum halaqoh quran">
-<title>@yield('title','Dashboard') | FHQ Web Admin </title>
+<title>@yield('title','Dashboard') | {{ env('APP_NAME','FHQ Web Admin') }} </title>
 
 <!-- Favicons-->
 <link rel="icon" href="/materialized/images/favicon/favicon-32x32.png" sizes="32x32">

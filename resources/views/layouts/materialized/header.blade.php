@@ -4,11 +4,14 @@
             <nav class="navbar-color">
                 <div class="nav-wrapper">
                     <ul class="left">                      
-                      <li><h1 class="logo-wrapper">
-                      <a href="{{ route('home') }}" class="brand-logo darken-1">
-                          <img src="/images/logo_web.png" alt="FHQ logo">
-                        </a> 
-                        <span class="logo-text">FHQ</span></h1></li>
+                      <li>
+                        <h1 class="logo-wrapper">
+                          <a href="{{ route('home') }}" class="brand-logo darken-1">
+                            <img src="{{ env('APP_SETTING_LOGO', '/images/logo_web.png') }}" alt="logo">
+                          </a> 
+                          <span class="logo-text">{{ env('APP_NAME', 'FHQ') }}</span>
+                        </h1>
+                      </li>
                     </ul>
 <!-- 
             <div class="header-search-wrapper hide-on-med-and-down">
