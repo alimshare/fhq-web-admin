@@ -139,6 +139,61 @@
 					</div>
 				</div>
 			</div>
+
+
+			<div class="section">
+				<div class="row">
+				   <div class="col s12">
+					  <h5>Kehadiran Peserta</h5>
+				   </div>
+				</div>
+				<div class="row">
+				   <div class="col s12">
+					  <div class="table-responsive">
+		  
+						 <table class="table table-bordered dataTable" border="1px" width="100%">
+							<thead>
+							   <tr class="cyan darken-3 white-text">
+								  <th>No.</th>
+								  <th>Nama Santri</th>
+								  <th>Total</th>
+								  @foreach ($halaqoh->kbm as $kbm)
+									<td class="text-center">
+										@php $time = strtotime($kbm->tgl); @endphp
+										{{ date("Y", $time) }} <br> {{ date("d", $time) }}/{{ date("m", $time) }}
+									</td>
+								  @endforeach
+							   </tr>
+							</thead>
+			 
+							<tbody>
+			 
+							   @php $i = 1; @endphp
+							   @foreach($peserta as $santri)
+								  <tr>
+									 <td>{{ $i++ }}</td>
+									 <td class="text-left">{{ $santri->santri_name }} </td>
+									 <td class="text-left">{{ $total_kehadiran[$santri->peserta_id] ?? ""}}</td>
+									 @foreach ($halaqoh->kbm as $kbm)
+									 	@php $pesertaHadir = $kbm->attendances->pluck('status','peserta_id'); @endphp
+										<td class="text-center">
+											@if($pesertaHadir[$santri->peserta_id] && $pesertaHadir[$santri->peserta_id] == 1)
+												<span class="mdi-action-check-circle green-text"></span>
+											@else
+												<span class="mdi-navigation-close red-text"></span>
+											@endif
+										</td>
+									 @endforeach
+								  </tr>
+							   @endforeach
+			 
+							</tbody>
+						 </table>
+		  
+					  </div>
+				   </div>
+				</div>
+			   </div>
     </div>
 
 

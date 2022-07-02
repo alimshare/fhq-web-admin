@@ -38,4 +38,9 @@ class Halaqoh extends Model
         return View\ViewHalaqoh::where('halaqoh_id', $this->id)->first();
     }
 
+    public function kbm()
+    {
+        return $this->hasMany(ActivityReport::class, 'halaqoh_id', 'id');
+    }
+
 }

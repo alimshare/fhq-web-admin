@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use DB;
-use App\Model\{Semester, Halaqoh};
+use App\Model\{Semester, Halaqoh, Attendance};
 
 class HalaqohController extends Controller
 {
@@ -104,9 +104,20 @@ class HalaqohController extends Controller
     public function detail(Request $request, $reference=null)
     {
 
-        $this->data['halaqoh'] = \App\Model\View\ViewHalaqoh::where('halaqoh_reference', $reference)->first();
+        $this->data['halaqoh'] = $halaqoh = \App\Model\View\ViewHalaqoh::where('halaqoh_reference', $reference)->with('kbm')->first();
         $this->data['peserta'] = \App\Model\View\ViewPeserta::where('halaqoh_reference', $reference)->get();
 
+        $halaqohId = $halaqoh->halaqoh_id;
+        $this->data['total_kehadiran'] = Attendance::selectRaw('peserta_id, COUNT(1) count_kehadiran')
+        ->with('peserta')
+        ->whereIn('peserta_id', function ($query) use ($halaqohId) {
+            $query->select('id')->from('peserta')->where('halaqoh_id', $halaqohId);
+        })
+        ->where('status', 1)
+        ->groupBy('peserta_id')
+        ->orderBy('count_kehadiran', 'desc')
+        ->get()->pluck('count_kehadiran', 'peserta_id');
+        
     	// dd($this->data);
     	return view('pages.halaqoh.form', $this->data);
     }

@@ -12,7 +12,6 @@ class Attendance extends Model
 {
     protected 	$table 		= "attendance";    
 
-
     public function peserta() {
         return $this->hasOne(View\ViewPeserta::class, 'peserta_id', 'peserta_id');
     }
