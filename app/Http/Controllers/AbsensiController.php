@@ -18,7 +18,7 @@ class AbsensiController extends Controller
         if (!empty($request->input('halaqohRef'))) 
         {
             $this->data['halaqohId'] = $halaqohId = $request->input('halaqohRef');
-            $this->data['kehadiran'] = $kehadiran = Attendance::selectRaw('peserta_id, COUNT(1) count_kehadiran')
+            $this->data['kehadiran'] = Attendance::selectRaw('peserta_id, COUNT(1) count_kehadiran')
                 ->with('peserta')
                 ->whereIn('peserta_id', function ($query) use ($halaqohId) {
                     $query->select('id')->from('peserta')->where('halaqoh_id', $halaqohId);
@@ -33,7 +33,16 @@ class AbsensiController extends Controller
         {
             $profileID = auth()->user()->profile_id;
             $halaqohIds = \App\Model\View\ViewHalaqoh::where('pengajar_id', $profileID)->where('semester_id', Semester::getActive()->id)->pluck('halaqoh_id')->toArray();
-            $this->data['kbm'] = ActivityReport::whereIn('halaqoh_id', $halaqohIds)->withCount(['attendances'])->with('halaqoh')->orderBy('tgl', 'desc')->get();
+            $this->data['kbm']       = ActivityReport::whereIn('halaqoh_id', $halaqohIds)->withCount(['attendances'])->with('halaqoh')->orderBy('tgl', 'desc')->get();
+            $this->data['kehadiran'] = Attendance::selectRaw('peserta_id, COUNT(1) count_kehadiran')
+                ->with('peserta')
+                ->whereIn('peserta_id', function ($query) use ($halaqohIds) {
+                    $query->select('id')->from('peserta')->whereIn('halaqoh_id', $halaqohIds);
+                })
+                ->where('status', 1)
+                ->groupBy('peserta_id')
+                ->orderBy('count_kehadiran', 'desc')
+                ->get();
         }
 
         return view('pages.absensi.list', $this->data);
