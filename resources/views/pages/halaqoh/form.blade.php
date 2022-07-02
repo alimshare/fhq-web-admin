@@ -156,7 +156,6 @@
 							   <tr class="cyan darken-3 white-text">
 								  <th>No.</th>
 								  <th>Nama Santri</th>
-								  <th>Total</th>
 								  @foreach ($halaqoh->kbm as $kbm)
 									<td class="text-center">
 										@php $time = strtotime($kbm->tgl); @endphp
@@ -173,7 +172,6 @@
 								  <tr>
 									 <td>{{ $i++ }}</td>
 									 <td class="text-left">{{ $santri->santri_name }} </td>
-									 <td class="text-left">{{ $total_kehadiran[$santri->peserta_id] ?? ""}}</td>
 									 @foreach ($halaqoh->kbm as $kbm)
 									 	@php $pesertaHadir = $kbm->attendances->pluck('status','peserta_id'); @endphp
 										<td class="text-center">
