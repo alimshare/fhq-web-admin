@@ -20,7 +20,7 @@ class ViewHalaqoh extends Model
 
     public function kbm()
     {
-        return $this->hasMany(ActivityReport::class, 'halaqoh_id', 'halaqoh_id');
+        return $this->hasMany(ActivityReport::class, 'halaqoh_id', 'halaqoh_id')->orderBy('tgl', 'asc');
     }
 
 }

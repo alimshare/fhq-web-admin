@@ -115,7 +115,6 @@ class HalaqohController extends Controller
         })
         ->where('status', 1)
         ->groupBy('peserta_id')
-        ->orderBy('count_kehadiran', 'desc')
         ->get()->pluck('count_kehadiran', 'peserta_id');
         
     	// dd($this->data);
