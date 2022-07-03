@@ -105,8 +105,10 @@ class SantriController extends Controller
 
         $data['profile']   = $user;
         $data['mutabaah']  = Attendance::where('peserta_id', $pesertaId)
+            ->select('attendance.*')
             ->join('activity_report','activity_report.id','attendance.activity_id')
-            ->orderBy('activity_report.tgl','asc')->get();
+            ->orderBy('activity_report.tgl','asc')
+            ->get();
 
         return view('pages.profile.profile_santri',$data);
     }
