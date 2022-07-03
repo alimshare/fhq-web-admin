@@ -147,7 +147,7 @@
                                     @foreach ($mutabaah as $m)
                                         <tr>
                                             <td>{{ $m->activity->tgl }}</td>
-                                            <td>{{ empty($m->status) ? "Tidak Hadir" : "Hadir"  }}</td>
+                                            <td>{{ ($m->status == 1) ? "Hadir" : "Tidak Hadir"  }}</td>
                                             <td>{{ $m->note }}</td>
                                         </tr>
                                     @endforeach
