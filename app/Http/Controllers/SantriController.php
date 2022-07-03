@@ -1,7 +1,8 @@
 <?php
  
 namespace App\Http\Controllers;
- 
+
+use App\Model\Attendance;
 use Illuminate\Http\Request;
 use Ixudra\Curl\Facades\Curl;
 use App\Model\Santri;
@@ -93,6 +94,19 @@ class SantriController extends Controller
 
         $data['profile']  = $user;
         $data['halaqoh']  = $halaqoh;
+
+        return view('pages.profile.profile_santri',$data);
+    }
+
+    public function mutabaah(Request $request, $pesertaId)
+    {
+        $peserta = \App\Model\View\ViewPeserta::where('peserta_id', $pesertaId)->first();
+        $user = Santri::where('id', $peserta->santri_id)->first();
+
+        $data['profile']   = $user;
+        $data['mutabaah']  = Attendance::where('peserta_id', $pesertaId)
+            ->join('activity_report','activity_report.id','attendance.activity_id')
+            ->orderBy('activity_report.tgl','asc')->get();
 
         return view('pages.profile.profile_santri',$data);
     }

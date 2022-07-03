@@ -15,4 +15,9 @@ class Attendance extends Model
     public function peserta() {
         return $this->hasOne(View\ViewPeserta::class, 'peserta_id', 'peserta_id');
     }
+
+    public function activity()
+    {
+        return $this->belongsTo(ActivityReport::class, 'activity_id', 'id');
+    }
 }

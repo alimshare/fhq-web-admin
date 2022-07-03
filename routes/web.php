@@ -64,6 +64,8 @@ Route::group(['middleware' => []], function () {
 	Route::post('santri/save', 'SantriController@save')->middleware(['permission:edit-santri']);
 	Route::get('santri/profile/{santriId}', 'SantriController@profile')->name('santri.profile');//->middleware(['permission:profile-santri']);
 
+	Route::get('peserta/{pesertaId}', 'SantriController@mutabaah')->name('santri.mutabaah');//->middleware(['permission:profile-santri']);
+
 	/**
 	 * Pengajar
 	 */

@@ -172,7 +172,7 @@
 							   @foreach($peserta as $santri)
 								  <tr>
 									 <td>{{ $i++ }}</td>
-									 <td class="text-left">{{ $santri->santri_name }} </td>
+									 <td class="text-left"><a href="{{ route('santri.mutabaah',['pesertaId'=>$santri->peserta_id]) }}?referer=/halaqoh/{{ $halaqoh->halaqoh_reference }}">{{ $santri->santri_name }}</a></td>
 									 <td class="text-left">{{ $total_kehadiran[$santri->peserta_id] ?? ""}}</td>
 									 @foreach ($halaqoh->kbm as $kbm)
 									 	@php $pesertaHadir = $kbm->attendances->pluck('status','peserta_id'); @endphp

@@ -98,6 +98,8 @@
                             </div>
                         </div>
                     </div>
+
+                    @isset($halaqoh)
                     <div class="col s12 l8">
                         <div class="card-panel table-responsive" id="card-halaqoh-active">
                             <h5 class="h5">Daftar halaqoh</h5>
@@ -126,6 +128,37 @@
                         </div>
                         
                     </div>
+                    @endisset
+
+                    @isset($mutabaah)
+                    <div class="col s12 l8">
+
+                        <div class="card-panel table-responsive" id="card-halaqoh-active">
+                            <h5 class="h5">Catatan Pekanan</h5>
+                            <table id="daftar_mutabaah" class="bordered" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr class="cyan darken-3 white-text" class="row-header">
+                                        <th>Tanggal</th>
+                                        <th>Kehadiran</th>
+                                        <th>Catatan</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($mutabaah as $m)
+                                        <tr>
+                                            <td>{{ $m->activity->tgl }}</td>
+                                            <td>{{ empty($m->status) ? "Tidak Hadir" : "Hadir"  }}</td>
+                                            <td>{{ $m->note }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                                <tfoot>
+                                </tfoot>
+                            </table>
+                        </div>
+                        
+                    </div>
+                    @endisset
                 </div>
 
             </div>
