@@ -27,7 +27,8 @@
 
     <!--start container-->
     <div class="container" style="margin-bottom: 25px; padding-top: 10px;">
-            <form action="/santri/save" method="POST">
+        
+        <form action="/santri/save" method="POST">
             <div class="row"> 
                 <div class="col s12 m6"> 
                     <label for="nis">NIS</label>
@@ -59,10 +60,11 @@
             <div class="row" style="margin-bottom: 10px; text-align: right;">
                 <div class="col s12 m6">
                     @csrf
+                    <a href="{{ "/santri" }}" class="btn btn-small">Kembali</a>
                     <button type="submit" class="waves-effect waves-light btn btn-small"><i class="mdi-content-save right"></i>Save</button>
                 </div>
             </div>
-            </form>
+        </form>
 
     </div>
 
