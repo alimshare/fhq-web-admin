@@ -137,7 +137,7 @@
                                 <li class="collection-item">
                                     <div class="row">
                                         <div class="col s10">
-                                            <label for="task">{{ $h->pengajar }}</label>
+                                            <label for="task">{{ $h->pengajar }} @if($h->jenis_kbm == "ONLINE") (Online) @endif</label>
                                         </div>
                                         @allows('admin::manage::halaqoh')
                                         <div class="col s2">
