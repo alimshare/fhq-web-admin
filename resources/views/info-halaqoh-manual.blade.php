@@ -100,8 +100,7 @@
                                             <select id="paramKbm">
                                                 <option value=""></option>
                                                 <option value="ONLINE">ONLINE</option>
-                                                <option value="OFFLINE - ANNASHR">ANNASHR</option>
-                                                <option value="OFFLINE - MRBJ">MRBJ</option>
+                                                <option value="OFFLINE">OFFLINE</option>
                                             </select>
                                         </th>
                                         <th>
