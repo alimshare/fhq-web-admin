@@ -33,12 +33,10 @@
                     <input type="hidden" name="redirectTo" value="{{ $redirectTo }}">
                     <div class="row">
                        <div class="col s12" style="margin-bottom:1em">
-
                             <span>
                                 <input class="with-gap" name="day" type="radio" {{ strtolower($hari) == 'ahad' ? 'checked' : '' }} value="AHAD" id="day-ahad"/>
                                 <label for="day-ahad">AHAD</label>
                             </span>
-
                             <span>
                                 <input class="with-gap" name="day" type="radio" {{ strtolower($hari) == 'sabtu' ? 'checked' : '' }} value="SABTU" id="day-sabtu"/>
                                 <label for="day-sabtu">SABTU</label>
@@ -71,6 +69,13 @@
                           </select>
                           <div id="pengajar-error" class="error"></div>
                        </div>
+                    </div>
+
+                    <div class="row" style="margin-top:1rem;">
+                        <label for="old_halaqoh" class="col s12">Jenis KBM</label>
+                        <div class="input-field col s12">
+                           <input type="text" name="jenis_kbm" id="jenis_kbm" style="height: 1.8rem">
+                        </div>
                     </div>
 
                     <div class="card-footer text-right" style="margin-top: 1rem;">                                           

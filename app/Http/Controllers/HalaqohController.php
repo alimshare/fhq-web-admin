@@ -86,6 +86,7 @@ class HalaqohController extends Controller
         $halaqoh->semester_id   = $semester_id;
         $halaqoh->start_hour    = '07:00';
         $halaqoh->created_at    = date('Y-m-d H:i:s');
+        $halaqoh->jenis_kbm     = $request->jenis_kbm;
 
         if ($halaqoh->save()){
             $halaqoh->reference = $halaqoh->id;
