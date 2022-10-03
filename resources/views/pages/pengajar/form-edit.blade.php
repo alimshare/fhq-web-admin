@@ -44,7 +44,8 @@
                 <div class="col s12 m6">
                     @csrf
                     <input type="hidden" name="id" value={{ $pengajar->id }}>
-                    <button type="submit" class="waves-effect waves-light btn btn-small"><i class="mdi-content-save right"></i>Save</button>
+                    <button type="button" class="waves-effect waves-light btn btn-small" onclick="history.back();">Kembali</button>
+                    <button type="submit" class="waves-effect waves-light btn btn-small"><i class="mdi-content-save right"></i>Simpan</button>
                 </div>
             </div>
             </form>

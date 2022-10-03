@@ -41,7 +41,7 @@
         "order" : [1, 'asc'],
         "columnDefs": [
             {
-                targets : [0,1,2],
+                targets : [0,1],
                 orderable : false
             }
         ]
@@ -106,7 +106,7 @@
                         <label>Order By</label>
                         <select id="orderBy">
                           <option value="" disabled selected>Choose your option</option>
-                          <option value="1" selected="">NIP</option>
+                          {{-- <option value="1" selected="">NIP</option> --}}
                           <option value="2">Name</option>
                           <option value="0">Gender</option>
                         </select>
@@ -128,7 +128,7 @@
                                 <thead>
                                     <tr class="cyan darken-3 white-text" class="row-header">
                                         <th>Gender</th>
-                                        <th>NIP</th>
+                                        {{-- <th>NIP</th> --}}
                                         <th>Name</th>
                                     </tr>
                                     <tr class="row-filter">
@@ -139,7 +139,7 @@
                                                 <option value="AKHWAT">AKHWAT</option>
                                             </select>
                                         </th>
-                                        <th><input type="text" placeholder="Search NIP" id="paramNip" class="input-text"></th>
+                                        {{-- <th><input type="text" placeholder="Search NIP" id="paramNip" class="input-text"></th> --}}
                                         <th><input type="text" placeholder="Search Name" id="paramName" class="input-text"></th>
                                     </tr>
                                 </thead>
@@ -147,8 +147,8 @@
                                     @foreach ($list as $n)
                                         <tr>
                                             <td>{{ ($n->gender=="FEMALE") ? "AKHWAT" : "IKHWAN" }}</td>
-                                            <td>{{ $n->nip }}</td>
-                                            <td><a href="/pengajar/edit/{{ $n->id }}">{{ $n->name }}</a></td>
+                                            {{-- <td>{{ $n->nip }}</td> --}}
+                                            <td><a href="/pengajar/{{ $n->id }}">{{ $n->name }}</a></td>
                                         </tr>
                                     @endforeach
                                 </tbody>

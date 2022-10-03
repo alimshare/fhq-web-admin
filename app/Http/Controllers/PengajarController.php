@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
  
 use Illuminate\Http\Request;
 use Ixudra\Curl\Facades\Curl;
+use \App\Model\{Pengajar, Semester};
  
 class PengajarController extends Controller
 {
@@ -49,15 +50,38 @@ class PengajarController extends Controller
      */
     public function show($id)
     {
-        $this->data['pengajar'] = Curl::to(env('API_ENDPOINT').'pengajar'.'/'.$id)
-            ->withHeaders([
-                'Content-type: application/x-www-form-urlencoded',
-                'Authorization: Bearer '.$this->token()
-            ])
-            ->asJson()
-            ->get();
+        $profile        = Pengajar::find($id);
 
-        return view('pengajar-detail', $this->data);
+        $halaqoh = \App\Model\View\ViewHalaqoh::where('pengajar_id', $profile->id)->WithCount(['peserta'])->orderBy('halaqoh_id', 'desc')->get();
+
+        $halaqohAktif = [];
+        $halaqohLampau = [];
+        foreach ($halaqoh as $row) {
+            if ($row->semester_id == Semester::getActive()->id) {
+                $halaqohAktif[] = $row;
+            } else {
+                $halaqohLampau[] = $row;
+            }            
+        }
+
+        $data['profile']        = $profile;
+        $data['halaqoh_aktif']  = $halaqohAktif;
+        $data['halaqoh_lampau'] = $halaqohLampau;
+        $data['title']          = 'Informasi Pengajar';
+        $data['breadcrumb']     = [
+            [
+                'name' => 'Pengajar', 
+                'link' => '/pengajar', 
+                'css' => ''
+            ],
+            [
+                'name' => 'Detail', 
+                'link' => '', 
+                'css' => 'active'
+            ],
+        ];
+
+        return view('pages.pengajar.view',$data);
     }
 
     /**
