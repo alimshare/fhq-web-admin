@@ -239,7 +239,7 @@ class HalaqohController extends Controller
 
     function get_template($program) {
         if (env("APP_NAME", "FHQ") == "HCQ") {
-            return ($program == "TAHFIDZ") ? 'template/hcq_template_rapor_tahfidz.docx' : 'hcq_template/template_rapor_tahsin.docx';
+            return ($program == "TAHFIDZ") ? 'template/hcq_template_rapor_tahfidz.docx' : 'template/hcq_template_rapor_tahsin.docx';
         }
 
         return ($program == "TAHFIDZ") ? 'template/fhq_template_rapor_tahfidz.docx' : 'template/fhq_template_rapor_tahsin.docx';
