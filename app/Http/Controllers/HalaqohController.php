@@ -238,7 +238,7 @@ class HalaqohController extends Controller
     }
 
     function get_template($program) {
-        if (env("HCQ", "FHQ")) {
+        if (env("HCQ", "FHQ") == "HCQ") {
             return ($program == "TAHFIDZ") ? 'template/hcq_template_rapor_tahfidz.docx' : 'hcq_template/template_rapor_tahsin.docx';
         }
 
