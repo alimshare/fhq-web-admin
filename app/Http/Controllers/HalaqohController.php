@@ -238,8 +238,14 @@ class HalaqohController extends Controller
     }
 
     function get_template($program) {
+        /** Template Rapot HCQ Al Aqsha (hcqalaqsha.org) */
         if (env("APP_NAME", "FHQ") == "HCQ") {
             return ($program == "TAHFIDZ") ? 'template/hcq_template_rapor_tahfidz.docx' : 'template/hcq_template_rapor_tahsin.docx';
+        }
+
+        /** Template Rapot HPQ Nurul Falah (hpqnurulfalah.com) */
+        if (env("APP_NAME", "FHQ") == "HPQ") {
+            return ($program == "TAHFIDZ") ? 'template/hpq_template_rapor_tahfidz.docx' : 'template/hpq_template_rapor_tahsin.docx';
         }
 
         return ($program == "TAHFIDZ") ? 'template/fhq_template_rapor_tahfidz.docx' : 'template/fhq_template_rapor_tahsin.docx';
