@@ -99,37 +99,6 @@
                         </div>
                     </div>
 
-                    @isset($halaqoh)
-                    <div class="col s12 l8">
-                        <div class="card-panel table-responsive" id="card-halaqoh-active">
-                            <h5 class="h5">Daftar halaqoh</h5>
-                            <table id="daftar_halaqoh_aktif" class="bordered" cellspacing="0" width="100%">
-                                <thead>
-                                    <tr class="cyan darken-3 white-text" class="row-header">
-                                        <th>Semester</th>
-                                        <th>Hari</th>
-                                        <th>Program</th>
-                                        <th>Pengajar</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($halaqoh as $n)
-                                        <tr>
-                                            <td>{{ $n->semester_name }}</td>
-                                            <td>{{ $n->day }}</td>
-                                            <td>{{ $n->program_name }}</td>
-                                            <td>{{ $n->pengajar_name }}</td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                                <tfoot>
-                                </tfoot>
-                            </table>
-                        </div>
-                        
-                    </div>
-                    @endisset
-
                     @isset($mutabaah)
                     <div class="col s12 l8">
 
@@ -159,6 +128,39 @@
                         
                     </div>
                     @endisset
+
+                    
+                    @isset($halaqoh)
+                    <div class="col s12 l8">
+                        <div class="card-panel table-responsive" id="card-halaqoh-active">
+                            <h5 class="h5">Daftar Riwayat Halaqoh</h5>
+                            <table id="daftar_halaqoh_aktif" class="bordered" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr class="cyan darken-3 white-text" class="row-header">
+                                        <th>Semester</th>
+                                        <th>Hari</th>
+                                        <th>Program</th>
+                                        <th>Pengajar</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($halaqoh as $n)
+                                        <tr>
+                                            <td>{{ $n->semester_name }}</td>
+                                            <td>{{ $n->day }}</td>
+                                            <td>{{ $n->program_name }}</td>
+                                            <td>{{ $n->pengajar_name }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                                <tfoot>
+                                </tfoot>
+                            </table>
+                        </div>
+                        
+                    </div>
+                    @endisset
+
                 </div>
 
             </div>

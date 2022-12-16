@@ -44,7 +44,7 @@
             	<div class="chip cyan white-text"> <i class="mdi-action-event"></i> <span id="modalSemester">Semester {{ $halaqoh->semester_name }}</span> </div>
             	<div class="chip cyan white-text"> <i class="mdi-action-event"></i> <span id="modalDay">{{ $halaqoh->day }}</span> </div>
             	<div class="chip cyan white-text"> <i class="mdi-content-flag"></i> <span id="modalProgram">{{ $halaqoh->program_name }}</span> </div>
-            	{{-- <div class="chip cyan white-text"> <i class="mdi-social-person-outline"></i> <span id="modalPengajar">{{ $halaqoh->pengajar_name }}</span> </div> --}}
+            	<div class="chip cyan white-text"> <i class="mdi-social-person-outline"></i> <span id="modalPengajar">{{ $halaqoh->pengajar_name }}</span> </div>
             </p>
           </div>
         </div>
@@ -104,12 +104,12 @@
 									@foreach ($peserta as $santri)
 									<tr> 
 										<td class="text-center">
-											<a href="{{ route('peserta.raport.print', ['peserta_id'=>$santri->peserta_id]) }}" target="_blank" class="btn-floating waves-effect waves-light purple darken-2 tooltipped" data-position="bottom" data-tooltip="Cetak Raport"><i class="mdi-file-file-download small"></i></a>
+											<a href="{{ route('peserta.raport.print', ['peserta_id'=> $santri->peserta_id]) }}" target="_blank" class="btn-floating waves-effect waves-light purple darken-2 tooltipped" data-position="bottom" data-tooltip="Cetak Raport"><i class="mdi-file-file-download small"></i></a>
 										</td>
 										<td>{{ $santri->nis }}</td>
 										<td>
 											@allow('detail-santri')
-											<a href="{{ route('santri.profile', ['santriId'=>$santri->santri_id]) }}?referer=/halaqoh/{{ $halaqoh->halaqoh_reference }}">{{ $santri->santri_name }}</a>
+											<a href="{{ route('santri.mutabaah', ['pesertaId'=> $santri->peserta_id]) }}?referer=/halaqoh/{{ $halaqoh->halaqoh_reference }}">{{ $santri->santri_name }}</a>
 											@else
 											{{ $santri->santri_name }}
 											@endallow
