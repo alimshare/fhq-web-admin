@@ -106,7 +106,7 @@
             console.log(res);
             $('.collection-item').remove();
             res.forEach(function(obj){
-                let elem = `<div class='collection-item'><div>`+ obj.santri_name +`<a href="#!" class="secondary-content"><i class="mdi-content-send"></i></a></diV></div>`;
+                let elem = `<div class='collection-item'><div>`+ obj.santri_name +`<a href="/peserta/${obj.peserta_reference}?referer=/halaqoh/${reference}" class="secondary-content"><i class="mdi-content-send"></i></a></diV></div>`;
                 $(".collection").append(elem);
             });
         });

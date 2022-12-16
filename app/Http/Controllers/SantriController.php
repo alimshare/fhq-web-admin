@@ -102,6 +102,7 @@ class SantriController extends Controller
     {
         $peserta = \App\Model\View\ViewPeserta::where('peserta_id', $pesertaId)->first();
         $user = Santri::where('id', $peserta->santri_id)->first();
+        $halaqoh = \App\Model\View\ViewPeserta::where('santri_id', $user->id)->orderBy('semester_name','desc')->get();
 
         $data['profile']   = $user;
         $data['mutabaah']  = Attendance::where('peserta_id', $pesertaId)
@@ -109,6 +110,7 @@ class SantriController extends Controller
             ->join('activity_report','activity_report.id','attendance.activity_id')
             ->orderBy('activity_report.tgl','asc')
             ->get();
+        $data['halaqoh']  = $halaqoh;
 
         return view('pages.profile.profile_santri',$data);
     }
