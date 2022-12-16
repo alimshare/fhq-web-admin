@@ -40,15 +40,27 @@ class ProgramController extends Controller
             return DB::select($SQL); // sementara pake native query
         });
 
-        $colorList = array('#F7464A', '#46BFBD', '#FDB45C', '#0097a7', '#d84315', '#6d4c41','#283593', '#c2185b', '#00695c', '#9e9d24', '#01579b','#6a1b9a' ,'#ec407a', '#ea80fc', '#b0bed6', '#f5b3f3', '#ff8269');
-        for ($i=0; $i < count($program); $i++) { 
-            $colorIndex = array_rand($colorList, 1);
-            $program[$i]->color = $colorList[$colorIndex];
-            unset($colorList[$colorIndex]);
+        $countProgram = count($program);
+        for ($i=0; $i < $countProgram; $i++) { 
+            $program[$i]->color = $this->getRandomColor();
         }
 
         $this->data['list'] = (Object) $program;
 
         return view('pages.program.list', $this->data);
+    }
+
+    public function getRandomColor()
+    {
+        $colorList = array(
+            '#F7464A', '#46BFBD', '#FDB45C', '#0097a7', '#d84315',
+            '#6d4c41', '#283593', '#c2185b', '#00695c', '#9e9d24',
+            '#01579b', '#6a1b9a', '#ec407a', '#ea80fc', '#b0bed6',
+            '#f5b3f3', '#ff8269', '#2cdada', '#9a0b0b', '#1a73e8',
+            '#10294a', '#188038', '#bac', '#5ecc59', '#72777c'
+        );
+
+        $randomIndex = array_rand($colorList, 1);
+        return $colorList[$randomIndex];
     }
 }
