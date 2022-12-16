@@ -130,7 +130,7 @@
                             </tr>
                             <tr class="row-filter">
                                 <th><input type="text" placeholder="yyyy-mm-dd" class="input-text" id="paramTanggal"></th>
-                                <th><input type="text" placeholder="SABTU / AHAD" class="input-text" id="paramHari"></th>
+                                <th><input type="text" placeholder="Hari Belajar" class="input-text" id="paramHari"></th>
                                 <th><input type="text" placeholder="program" class="input-text" id="paramProgram"></th>
                                 <th><input type="text" placeholder="pengajar" class="input-text" id="paramPengajar"></th>
                                 <th></th>

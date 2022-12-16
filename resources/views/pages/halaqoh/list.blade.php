@@ -203,8 +203,9 @@
                                         <th>
                                             <select id="paramHari">
                                                 <option value=""></option>
-                                                <option value="SABTU">SABTU</option>
-                                                <option value="AHAD">AHAD</option>
+                                                @foreach ($days as $day)
+                                                    <option value="{{ $day }}">{{ $day }}</option>
+                                                @endforeach
                                             </select>
                                         </th>
                                         <th>

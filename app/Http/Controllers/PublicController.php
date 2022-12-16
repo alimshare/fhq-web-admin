@@ -15,6 +15,7 @@ class PublicController extends Controller
                 ->orderBy('santri_name','asc')
                 ->get();
         });
+        $this->data['days']     = explode(",", strtoupper(env('AVAILABLE_DAYS', 'SABTU,AHAD')));
 
         return view('info-halaqoh', $this->data);
     }
@@ -27,6 +28,7 @@ class PublicController extends Controller
                 ->orderBy('santri_name','asc')
                 ->get();
         });
+        $this->data['days']     = explode(",", strtoupper(env('AVAILABLE_DAYS', 'SABTU,AHAD')));
 
         return view('info-halaqoh', $this->data);
     }
@@ -39,6 +41,7 @@ class PublicController extends Controller
                 ->orderBy('santri_name','asc')
                 ->get();
         });
+        $this->data['days']     = explode(",", strtoupper(env('AVAILABLE_DAYS', 'SABTU,AHAD')));
 
         return view('info-halaqoh', $this->data);
     }
@@ -51,6 +54,7 @@ class PublicController extends Controller
                 ->orderBy('santri_name','asc')
                 ->get();
         });
+        $this->data['days']     = explode(",", strtoupper(env('AVAILABLE_DAYS', 'SABTU,AHAD')));
 
         return view('info-halaqoh', $this->data);
     }
@@ -63,6 +67,7 @@ class PublicController extends Controller
                 ->orderBy('santri_name','asc')
                 ->get();
         });
+        $this->data['days']     = explode(",", strtoupper(env('AVAILABLE_DAYS', 'SABTU,AHAD')));
 
         return view('info-halaqoh', $this->data);
     }
@@ -75,6 +80,7 @@ class PublicController extends Controller
                 ->orderBy('santri_name','asc')
                 ->get();
         });
+        $this->data['days']     = explode(",", strtoupper(env('AVAILABLE_DAYS', 'SABTU,AHAD')));
         return view('info-halaqoh-manual', $this->data);
     }
 
@@ -86,6 +92,7 @@ class PublicController extends Controller
                 ->orderBy('santri_name','asc')
                 ->get();
         });
+        $this->data['days']     = explode(",", strtoupper(env('AVAILABLE_DAYS', 'SABTU,AHAD')));
         return view('info-halaqoh-manual', $this->data);
     }
 

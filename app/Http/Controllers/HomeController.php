@@ -162,6 +162,7 @@ class HomeController extends Controller
     {
         $data['list'] = \App\Model\View\ViewPeserta::where('semester_id', Semester::getActive()->id)
             ->orderBy('pengajar_name', 'asc')->orderBy('santri_name','asc')->get();
+        $data['days'] = explode(",", strtoupper(env('AVAILABLE_DAYS', 'SABTU,AHAD')));
         return view('pages.report.rekap_nilai',$data);
     }
 

@@ -29,15 +29,17 @@ class HalaqohController extends Controller
      */
     public function lists(Request $request, $reference=null)
     {
-        # cache for a hour
+        # cache for a day
         $this->data['list'] = Cache::remember('viewHalaqoh.all', 60*60*24, function () {
             return \App\Model\View\ViewHalaqoh::all();
         });
 
-        # cache for a hour
+        # cache for a day
         $this->data['peserta']      = Cache::remember('viewPeserta.all', 60*60*24, function () {
             return \App\Model\View\ViewPeserta::all();
         });
+
+        $this->data['days']     = explode(",", strtoupper(env('AVAILABLE_DAYS', 'SABTU,AHAD')));
 
         return view('pages.halaqoh.list', $this->data);
     }
@@ -49,6 +51,7 @@ class HalaqohController extends Controller
     {
     	$this->data['program']  = \App\Model\Program::orderBy('name','asc')->get();
         $this->data['pengajar'] = \App\Model\Pengajar::orderBy('name','asc')->get();
+        $this->data['days']     = explode(",", strtoupper(env('AVAILABLE_DAYS', 'SABTU,AHAD')));
         
         $this->data['hari']       = $request->get('hari');
         $this->data['program_id'] = $request->get('program');
@@ -473,11 +476,13 @@ class HalaqohController extends Controller
         $program = \App\Model\Program::select('id','name')->orderBy('sequence','asc')->get();
         $halaqohs = \App\Model\View\ViewHalaqoh::select('program_id', 'pengajar_name', 'day','halaqoh_reference','jenis_kbm')->where('semester_id', $semesterActive->id)->orderBy('pengajar_name','asc')->get();
 
-        $data = [];
+        $days = explode(",", strtoupper(env('AVAILABLE_DAYS', 'SABTU,AHAD')) );
+        
+        $data = array_fill_keys($days, []);
         foreach ($halaqohs as $key => $halaqoh) {
             $data[$halaqoh->day][$halaqoh->program_id][] = (object)['pengajar'=> $halaqoh->pengajar_name, 'reference'=> $halaqoh->halaqoh_reference, 'jenis_kbm' => $halaqoh->jenis_kbm];
         }
 
-        return view('pages.halaqoh.manage', compact('program', 'data'));
+        return view('pages.halaqoh.manage', compact('program', 'data', 'days'));
     }
 }

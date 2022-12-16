@@ -32,15 +32,13 @@
                     @csrf
                     <input type="hidden" name="redirectTo" value="{{ $redirectTo }}">
                     <div class="row">
-                       <div class="col s12" style="margin-bottom:1em">
-                            <span>
-                                <input class="with-gap" name="day" type="radio" {{ strtolower($hari) == 'ahad' ? 'checked' : '' }} value="AHAD" id="day-ahad"/>
-                                <label for="day-ahad">AHAD</label>
-                            </span>
-                            <span>
-                                <input class="with-gap" name="day" type="radio" {{ strtolower($hari) == 'sabtu' ? 'checked' : '' }} value="SABTU" id="day-sabtu"/>
-                                <label for="day-sabtu">SABTU</label>
-                            </span>
+                       <div class="col s12">
+                            <select name="day" id="day" class="select2">
+                              <option disabled selected>-- Pilih Hari --</option>
+                               @foreach ($days as $day)
+                                 <option value="{{ trim($day) }}" {{ strtolower($hari) == strtolower($day) ? 'selected' : '' }}>{{ $day }}</option>
+                               @endforeach
+                           </select>
                             <div id="day-error" class="error"></div>
                        </div>
                     </div>
