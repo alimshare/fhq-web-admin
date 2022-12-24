@@ -251,7 +251,13 @@ class HalaqohController extends Controller
             return ($program == "TAHFIDZ") ? 'template/hpq_template_rapor_tahfidz.docx' : 'template/hpq_template_rapor_tahsin.docx';
         }
 
-        return ($program == "TAHFIDZ") ? 'template/fhq_template_rapor_tahfidz.docx' : 'template/fhq_template_rapor_tahsin.docx';
+        if ($program == "TAHFIDZ") {
+            return 'template/fhq_template_rapor_tahfidz.docx';
+        } else if (strpos($program, "BAHASA ARAB") !== false) {
+            return 'template/fhq_template_rapor_bhs_arab.docx';
+        } else {
+            return 'template/fhq_template_rapor_tahsin.docx';
+        }
     }
 
     function get_month_description($monthIndex){
@@ -320,6 +326,8 @@ class HalaqohController extends Controller
 
         switch (trim($currentProgram)) {
             case 'PRA TAHSIN': return 'TAHSIN 1';
+            case 'PRA TAHSIN A': return 'PRA TAHSIN B';
+            case 'PRA TAHSIN B': return 'TAHSIN 1';
             case 'TAHSIN 1': return 'TAHSIN 2';
             case 'TAHSIN 2': return 'TAKHASSUS';
             case 'TAKHASSUS': return 'TAHFIDZ';
@@ -331,6 +339,12 @@ class HalaqohController extends Controller
             case 'TAHSIN B': return 'TAHFIDZ ANAK';
             case 'TAHFIDZ ANAK': return 'TAHFIDZ ANAK';
             case 'BAHASA ARAB': return 'BAHASA ARAB';
+            case 'BAHASA ARAB LEVEL 1': return 'BAHASA ARAB LEVEL 2';
+            case 'BAHASA ARAB LEVEL 2': return 'BAHASA ARAB LEVEL 3';
+            case 'BAHASA ARAB LEVEL 3': return 'BAHASA ARAB LEVEL 4';
+            case 'BAHASA ARAB LEVEL 4': return 'BAHASA ARAB LEVEL 5';
+            case 'BAHASA ARAB LEVEL 5': return 'BAHASA ARAB LEVEL 6';
+            case 'BAHASA ARAB LEVEL 6': return 'BAHASA ARAB LEVEL 6';
 
             default: return "";
         }
