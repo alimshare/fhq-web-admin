@@ -37,7 +37,7 @@ class UserController extends Controller
         if ($user->save()) {
             return redirect('/users')->with('alert', ['message'=>"Reset password for <b>$user->username</b> is success :  <em>$defaultPassword</em> ", 'type'=>'success']);
         } else {
-            return redirect('/users')->with('alert', ['message'=>"Reset password is fail", 'type'=>'success']);
+            return redirect('/users')->with('alert', ['message'=>"Reset password is fail", 'type'=>'danger']);
         }
 
         return redirect()->back();

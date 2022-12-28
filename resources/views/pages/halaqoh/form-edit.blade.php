@@ -15,7 +15,7 @@
     	padding: 8px;
         border: 1px solid #ddd;    	
     }
-    table.dataTable input[type=text], table .select-wrapper input.select-dropdown {
+    table.dataTable input[type=text], table.dataTable input[type=number], table .select-wrapper input.select-dropdown {
         height: 2rem;
         font-size: 12px;
         border: 1px solid #ddd;
@@ -75,7 +75,7 @@
             <div class="row"> 
                 <div class="col s12"> 
         			<div class="" style="overflow-x: scroll;"> 
-        				<table class="dataTable" border="1px" width="100%"> 
+        				<table class="dataTable" width="100%"> 
         					<thead class="cyan white-text"> 
         						<tr> 
         							<th rowspan="2">NO</th>
@@ -112,12 +112,12 @@
         							<td>{{ $no++ }}</td>
         							<td>{{ $santri->nis }}</td>
         							<td>{{ $santri->santri_name }}</td>
-                                    <td class="text-right"><input type="text" name="data[{{$santri->peserta_id}}][nilai_uts_teori]" value="{{ $santri->nilai_uts_teori }}" onkeypress="return isNumberKey(event)"></td>
-                                    <td class="text-right"><input type="text" name="data[{{$santri->peserta_id}}][nilai_uts_praktek]" value="{{ $santri->nilai_uts_praktek }}" onkeypress="return isNumberKey(event)"></td>
-                                    <td class="text-right"><input type="text" name="data[{{$santri->peserta_id}}][nilai_uas_teori]" value="{{ $santri->nilai_uas_teori }}" onkeypress="return isNumberKey(event)"></td>
-                                    <td class="text-right"><input type="text" name="data[{{$santri->peserta_id}}][nilai_uas_praktek]"  value="{{ $santri->nilai_uas_praktek }}" onkeypress="return isNumberKey(event)"></td>
-                                    <td class="text-right"><input type="text" name="data[{{$santri->peserta_id}}][khatam]" value="{{ $santri->khatam }}"></td>
-                                    <td class="text-right"><input type="text" name="data[{{$santri->peserta_id}}][kehadiran]" value="{{ $santri->kehadiran }}" onkeypress="return isNumberKey(event)"></td>
+                                    <td class="text-right"><input type="number" step="0.1" name="data[{{$santri->peserta_id}}][nilai_uts_teori]" value="{{ $santri->nilai_uts_teori }}" onkeypress="return isNumberKey(event)"></td>
+                                    <td class="text-right"><input type="number" step="0.1" name="data[{{$santri->peserta_id}}][nilai_uts_praktek]" value="{{ $santri->nilai_uts_praktek }}" onkeypress="return isNumberKey(event)"></td>
+                                    <td class="text-right"><input type="number" step="0.1" name="data[{{$santri->peserta_id}}][nilai_uas_teori]" value="{{ $santri->nilai_uas_teori }}" onkeypress="return isNumberKey(event)"></td>
+                                    <td class="text-right"><input type="number" step="0.1" name="data[{{$santri->peserta_id}}][nilai_uas_praktek]"  value="{{ $santri->nilai_uas_praktek }}" onkeypress="return isNumberKey(event)"></td>
+                                    <td class="text-right"><input type="number" step="0.1" name="data[{{$santri->peserta_id}}][khatam]" value="{{ $santri->khatam }}" onkeypress="return isNumberKey(event)"></td>
+                                    <td class="text-right"><input type="number" step="0.1" name="data[{{$santri->peserta_id}}][kehadiran]" value="{{ $santri->kehadiran }}" onkeypress="return isNumberKey(event)"></td>
         							<td class="text-right">
                                         <select name="data[{{$santri->peserta_id}}][status]">
                                             <option value=""></option>    

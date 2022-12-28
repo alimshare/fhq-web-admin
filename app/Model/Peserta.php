@@ -23,4 +23,9 @@ class Peserta extends Model
     	return Santri::find($this->santri_id);
     }
 
+    public function santri()
+    {
+        return $this->belongsTo(Santri::class, 'santri_id', 'id');
+    }
+
 }

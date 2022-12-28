@@ -138,7 +138,8 @@ class HalaqohController extends Controller
     public function saveDetail(Request $request)
     {
         $halaqohReference = $request->halaqohReference;
-        // dd($request->all());
+
+        $fails = [];
         foreach ($request->data as $pesertaId => $nilai) {
             $peserta = \App\Model\Peserta::find($pesertaId);
             if ($peserta != null) {
@@ -151,11 +152,20 @@ class HalaqohController extends Controller
                 $peserta->status = $nilai['status'];
                 $peserta->note = $nilai['note'];
                 $peserta->management_note = $nilai['management_note'];
-                $peserta->save();
+
+                try {
+                    $peserta->save();
+                } catch (\Exception $e) {
+                    $fails[] = sprintf("Nilai <b>%s</b> gagal disimpan.<br><small>err : %s</small><br>", $peserta->santri->name, $e->getMessage());
+                }            
             }
         }
         
-        return redirect("/halaqoh/{$halaqohReference}");
+        if (!empty($fails)) {
+            return redirect()->back()->with('alert', ['message'=> join("<br>", $fails), 'type'=>'danger']);
+        }
+
+        return redirect("/halaqoh/{$halaqohReference}")->with('error', $fails);
     }
 
     /**
