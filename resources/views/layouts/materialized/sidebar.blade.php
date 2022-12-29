@@ -32,7 +32,7 @@
             <li class="bold"><a href="/absensi" class="waves-effect waves-cyan"><i class="mdi-action-assignment-ind"></i> Absensi</a></li>
             
             @allow('list-halaqoh')
-            <li class="bold"><a href="/halaqoh" class="waves-effect waves-cyan"><i class="mdi-toggle-radio-button-off"></i> Halaqoh</a></li>
+            <li class="bold"><a href="/halaqoh" class="waves-effect waves-cyan"><i class="mdi-toggle-radio-button-off"></i> Riwayat Halaqoh</a></li>
             @endallow
 
             <li class="bold"><a href="/halaqoh/manage" class="waves-effect waves-cyan"><i class="mdi-toggle-radio-button-off"></i> Halaqoh Aktif</a></li>
@@ -104,7 +104,7 @@
             @endallow
             
             <li class="bold">
-                <a href="{{ route('logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();" class="waves-effect waves-cyan">
+                <a onclick="logout()" class="waves-effect waves-cyan">
                     <i class="mdi-hardware-keyboard-tab"></i> Log Out</a>
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">@csrf</form>
             </li>
