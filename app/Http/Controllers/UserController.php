@@ -25,6 +25,39 @@ class UserController extends Controller
         return view('pages.user.list', $this->data);
     }
 
+
+    /**
+     * Show the change password form
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function changePassword()
+    {
+        return view('pages.change-password');
+    }
+
+    public function changePasswordProcess(Request $req)
+    { 
+        
+        $validatedData = $req->validate([
+            'old_password'  => 'required',
+            'new_password'  => 'required|min:6|same:confirm_password'
+        ]);
+
+        if (Hash::check($req->input('old_password'), auth()->user()->password)) {
+            $currentUser = \App\User::find(auth()->user()->id);
+            $currentUser->password = Hash::make($req->input('new_password'));
+            if ($currentUser->save()){
+                return redirect('/change-password')->with('alert', ['message'=>'Change password success, please re-login to application using your new password !', 'type'=>'success']);    
+            } else {
+                return redirect('/change-password')->with('alert', ['message'=>'Change password fail', 'type'=>'danger']);
+            }
+
+        } else {            
+            return redirect('/change-password')->with('alert', ['message'=>'Your current password invalid !', 'type'=>'danger']);
+        }
+    }
+
     public function resetPassword(Request $req, $userId)
     {
         $user = User::find($userId);

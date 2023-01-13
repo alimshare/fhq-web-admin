@@ -11,6 +11,11 @@
 |
 */
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
+
+
 Auth::routes();
 
 Route::group(['middleware' => []], function () {
@@ -114,8 +119,8 @@ Route::group(['middleware' => []], function () {
 	/**
 	 * Change Password
 	 */
-	Route::get('/change-password', 'HomeController@changePassword');
-	Route::post('/change-password', 'HomeController@changePasswordProcess');
+	Route::get('/change-password', 	[UserController::class, 'changePassword']);
+	Route::post('/change-password', [UserController::class, 'changePasswordProcess']);
 
 
     /**

@@ -54,21 +54,21 @@
                     <div class="row">
                        <div class="input-field col s12">
                           <input id="old_password" type="password" class="validate" name="old_password" required="">
-                          <label for="password">Password Lama</label>
+                          <label for="old_password">Password Lama</label>
                           <div id="old-password-error" class="error"></div>
                        </div>
                     </div>
                     <div class="row">
                        <div class="input-field col s12">
                           <input id="new_password" type="password" class="validate" name="new_password" required="">
-                          <label for="password">Password Baru</label>
+                          <label for="new_password">Password Baru</label>
                           <div id="new-password-error" class="error"></div>
                        </div>
                     </div>
                     <div class="row">
                        <div class="input-field col s12">
                           <input id="confirm_password" type="password" class="validate" name="confirm_password" required="">
-                          <label for="password">Ulangi Password Baru</label>
+                          <label for="confirm_password">Ulangi Password Baru</label>
                           <div id="confirm-password-error" class="error"></div>
                        </div>
                     </div>
