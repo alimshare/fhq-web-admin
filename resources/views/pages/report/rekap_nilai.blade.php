@@ -95,8 +95,9 @@
                 <h5 class="breadcrumbs-title">Rekap Nilai</h5>
                 <ol class="breadcrumbs">
                     <li><a href="/" class="cyan-text">Beranda</a></li>
-                    <li class="active">Monitor</li>
-                    <li class="active">Rekap Nilai</li>
+                    <li class="">Monitor</li>
+                    <li class="">Rekap Nilai</li>
+                    <li class="active">{{ $semester->name }}</li>
                 </ol>
               </div>
             </div>
