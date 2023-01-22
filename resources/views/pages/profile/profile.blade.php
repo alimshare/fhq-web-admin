@@ -61,7 +61,7 @@
             <div class="section users-view">
                 <div class="row">
                     <div class="col s12 m6 l4">
-                        <div class="card-panel" id="profile-card">
+                        <div class="card-panel" id="profile-card" style="overflow-x: scroll">
                             <div class="display-flex media">
                                 <a href="#" class="avatar">
                                     <img src="/images/user-default.png" alt="users view avatar" class="z-depth-1 circle" width="64" height="64">
@@ -75,7 +75,7 @@
                                 </div>
                             </div>
 
-                            <div class="row" style="margin-top: 0.8rem">
+                            <div class="row" style="margin-top: 0.8rem";>
                                 <div class="col s12">
                                 <table class="striped">
                                     <tbody>
