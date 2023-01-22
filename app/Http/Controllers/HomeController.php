@@ -128,16 +128,43 @@ class HomeController extends Controller
 
     public function rekapNilai(Request $request)
     {
-        $data['list'] = \App\Model\View\ViewPeserta::where('semester_id', Semester::getActive()->id)
+        $semesterId = $request->input('semester_id');
+        $semester = null;
+
+        if (empty($semesterId)) {
+            $semester = Semester::getActive();
+            $semesterId = $semester->id;
+        } else {
+            $semester = Semester::find($semesterId);
+            if (!$semester) {
+                return redirect()->route('rekap.nilai')->with('alert', ['message'=> "Data untuk Semester $semesterId tidak ditemukan!", 'type'=>'danger']);
+            }
+        }
+
+        $data['semesters'] = Semester::get();
+        $data['list'] = \App\Model\View\ViewPeserta::where('semester_id', $semesterId)
             ->orderBy('pengajar_name', 'asc')->orderBy('santri_name','asc')->get();
         $data['days'] = explode(",", strtoupper(env('AVAILABLE_DAYS', 'SABTU,AHAD')));
+
         return view('pages.report.rekap_nilai',$data);
     }
 
     public function exportRekapNilai(Request $request)
     {
-        $semester = Semester::getActive();
-        return (new RekapNilaiExport)->forSemester($semester->id)->download('rekap-nilai-'.$semester->name.'-'.date('Ymd_Hi').'.xlsx');
+        $semesterId = $request->input('semester_id');
+        $semester = null;
+
+        if (empty($semesterId)) {
+            $semester = Semester::getActive();
+            $semesterId = $semester->id;
+        } else {
+            $semester = Semester::find($semesterId);
+            if (!$semester) {
+                return redirect()->back()->with('alert', ['message'=> "Data Semester tidak ditemukan!", 'type'=>'danger']);
+            }
+        }
+
+        return (new RekapNilaiExport)->forSemester($semesterId)->download('rekap-nilai-'.$semester->name.'-'.date('Ymd_Hi').'.xlsx');
     }
 
     public static function MaritalStatus_Lookup(){

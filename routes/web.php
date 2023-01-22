@@ -14,6 +14,7 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\HomeController;
 
 
 Auth::routes();
@@ -29,7 +30,7 @@ Route::group(['middleware' => []], function () {
 	Route::get('/dashboard', 'HomeController@index')->name('dashboard');
 	Route::get('/admin/clear-cache/{key?}', 'HomeController@clearCache')->name('clear.cache');
 
-	Route::get('/rekap-nilai', 'HomeController@rekapNilai')->name('rekap.nilai')->middleware(['permission:rekap-nilai.view']);
+	Route::get('/rekap-nilai', [HomeController::class, 'rekapNilai'])->name('rekap.nilai')->middleware(['permission:rekap-nilai.view']);
 	Route::get('/rekap-nilai/download', 'HomeController@exportRekapNilai')->name('rekap.nilai.download')->middleware(['permission:rekap-nilai.download']);
 	
 	Route::get('/rekap-kbm', 			'AbsensiController@rekapKBM')->name('rekap.kbm')->middleware(['permission:rekap-kbm.view']);

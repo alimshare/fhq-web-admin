@@ -43,6 +43,12 @@
 
       <!-- START CONTENT -->
       <section id="content">
+
+        <div class="row" style="margin-bottom: 0">
+          <div class="col s12 no-padding">
+          @include('layouts.materialized.components.alert')
+          </div>
+        </div>
         
         @yield('content')
 
