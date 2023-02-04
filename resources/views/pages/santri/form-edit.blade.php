@@ -61,11 +61,36 @@
                     <div id="day-error" class="error"></div>
                 </div>
             </div>
+            <div class="row"> 
+                <div class="col s12 m6"> 
+                    <label for="name">Alamat</label>
+                    <input type="text" name="address" value="{{ $santri->address }}">
+                </div>
+            </div>
+            <div class="row"> 
+                <div class="col s12 m6"> 
+                    <label for="name">Kelurahan</label>
+                    <input type="text" name="kelurahan" value="{{ $santri->kelurahan }}">
+                </div>
+            </div>
+            <div class="row"> 
+                <div class="col s12 m6"> 
+                    <label for="name">Kecamatan</label>
+                    <input type="text" name="kecamatan" value="{{ $santri->kecamatan }}">
+                </div>
+            </div>
+            <div class="row"> 
+                <div class="col s12 m6"> 
+                    <label for="name">Kota/Kabupaten</label>
+                    <input type="text" name="kota" value="{{ $santri->kota }}">
+                </div>
+            </div>
             <div class="row" style="margin-bottom: 10px; text-align: right;">
                 <div class="col s12 m6">
                     @csrf
                     <input type="hidden" name="id" value={{ $santri->id }}>
-                    <button type="submit" class="waves-effect waves-light btn btn-small"><i class="mdi-content-save right"></i>Save</button>
+                    <a href="{{ route('santri.index') }}" class="waves-effect waves-light btn btn-small">Batal</a>
+                    <button type="submit" class="waves-effect waves-light btn btn-small green"><i class="mdi-content-save right"></i>Save</button>
                 </div>
             </div>
             </form>

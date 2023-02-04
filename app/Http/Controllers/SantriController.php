@@ -45,6 +45,11 @@ class SantriController extends Controller
         $gender     = $request->input('gender');
         $phone      = $request->input('phone');
 
+        $kelurahan      = $request->input('kelurahan');
+        $kecamatan      = $request->input('kecamatan');
+        $kota           = $request->input('kota');
+        $address        = $request->input('address');
+
         $message = "";
         $messageType = "success";
         
@@ -74,6 +79,10 @@ class SantriController extends Controller
             $santri->name   = $name;
             $santri->gender = $gender;
             $santri->phone  = $phone;
+            $santri->kota   = $kota;
+            $santri->kecamatan   = $kecamatan;
+            $santri->kelurahan   = $kelurahan;
+            $santri->address     = $address;
 
             if ($santri->save()) {
                 $message = "ubah data santri berhasil";
