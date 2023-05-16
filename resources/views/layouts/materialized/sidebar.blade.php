@@ -46,6 +46,7 @@
                                 <li><a href="{{ route('halaqoh.add') }}">Tambah Halaqoh</a></li>
                                 <li><a href="{{ route('halaqoh.peserta.add') }}">Tambah Peserta</a></li>
                                 <li><a href="{{ route('halaqoh.pindah') }}">Pindah Halaqoh</a></li>
+                                <li><a href="{{ route('halaqoh.peserta.cuti') }}">Santri Cuti</a></li>
                             </ul>
                         </div>
                     </li>

@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use DB;
-use App\Model\{Semester, Halaqoh, Attendance};
+use App\Model\{Semester, Halaqoh, Attendance, Peserta};
+use App\Model\View\ViewPeserta;
 
 class HalaqohController extends Controller
 {
@@ -508,5 +509,57 @@ class HalaqohController extends Controller
         }
 
         return view('pages.halaqoh.manage', compact('program', 'data', 'days'));
+    }
+
+    public function cuti(Request $request)
+    {
+        if ($request->method() == Request::METHOD_POST) {
+
+            $peserta = Peserta::find($request->id);
+            if (!$peserta) {
+                return redirect()->route('halaqoh.peserta.cuti')
+                    ->with('alert', ['message'=>"Peserta tidak ditemukan", 'type'=>'danger']);
+            }
+
+            if ($peserta->delete()) {
+                return redirect()->route('halaqoh.peserta.cuti')
+                    ->with('alert', ['message'=>"Input Cuti peserta berhasil", 'type'=>'success']);
+            }
+
+            return redirect()->route('halaqoh.peserta.cuti')
+                ->with('alert', ['message'=>"Input cuti gagal dilakukan, silahkan hubungi admin.", 'type'=>'danger']);
+
+        }
+
+        $semesterActiveId = Semester::getActive()->id;
+        $pesertaActive = ViewPeserta::where('semester_id', $semesterActiveId)->get();
+        $pesertaCuti = ViewPeserta::withTrashed()->where('semester_id', $semesterActiveId)->whereNotNull('deleted_at')->get();
+
+        return view('pages.halaqoh.form-cuti', [
+            'peserta_active' => $pesertaActive,
+            'peserta_cuti'  => $pesertaCuti,
+        ]);
+    }
+
+    public function cutiRestore(Request $request, $pesertaId)
+    {  
+        $peserta = Peserta::withTrashed()->find($pesertaId);
+        if (!$peserta) {
+            return redirect()->route('halaqoh.peserta.cuti')
+                ->with('alert', ['message'=>"Peserta tidak ditemukan", 'type'=>'danger']);
+        }
+
+        if (empty($peserta->deleted_at)) {
+            return redirect()->route('halaqoh.peserta.cuti')
+                ->with('alert', ['message'=>"Status peserta tidak dapat dipulihkan", 'type'=>'danger']);
+        }
+
+        if ($peserta->restore()) {
+            return redirect()->route('halaqoh.peserta.cuti')
+                ->with('alert', ['message'=>"Status peserta berhasil dipulihkan", 'type'=>'success']);
+        }
+
+        return redirect()->route('halaqoh.peserta.cuti')
+            ->with('alert', ['message'=>"Status peserta gagal dipulihkan, silahkan hubungi admin.", 'type'=>'danger']);
     }
 }

@@ -9,6 +9,8 @@ use App\Model\Santri;
  
 class SantriController extends Controller
 {
+    private $data;
+
     /**
      * Create a new controller instance.
      *

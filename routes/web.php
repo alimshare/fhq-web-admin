@@ -11,6 +11,7 @@
 |
 */
 
+use App\Http\Controllers\HalaqohController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
@@ -110,6 +111,10 @@ Route::group(['middleware' => []], function () {
 
 	Route::get('halaqoh/peserta/add/{halaqohId?}', 'HalaqohController@addPeserta')->name('halaqoh.peserta.add')->middleware(['permission:edit-halaqoh']);
 	Route::post('halaqoh/peserta/add', 'HalaqohController@addPesertaPost')->name('halaqoh.peserta.addPost')->middleware(['permission:edit-halaqoh']);
+	
+	Route::get('halaqoh/peserta/cuti', 		[HalaqohController::class, 'cuti'])->name('halaqoh.peserta.cuti')->middleware(['permission:edit-halaqoh']);
+	Route::post('halaqoh/peserta/cuti', 	[HalaqohController::class, 'cuti'])->middleware(['permission:edit-halaqoh']);
+	Route::get('halaqoh/peserta/restore/{pesertaId?}', 	[HalaqohController::class, 'cutiRestore'])->name('halaqoh.peserta.cuti.restore')->middleware(['permission:edit-halaqoh']);
 
 	Route::get('halaqoh/{reference}', 'HalaqohController@detail')->middleware(['permission:detail-halaqoh']);
 	Route::get('halaqoh/{reference}/edit', 'HalaqohController@editDetail')->middleware(['permission:input-nilai']);
