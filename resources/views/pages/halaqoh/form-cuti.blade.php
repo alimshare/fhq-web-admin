@@ -57,28 +57,31 @@
         <div class="row">
          <div class="col s12">
             <div class="card">
-               <div class="card-panel">
+               <div class="card-panel" style="overflow-x: scroll">
                   <h5>Daftar Peserta Cuti</h5>
-                  <table class="table">
-                     <tr>
-                        <th>Nama</th>
-                        <th>Program</th>
-                        <th>Pengajar Terakhir</th>
-                        <th>Tanggal Cuti</th>
-                        <th>Action</th>
-                     </tr>
+                  <table class="table striped">
+                     <thead>
+                        <tr>
+                           <th>Nama</th>
+                           <th>Program</th>
+                           <th>Pengajar Terakhir</th>
+                           <th>Action</th>
+                        </tr>
+                     </thead>
 
-                     @foreach ($peserta_cuti as $p)
-                         <tr>
-                           <td>{{ $p->santri_name }}</td>
-                           <td>{{ $p->pengajar_name }}</td>
-                           <td>{{ $p->program_name }}</td>
-                           <td>{{ $p->deleted_at }}</td>
-                           <td>
+                     <tbody>
+                        @foreach ($peserta_cuti as $p)
+                        <tr>
+                           <td class="">{{ $p->santri_name }}</td>
+                           <td class="">{{ $p->pengajar_name }}</td>
+                           <td class="">{{ $p->program_name }}</td>
+                           <td class="">
                               <button type="button" class="btn btn-xs" onclick="confirmRestore(this)" data-id="{{ $p->peserta_id }}">Pulihkan</button>
                            </td>
-                         </tr>
-                     @endforeach
+                        </tr>
+                        @endforeach
+                     </tbody>
+
                   </table>
                </div>
             </div>
