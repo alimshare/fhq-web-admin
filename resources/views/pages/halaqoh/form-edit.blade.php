@@ -89,21 +89,23 @@
         							<th rowspan="2">Catatan</th>
         							<th rowspan="2">Catatan Manajemen</th>				
         						</tr>
-								@if($halaqoh->program_id == "11" || $halaqoh->program_name == "TAKHASSUS")
-        						<tr> 
-        							<th>Tadribat</th>
-        							<th>Tahfidz</th>
-        							<th>Tadribat</th>
-        							<th>Tahfidz</th>
-								</tr>
+
+                                @if(env("APP_NAME", "") == "FHQ" && ($halaqoh->program_id == "11" || $halaqoh->program_name == "TAKHASSUS"))
+                                    <tr> 
+                                        <th>Tadribat</th>
+                                        <th>Tahfidz</th>
+                                        <th>Tadribat</th>
+                                        <th>Tahfidz</th>
+                                    </tr>
 								@else
-        						<tr> 
-        							<th>Teori</th>
-        							<th>Praktek</th>
-        							<th>Teori</th>
-        							<th>Praktek</th>
-								</tr>
+                                    <tr> 
+                                        <th>Teori</th>
+                                        <th>Praktek</th>
+                                        <th>Teori</th>
+                                        <th>Praktek</th>
+                                    </tr>
 								@endif
+
         					</thead>
         					<tbody> 
         						<?php  $no = 1; ?>
