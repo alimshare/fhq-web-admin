@@ -108,4 +108,16 @@ class PublicController extends Controller
         return view('info-halaqoh-manual', $this->data);
     }
 
+    public function halaqoh33()
+    {
+        $this->data['list'] = Cache::remember('viewPeserta.33', 60*60*24*7, function () {
+            return \App\Model\View\ViewPeserta::select('nis','santri_name','pengajar_name','program_name','day','gender_santri','jenis_kbm','lokasi_kbm')
+                ->where('semester_id', 33)
+                ->orderBy('santri_name','asc')
+                ->get();
+        });
+        $this->data['days']     = explode(",", strtoupper(env('AVAILABLE_DAYS', 'SABTU,AHAD')));
+        return view('info-halaqoh-manual', $this->data);
+    }
+
 }
