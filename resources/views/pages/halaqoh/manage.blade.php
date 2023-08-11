@@ -48,6 +48,14 @@
         border: 1px solid rgba(0, 0, 0, .12) !important;
         padding: 15px !important;
     }
+
+    .d-none {
+        display: none;
+    }
+
+    .d-block {
+
+    }
 </style>
 @endsection
 
@@ -83,6 +91,13 @@
             checkboxes[i].checked = source.checked;
         }
     }
+
+    var checkShowAll = document.getElementById("showAll");
+    checkShowAll.addEventListener("click", ()=>{
+        if (checkShowAll.checked) {
+
+        }
+    });
 </script>
 @endsection
 
@@ -114,7 +129,17 @@
             </div>
         </div>
 
+        {{-- <div class="row">
+            <div class="col" style="float: right">
+                <input type="checkbox" id="showAll">                     
+                <label for="showAll">
+                    <span>Tampilkan Semua</span>
+                </label>
+            </div>
+        </div> --}}
+
         <div class="row">
+
             <div class="col s12">
                 <ul class="tabs tab-demo-active z-depth-1 cyan" style="width: 100%;">
                     @foreach ($days as $d)
@@ -127,45 +152,46 @@
 
                 @php $i = 0 @endphp
                 @foreach ($data as $day => $halaqoh)
-                <div id="{{ $day }}-container" class="col s12" style="display: {{ (++$i== 1) ? 'block' : 'none' }}">
+                    <div id="{{ $day }}-container" class="col s12 tab-container" style="display: {{ (++$i == 1) ? 'block' : 'none' }}">
 
-                    @foreach($program as $o)
-                    <div class="col s6 m4 l3">
+                        @foreach($program as $o)
+                            <div class="col s6 m4 program-container {{ empty($halaqoh[$o->id]) ? 'd-none' : '' }}">
 
-                        <div class="cyan white-text" style="width:100%; padding:15px;">
-                            <h6 class="mb-3" style="font-weight:300;">{{ $o->name }}</h6>
-                            <small class="mb-3" style="font-weight:300;">@if(!empty($halaqoh[$o->id])) {{ count($halaqoh[$o->id]) }} @else 0 @endif Halaqoh</small>
-                            @allow('add-halaqoh')
-                            <a class="btn-floating activator btn-move-up waves-effect waves-light red accent-2 z-depth-4 right" href="/halaqoh/add?hari={{ $day }}&program={{ $o->id }}&ref=/halaqoh/manage">
-                                <i class="mdi-social-person-add"></i>
-                            </a>
-                            @endallow
-                        </div>
-
-                        <ul class="collection" style="width:100%;height:270px;overflow-y:scroll">
-
-                            @isset($halaqoh[$o->id])
-                            @foreach($halaqoh[$o->id] as $h)
-                            <li class="collection-item">
-                                <div class="row">
-                                    <div class="col s10">
-                                        <label for="task">{{ $h->pengajar }} @if(strtoupper($h->jenis_kbm) == "ONLINE") (Online) @endif</label>
-                                    </div>
-                                    @allow('admin::manage::halaqoh')
-                                    <div class="col s2">
-                                        <a href="/halaqoh/{{ $h->reference }}" class="secondary-content"> <span class="ultra-small">Lihat</span></a>
-                                    </div>
+                                <div class="cyan white-text program-container-header" style="width:100%; padding:15px;">
+                                    <h6 class="mb-3" style="font-weight:300;">{{ $o->name }}</h6>
+                                    <small class="mb-3" style="font-weight:300;">@if(!empty($halaqoh[$o->id])) {{ count($halaqoh[$o->id]) }} @else 0 @endif Halaqoh</small>
+                                    @allow('add-halaqoh')
+                                    <a class="btn-floating activator btn-move-up waves-effect waves-light red accent-2 z-depth-4 right" href="/halaqoh/add?hari={{ $day }}&program={{ $o->id }}&ref=/halaqoh/manage">
+                                        <i class="mdi-social-person-add"></i>
+                                    </a>
                                     @endallow
                                 </div>
-                            </li>
-                            @endforeach
-                            @endisset
 
-                        </ul>
-                    </div>
-                    @endforeach
+                                <ul class="collection program-container-body" style="width:100%;height:270px;overflow-y:scroll">
 
-                </div>                    
+                                    @isset($halaqoh[$o->id])
+                                    @foreach($halaqoh[$o->id] as $h)
+                                    <li class="collection-item">
+                                        <div class="row">
+                                            <div class="col s9">
+                                                <label for="task">{{ $h->pengajar }} @if(strtoupper($h->jenis_kbm) == "ONLINE") (Online) @endif</label>
+                                            </div>
+                                            @allow('admin::manage::halaqoh')
+                                            <div class="col s3">
+                                                <a href="/halaqoh/{{ $h->reference }}" class="secondary-content"> <span class="ultra-small">Lihat &nbsp;</span></a>
+                                                <a href="/halaqoh/{{ $h->reference }}/edit-data" class="secondary-content"> <span class="ultra-small">Edit  &nbsp;</span></a>
+                                            </div>
+                                            @endallow
+                                        </div>
+                                    </li>
+                                    @endforeach
+                                    @endisset
+
+                                </ul>
+                            </div>
+                        @endforeach
+
+                    </div>                    
                 @endforeach
             </div>
         </div>

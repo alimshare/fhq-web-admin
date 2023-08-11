@@ -106,6 +106,10 @@ Route::group(['middleware' => []], function () {
 	Route::get('halaqoh/add', 'HalaqohController@add')->name('halaqoh.add');
 	Route::get('halaqoh/manage', 'HalaqohController@manage')->name('halaqoh.manage');
 	Route::post('halaqoh/add', 'HalaqohController@save')->name('halaqoh.addPost');
+
+	Route::get('halaqoh/{halaqohReference?}/edit-data', 'HalaqohController@editView')->name('halaqoh.edit');
+	Route::post('halaqoh/{halaqohReference?}/edit-data', 'HalaqohController@editPost')->name('halaqoh.editPost');
+
 	Route::get('halaqoh/pindah/{halaqohId?}/{pesertaId?}', 'HalaqohController@pindah')->name('halaqoh.pindah')->middleware(['permission:edit-halaqoh']);
 	Route::post('halaqoh/pindah', 'HalaqohController@pindahPost')->name('halaqoh.pindahPost')->middleware(['permission:edit-halaqoh']);
 

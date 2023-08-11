@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use DB;
 use App\Model\{Semester, Halaqoh, Attendance, Peserta};
+use App\Model\View\ViewHalaqoh;
 use App\Model\View\ViewPeserta;
 
 class HalaqohController extends Controller
@@ -167,6 +168,51 @@ class HalaqohController extends Controller
         }
 
         return redirect("/halaqoh/{$halaqohReference}")->with('error', $fails);
+    }
+
+    /**
+     * Edit halaqoh, show edit form
+     */
+    public function editView(Request $request, $halaqohReference)
+    {
+        $this->data['halaqoh']  = ViewHalaqoh::where('halaqoh_reference', $halaqohReference)->first();                        
+    	$this->data['program']  = \App\Model\Program::orderBy('name','asc')->get();
+        $this->data['pengajar'] = \App\Model\Pengajar::orderBy('name','asc')->get();
+        $this->data['days']     = explode(",", strtoupper(env('AVAILABLE_DAYS', 'SABTU,AHAD')));
+
+    	return view('pages.halaqoh.edit', $this->data);
+    }
+
+    /**
+     * Post Edit halaqoh, update data halaqoh based on date provided
+     */
+    public function editPost(Request $request)
+    {
+        $halaqoh = Halaqoh::where('id', $request->input('id'))->first();
+        if (!$halaqoh) {
+            return redirect()->route('halaqoh.manage')->with('alert', ['message'=>"Data halaqoh tidak ditemukan", 'type'=>'danger']);
+        }
+
+        if (!empty($request->input('program'))) {
+            $halaqoh->program_id    = $request->input('program');
+        }
+
+        if (!empty($request->input('pengajar'))) {
+            $halaqoh->pengajar_id   = $request->input('pengajar');
+        }
+
+        if (!empty($request->input('day'))) {
+            $halaqoh->day           = $request->input('day');
+        }
+
+        $halaqoh->jenis_kbm     = $request->input('jenis_kbm');
+
+        if ($halaqoh->save()){
+            return redirect()->route('halaqoh.manage')->with('alert', ['message'=>"Halaqoh berhasil diubah", 'type'=>'success']);
+        } else {
+            return redirect()->route('halaqoh.manage')->with('alert', ['message'=>"Perubahan informasi halaqoh gagal dilakukan", 'type'=>'danger']);
+        }
+
     }
 
     /**
