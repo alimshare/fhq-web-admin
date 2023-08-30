@@ -11,12 +11,13 @@
 |
 */
 
+use App\Http\Controllers\AbsensiController;
 use App\Http\Controllers\HalaqohController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\HomeController;
-
+use App\Http\Controllers\PengajarController;
 
 Auth::routes();
 
@@ -46,11 +47,11 @@ Route::group(['middleware' => []], function () {
 	/**
 	 * Absensi KBM
 	 */
-	Route::get('/absensi', 'AbsensiController@absensi')->name('absensi');
-	Route::get('/absensi/add', 'AbsensiController@absensi_form')->name('absensi.add');
-	Route::post('/absensi/save', 'AbsensiController@save')->name('absensi.save');
-	Route::get('/absensi/edit/{id}', 'AbsensiController@edit')->name('absensi.edit');
-	Route::post('/absensi/update', 'AbsensiController@update')->name('absensi.update');
+	Route::get('/absensi', 			 [AbsensiController::class, 'absensi'])->name('absensi');
+	Route::get('/absensi/add', 		 [AbsensiController::class, 'absensi_form'])->name('absensi.add');
+	Route::post('/absensi/save', 	 [AbsensiController::class, 'save'])->name('absensi.save');
+	Route::get('/absensi/edit/{id}', [AbsensiController::class, 'edit'])->name('absensi.edit');
+	Route::post('/absensi/update',	 [AbsensiController::class, 'update'])->name('absensi.update');
 
 	/**
 	 * Lembaga
@@ -144,8 +145,8 @@ Route::group(['middleware' => []], function () {
     Route::view('/permissions/add', 'pages.permission.form')->name('permissions.add');
     Route::post('/permissions/save', 'RolePermissionController@permissionsPost')->name('permissions.save');
 
-	Route::get('/users','UserController@index')->name('users')->middleware(['permission:users']);
-	Route::get('/users/reset-password/{userId}','UserController@resetPassword')->name('users.reset-password')->middleware(['permission:users.reset-password']);
+	Route::get('/users', 							[UserController::class, 'index'])->name('users')->middleware(['permission:users']);
+	Route::get('/users/reset-password/{userId}',	[UserController::class, 'resetPassword'])->name('users.reset-password')->middleware(['permission:users.reset-password']);
 
 });
 

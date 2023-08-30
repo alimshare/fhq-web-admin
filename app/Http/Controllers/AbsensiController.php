@@ -13,6 +13,8 @@ use \App\Model\Attendance;
 class AbsensiController extends Controller
 {
 
+    private $data = [];
+
     public function absensi(Request $request)
     {
         if (!empty($request->input('halaqohRef'))) 
@@ -21,7 +23,7 @@ class AbsensiController extends Controller
             $this->data['kehadiran'] = Attendance::selectRaw('peserta_id, COUNT(1) count_kehadiran')
                 ->with('peserta')
                 ->whereIn('peserta_id', function ($query) use ($halaqohId) {
-                    $query->select('id')->from('peserta')->where('halaqoh_id', $halaqohId);
+                    $query->select('id')->from('peserta')->where('halaqoh_id', $halaqohId)->whereNull('deleted_at');
                 })
                 ->where('status', 1)
                 ->groupBy('peserta_id')
