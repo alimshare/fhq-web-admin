@@ -36,13 +36,15 @@ class AbsensiController extends Controller
             $profileID = auth()->user()->profile_id;
             $halaqohIds = \App\Model\View\ViewHalaqoh::where('pengajar_id', $profileID)->where('semester_id', Semester::getActive()->id)->pluck('halaqoh_id')->toArray();
             $this->data['kbm']       = ActivityReport::whereIn('halaqoh_id', $halaqohIds)->withCount(['attendances'])->with('halaqoh')->orderBy('tgl', 'desc')->get();
-            $this->data['kehadiran'] = Attendance::selectRaw('peserta_id, COUNT(1) count_kehadiran')
+            $this->data['kehadiran'] = Attendance::selectRaw('attendance.peserta_id, COUNT(1) count_kehadiran')
+                ->join('peserta','peserta.id','attendance.peserta_id')
                 ->with('peserta')
-                ->whereIn('peserta_id', function ($query) use ($halaqohIds) {
-                    $query->select('id')->from('peserta')->whereIn('halaqoh_id', $halaqohIds);
+                ->whereNull('peserta.deleted_at')
+                ->whereIn('attendance.peserta_id', function ($query) use ($halaqohIds) {
+                    $query->select('id')->from('peserta')->whereIn('halaqoh_id', $halaqohIds)->whereNull('deleted_at');
                 })
-                ->where('status', 1)
-                ->groupBy('peserta_id')
+                ->where('attendance.status', 1)
+                ->groupBy('attendance.peserta_id')
                 ->orderBy('count_kehadiran', 'desc')
                 ->get();
         }

@@ -134,7 +134,7 @@
                    @foreach($kehadiran as $k)
                       <tr>
                          <td>{{ $i++ }}</td>
-                         <td class="text-left">{{ $k->peserta->santri_name }} </td>
+                         <td class="text-left">{{ $k->peserta->santri_name ?? '' }} </td>
                          <td>{{ $k->count_kehadiran }}</td>
                       </tr>
                    @endforeach
