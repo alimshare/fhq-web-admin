@@ -93,10 +93,10 @@
 									<th rowspan="2">Catatan</th>
 									<th rowspan="2">Catatan Manajemen</th>
 								</tr>
-								@if(env("APP_NAME", "") == "FHQ" && ($halaqoh->program_id == "11" || $halaqoh->program_name == "TAKHASSUS"))
+								@if(in_array($halaqoh->program_id, explode(",", env('TAKHOSSUS_IDS', ''))))
 									<tr> 
 										<th>Tadribat</th>
-										<th>Tahfidz</th>
+										<th>Tahfidz</th> 
 										<th>Tadribat</th>
 										<th>Tahfidz</th>
 									</tr>
