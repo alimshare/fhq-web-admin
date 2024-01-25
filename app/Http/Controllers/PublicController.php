@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Cache;
 
 class PublicController extends Controller
 {
+    public $data = [];
+
     public function halaqoh25()
     {
         $this->data['list'] = Cache::remember('viewPeserta.25', 60*60*24*7, function () {
@@ -113,6 +115,18 @@ class PublicController extends Controller
         $this->data['list'] = Cache::remember('viewPeserta.33', 60*60*24*7, function () {
             return \App\Model\View\ViewPeserta::select('nis','santri_name','pengajar_name','program_name','day','gender_santri','jenis_kbm','lokasi_kbm')
                 ->where('semester_id', 33)
+                ->orderBy('santri_name','asc')
+                ->get();
+        });
+        $this->data['days']     = explode(",", strtoupper(env('AVAILABLE_DAYS', 'SABTU,AHAD')));
+        return view('info-halaqoh-manual', $this->data);
+    }
+
+    public function halaqohInfo($semesterId) 
+    {
+        $this->data['list'] = Cache::remember('viewPeserta.'.$semesterId, 60*60*24*7, function () use ($semesterId) {
+            return \App\Model\View\ViewPeserta::select('nis','santri_name','pengajar_name','program_name','day','gender_santri','jenis_kbm','lokasi_kbm')
+                ->where('semester_id', $semesterId)
                 ->orderBy('santri_name','asc')
                 ->get();
         });

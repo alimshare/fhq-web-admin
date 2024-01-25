@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PengajarController;
+use App\Http\Controllers\PublicController;
 
 Auth::routes();
 
@@ -77,11 +78,14 @@ Route::group(['middleware' => []], function () {
 	/**
 	 * Pengajar
 	 */
-	Route::get('pengajar', 'PengajarController@index')->middleware(['permission:list-pengajar']);
-	Route::get('pengajar/{id}', 'PengajarController@show')->middleware(['permission:detail-pengajar']);
-	Route::get('pengajar/edit/{id}', 'PengajarController@edit')->middleware(['permission:edit-pengajar']);
-	Route::post('pengajar/save', 'PengajarController@save')->middleware(['permission:add-pengajar']);
-	Route::delete('pengajar/remove/{id}', 'PengajarController@destroy')->middleware(['permission:delete-pengajar']);
+	Route::get('pengajar', 					[PengajarController::class, 'index'])->name('pengajar')->middleware(['permission:list-pengajar']);
+	Route::get('pengajar/add', 				[PengajarController::class, 'add'])->name('pengajar.add')->middleware(['permission:add-pengajar']);
+	Route::post('pengajar/add', 			[PengajarController::class, 'addPost'])->name('pengajar.add')->middleware(['permission:add-pengajar']);
+
+	Route::get('pengajar/{id}', 			[PengajarController::class, 'show'])->middleware(['permission:detail-pengajar']);
+	Route::get('pengajar/edit/{id}', 		[PengajarController::class, 'edit'])->middleware(['permission:edit-pengajar']);
+	Route::post('pengajar/save', 			[PengajarController::class, 'save'])->middleware(['permission:add-pengajar']);
+	Route::delete('pengajar/remove/{id}', 	[PengajarController::class, 'destroy'])->middleware(['permission:delete-pengajar']);
 
 	/**
 	 * Semester
@@ -159,5 +163,7 @@ Route::get('halaqoh-30', 'PublicController@halaqoh30');
 Route::get('halaqoh-31', 'PublicController@halaqoh31');
 Route::get('halaqoh-32', 'PublicController@halaqoh32');
 Route::get('halaqoh-33', 'PublicController@halaqoh33');
+
+Route::get('halaqoh-info/{semesterId}', [PublicController::class, 'halaqohInfo']);
 // Route::view('register', 'auth.register')->name('register');
 
