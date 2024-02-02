@@ -69,9 +69,13 @@
                                 </div>
                                 
                                 <div class="row">
-                                    <div class="input-field col s12">
+                                    <div class="input-field col s12 l6">
                                         <input id="start_time" name="start_time" type="text" value="{{ date('H:i', strtotime($activity->start_time)) }}" style="font-size:15pt" maxlength="5">
                                         <label for="start_time">Waktu Mulai</label>
+                                    </div>
+                                    <div class="input-field col s12 l6">
+                                        <input id="end_time" name="end_time" type="text" value="{{ date('H:i', strtotime($activity->end_time)) ?? date('H:i', strtotime($activity->start_time."+2 hours")) }}" style="font-size:15pt" maxlength="5">
+                                        <label for="end_time">Waktu Selesai</label>
                                     </div>
                                 </div>
 

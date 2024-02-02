@@ -9,6 +9,7 @@ use \App\Model\Semester;
 use \App\Model\Halaqoh;
 use \App\Model\ActivityReport;
 use \App\Model\Attendance;
+use Exception;
 
 class AbsensiController extends Controller
 {
@@ -84,44 +85,50 @@ class AbsensiController extends Controller
         }
 
         $start_time      = $request->input('start_time');
+        $end_time        = $request->input('end_time');
         $note            = $request->input('note');
         $management_note = $request->input('management_note');
         $peserta         = $request->input('peserta');
 
         $activity = new ActivityReport;
-        $activity->halaqoh_id = $halaqohId;
-        $activity->tgl = $tgl;
-        $activity->description = $note;
+        $activity->halaqoh_id   = $halaqohId;
+        $activity->tgl          = $tgl;
+        $activity->description  = $note;
+        $activity->status       = "NORMAL";
+        $activity->start_time   = "$tgl $start_time:00";
+        $activity->end_time     = "$tgl $end_time:00";
         $activity->management_note = $management_note;
-        $activity->status = "NORMAL";
-        $activity->start_time = "$tgl $start_time:00";
 
-        if ($activity->save()) {
-
-            $activityId = $activity->id;
-            $anyFail = false;
-            foreach ($peserta as $pesertaId => $data) 
-            {
-                $attendance = new Attendance;
-                $attendance->activity_id = $activityId;
-                $attendance->peserta_id = $pesertaId;
-                $attendance->status = $data['hadir'];
-                $attendance->note = $data['note'];
-
-                if (!$attendance->save()){
-                    $anyFail = true;
+        try {
+            if ($activity->save()) {
+    
+                $activityId = $activity->id;
+                $anyFail = false;
+                foreach ($peserta as $pesertaId => $data) 
+                {
+                    $attendance = new Attendance;
+                    $attendance->activity_id = $activityId;
+                    $attendance->peserta_id = $pesertaId;
+                    $attendance->status = $data['hadir'];
+                    $attendance->note = $data['note'];
+    
+                    if (!$attendance->save()){
+                        $anyFail = true;
+                    }
                 }
-
-            }
-
-            if ($anyFail) {
-                return redirect("/absensi?halaqohRef=$halaqohId")->with('alert', ['message'=>"Simpan Absensi berhasil, tapi ada beberapa peserta yang gagal di simpan", 'type'=>'danger']);
-            } else {
-                return redirect("/absensi?halaqohRef=$halaqohId")->with('alert', ['message'=>"Absensi tanggal <b>$tgl</b> berhasil disimpan", 'type'=>'success']);
-            }
-
-        } else {
+    
+                if ($anyFail) {
+                    return redirect("/absensi?halaqohRef=$halaqohId")->with('alert', ['message'=>"Simpan Absensi berhasil, tapi ada beberapa peserta yang gagal di simpan", 'type'=>'danger']);
+                } else {
+                    return redirect("/absensi?halaqohRef=$halaqohId")->with('alert', ['message'=>"Absensi tanggal <b>$tgl</b> berhasil disimpan", 'type'=>'success']);
+                }
+    
+            } 
+            
             return redirect("/absensi/add?halaqohRef=$halaqohId")->with('alert', ['message'=>"Gagal menyimpan absensi untuk tanggal <b>$tgl</b>", 'type'=>'danger']);
+
+        } catch (Exception $e) {
+            return redirect("/absensi/add?halaqohRef=$halaqohId")->with('alert', ['message'=>"Gagal menyimpan absensi untuk tanggal <b>$tgl</b>, error: ".$e->getMessage(), 'type'=>'danger']);
         }
 
     }
@@ -150,6 +157,7 @@ class AbsensiController extends Controller
         $tgl             = $request->input('tgl');
         $halaqohId       = $activity->halaqoh_id;
         $start_time      = $request->input('start_time');
+        $end_time        = $request->input('end_time');
         $note            = $request->input('note');
         $management_note = $request->input('management_note');
         $peserta         = $request->input('peserta');
@@ -160,30 +168,36 @@ class AbsensiController extends Controller
         $activity->management_note  = $management_note;
         $activity->status           = "NORMAL";
         $activity->start_time       = "$tgl $start_time:00";
+        $activity->end_time         = "$tgl $end_time:00";
 
-        if ($activity->save()) {
+        try {
+            if ($activity->save()) {
 
-            $anyFail = false;
-            foreach ($attendances as $attendanceId => $data) 
-            {
-                $attendance = Attendance::find($attendanceId);
-                $attendance->status = $data['hadir'];
-                $attendance->note = $data['note'];
+                $anyFail = false;
+                foreach ($attendances as $attendanceId => $data) 
+                {
+                    $attendance = Attendance::find($attendanceId);
+                    $attendance->status = $data['hadir'];
+                    $attendance->note = $data['note'];
 
-                if (!$attendance->save()){
-                    $anyFail = true;
+                    if (!$attendance->save()){
+                        $anyFail = true;
+                    }
+
+                }
+
+                if ($anyFail) {
+                    return redirect("/absensi?halaqohRef=$halaqohId")->with('alert', ['message'=>"Ubah Absensi berhasil, tapi ada beberapa perubahan yang gagal di simpan", 'type'=>'danger']);
+                } else {
+                    return redirect("/absensi?halaqohRef=$halaqohId")->with('alert', ['message'=>"Absensi tanggal <b>$tgl</b> berhasil disimpan", 'type'=>'success']);
                 }
 
             }
-
-            if ($anyFail) {
-                return redirect("/absensi?halaqohRef=$halaqohId")->with('alert', ['message'=>"Ubah Absensi berhasil, tapi ada beberapa perubahan yang gagal di simpan", 'type'=>'danger']);
-            } else {
-                return redirect("/absensi?halaqohRef=$halaqohId")->with('alert', ['message'=>"Absensi tanggal <b>$tgl</b> berhasil disimpan", 'type'=>'success']);
-            }
-
-        } else {
+            
             return redirect("/absensi/add?halaqohRef=$halaqohId")->with('alert', ['message'=>"Gagal menyimpan absensi untuk tanggal <b>$tgl</b>", 'type'=>'danger']);
+            
+        } catch (Exception $e) {
+            return redirect("/absensi/add?halaqohRef=$halaqohId")->with('alert', ['message'=>"Gagal menyimpan absensi untuk tanggal <b>$tgl</b>, error: ".$e->getMessage(), 'type'=>'danger']);
         }
     }
 

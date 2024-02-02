@@ -140,14 +140,14 @@
                                 </div>
                                 
                                 <div class="row">
-                                    <div class="input-field col s12">
+                                    <div class="input-field col s12 l6">
                                         <input id="start_time" name="start_time" type="text" value="{{ date('H:i') }}" style="font-size:15pt" maxlength="5">
                                         <label for="start_time">Waktu Mulai</label>
                                     </div>
-                                    <!-- <div class="input-field col s12 l6">
+                                    <div class="input-field col s12 l6">
                                         <input id="end_time" name="end_time" type="text" value="{{ date('H:i') }}" style="font-size:15pt">
                                         <label for="end_time">Waktu Selesai</label>
-                                    </div> -->
+                                    </div>
                                 </div>
 
                                 <div class="row">
