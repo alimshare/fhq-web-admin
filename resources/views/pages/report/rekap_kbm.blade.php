@@ -125,6 +125,7 @@
                                 <th>Program</th>
                                 <th>Pengajar</th>
                                 <th>Waktu Mulai</th>
+                                <th>Waktu Selesai</th>
                                 <th>Jumlah Peserta</th>
                                 <th>Jumlah Peserta Hadir</th>
                             </tr>
@@ -133,6 +134,7 @@
                                 <th><input type="text" placeholder="Hari Belajar" class="input-text" id="paramHari"></th>
                                 <th><input type="text" placeholder="program" class="input-text" id="paramProgram"></th>
                                 <th><input type="text" placeholder="pengajar" class="input-text" id="paramPengajar"></th>
+                                <th></th>
                                 <th></th>
                                 <th></th>
                                 <th></th>
@@ -147,6 +149,7 @@
                                 <td>{{ $k->halaqoh->program_name }}</td>
                                 <td>{{ $k->halaqoh->pengajar_name }}</td>
                                 <td>{{ date('H:i', strtotime($k->start_time)) }}</td>
+                                <td>{{ empty($k->end_time) ? '' : date('H:i', strtotime($k->end_time)) }}</td>
                                 <td>{{ $k->attendances_count }}</td>
                                 <td>{{ $k->hadir_count }}</td>
                             </tr>

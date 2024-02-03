@@ -3,6 +3,7 @@
 namespace App\Exports;
 
 use App\Model\View\ViewKbm;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithTitle;
 use Maatwebsite\Excel\Concerns\Exportable;
@@ -37,7 +38,7 @@ class RekapKbmExport implements FromQuery, WithTitle, WithHeadings
 
     public function query()
     {
-        $query = ViewKbm::select('tgl','program_name','pengajar_name','description','management_note','jumlah_peserta','hadir','tidak_hadir');
+        $query = ViewKbm::select('tgl','program_name','pengajar_name',DB::raw('DATE_FORMAT(start_time, "%H:%i") as start'),DB::raw('DATE_FORMAT(end_time, "%H:%i") as end'),'description','management_note','jumlah_peserta','hadir','tidak_hadir');
 
         if ($this->semesterId) {
             $query->where('semester_id', $this->semesterId);
@@ -63,7 +64,7 @@ class RekapKbmExport implements FromQuery, WithTitle, WithHeadings
     public function headings(): array
     {
         return [
-            'Tanggal','Program','Pengajar','Catatan','Catatan Manajemen','Jumlah Peserta','Hadir','Tidak Hadir'
+            'Tanggal','Program','Pengajar','Mulai','Selesai','Catatan','Catatan Manajemen','Jumlah Peserta','Hadir','Tidak Hadir'
         ];
     }
 }
