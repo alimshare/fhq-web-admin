@@ -137,11 +137,11 @@
                             <tbody>
                                 @foreach($kehadiran as $k)
                                     <tr>
-                                        <td class="text-left hide-mobile">{{ $k->peserta->day}} </td>
-                                        <td class="text-left hide-mobile">{{ $k->peserta->program_name }} </td>
-                                        <td class="text-left hide-mobile">{{ $k->peserta->pengajar_name }} </td>
-                                        <td class="text-left">{{ $k->peserta->santri_name }} </td>
-                                        <td>{{ $k->count_kehadiran }}</td>
+                                        <td class="text-left hide-mobile">{{ @$k->peserta->day}} </td>
+                                        <td class="text-left hide-mobile">{{ @$k->peserta->program_name }} </td>
+                                        <td class="text-left hide-mobile">{{ @$k->peserta->pengajar_name }} </td>
+                                        <td class="text-left">{{ @$k->peserta->santri_name }} </td>
+                                        <td>{{ @$k->count_kehadiran }}</td>
                                     </tr>
                                 @endforeach
                             </tbody>
