@@ -221,19 +221,6 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($list as $n)
-                                        <tr>
-                                            <td>{{ $n->semester_name }}</td>
-                                            <td>{{ $n->day }}</td>
-                                            <td>{{ ($n->gender=="FEMALE") ? "AKHWAT" : "IKHWAN" }}</td>
-                                            <td>{{ $n->program_name }}</td>
-                                            <td>{{ $n->pengajar_name }}</td>
-                                            <td class="text-center">
-                                                <a href="/halaqoh/{{ $n->halaqoh_reference }}" class="btn-floating waves-effect waves-light primary tooltipped" data-position="bottom" data-tooltip="Detail"><i class="mdi-action-search"></i></a>
-                                                <a onclick="loadPeserta(`{{ $n->day }}`,`{{ $n->gender }}`,`{{ $n->program_name }}`,`{{ $n->pengajar_name }}`,`{{ $n->halaqoh_reference }}`,`{{ $n->semester_name }}`)" class="btn-floating waves-effect waves-light green tooltipped modal-triggers" data-position="bottom" data-tooltip="Daftar Peserta"><i class="mdi-social-people"></i></a>
-                                            </td>
-                                        </tr>
-                                    @endforeach
                                 </tbody>
                                 <tfoot>
                                 </tfoot>
@@ -264,9 +251,18 @@
                                             <td>{{ $n->day }}</td>
                                             <td>{{ ($n->gender_santri=="FEMALE") ? "AKHWAT" : "IKHWAN" }}</td>
                                             <td>{{ $n->program_name }}</td>
-                                            <td>{{ $n->pengajar_name }}</td>
+                                            <td>
+                                                <div style="display: flex;justify-content: space-between;align-items: center;">
+                                                    <span>{{ $n->pengajar_name }}</span>
+                                                    <a href="/halaqoh/{{ $n->halaqoh_reference }}" class="tooltipped" data-position="bottom" data-tooltip="Detail"><i class="mdi-action-search"></i></a></td>
+                                                </div>
                                             <td>{{ $n->nis }}</td>
-                                            <td>{{ $n->santri_name }}</td>
+                                            <td>
+                                                <div style="display: flex;justify-content: space-between;align-items: center;">
+                                                    <span>{{ $n->santri_name }}</span>
+                                                    <a href="/peserta/{{ $n->peserta_reference }}" class="tooltipped" data-position="bottom" data-tooltip="Detail"><i class="mdi-action-search"></i></a></td>
+                                                </div>
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
