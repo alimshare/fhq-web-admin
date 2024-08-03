@@ -56,6 +56,12 @@
     .d-block {
 
     }
+    span.badge {
+        position: inherit;
+    }
+    span.badge.new:after {
+        content: "";
+    }
 </style>
 @endsection
 
@@ -174,9 +180,8 @@
                                     <li class="collection-item">
                                         <div class="row">
                                             <div class="col s8">                                                
-                                                <label>
-                                                    {{ $h->pengajar }} @if(strtoupper($h->jenis_kbm) == "ONLINE") (Online) @endif
-                                                </label>
+                                                <label>{{ $h->pengajar }} @if(strtoupper($h->jenis_kbm) == "ONLINE") @endif </label>
+                                                <span class="badge new">Online</span> 
                                             </div>
                                             @allow('admin::manage::halaqoh')
                                             <div class="col s4">
