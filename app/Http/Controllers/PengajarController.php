@@ -42,6 +42,40 @@ class PengajarController extends Controller
         return view('pages.pengajar.list', $this->data);
     }
 
+    function add() {
+        return view('pages.pengajar.add', []);
+    }
+
+    function addPost(Request $request) {
+        $validatedData = $request->validate([
+            "name"      => "bail|required|max:255|unique:pengajar,name",
+            "phone"     => "required|numeric",
+            "gender"    => "required|in:MALE,FEMALE",
+        ]);
+
+        $name   = $request->input('name');
+        $phone  = $request->input('phone');
+        $gender = $request->input('gender');
+        $address = $request->input('address');
+        
+        $o = new Pengajar;
+        $o->name = $name;
+        $o->phone = $phone;
+        $o->gender = $gender;
+        $o->address = $address;
+
+        $type = "";
+        if ($o->save()) {
+            $message = "ubah data pengajar berhasil";
+        } else {
+            $message = "ubah data pengajar gagal";
+            $type = "danger";
+        }
+
+        return redirect('pengajar')->with('alert', ['message'=>$message, 'type'=>$type]);
+
+    }
+
     /**
      * Display the specified resource.
      *
