@@ -180,8 +180,8 @@
                                     <li class="collection-item">
                                         <div class="row">
                                             <div class="col s8">                                                
-                                                <label>{{ $h->pengajar }} @if(strtoupper($h->jenis_kbm) == "ONLINE") @endif </label>
-                                                <span class="badge new">Online</span> 
+                                                <label>{{ $h->pengajar }} </label>
+                                                @if(strtoupper($h->jenis_kbm) == "ONLINE") <span class="badge new">Online</span> @endif
                                             </div>
                                             @allow('admin::manage::halaqoh')
                                             <div class="col s4">
