@@ -92,12 +92,12 @@
         }
     }
 
-    var checkShowAll = document.getElementById("showAll");
-    checkShowAll.addEventListener("click", ()=>{
-        if (checkShowAll.checked) {
+    // var checkShowAll = document.getElementById("showAll");
+    // checkShowAll.addEventListener("click", ()=>{
+    //     // if (checkShowAll.checked) {
 
-        }
-    });
+    //     // }
+    // });
 </script>
 @endsection
 
@@ -155,7 +155,7 @@
                     <div id="{{ $day }}-container" class="col s12 tab-container" style="display: {{ (++$i == 1) ? 'block' : 'none' }}">
 
                         @foreach($program as $o)
-                            <div class="col s6 m4 program-container {{ empty($halaqoh[$o->id]) ? 'd-none' : '' }}">
+                            <div class="col s12 m6 l4 program-container {{ empty($halaqoh[$o->id]) ? 'd-none' : '' }}">
 
                                 <div class="cyan white-text program-container-header" style="width:100%; padding:15px;">
                                     <h6 class="mb-3" style="font-weight:300;">{{ $o->name }}</h6>
@@ -173,13 +173,16 @@
                                     @foreach($halaqoh[$o->id] as $h)
                                     <li class="collection-item">
                                         <div class="row">
-                                            <div class="col s9">
-                                                <label for="task">{{ $h->pengajar }} @if(strtoupper($h->jenis_kbm) == "ONLINE") (Online) @endif</label>
+                                            <div class="col s8">                                                
+                                                <label>
+                                                    {{ $h->pengajar }} @if(strtoupper($h->jenis_kbm) == "ONLINE") (Online) @endif
+                                                </label>
                                             </div>
                                             @allow('admin::manage::halaqoh')
-                                            <div class="col s3">
+                                            <div class="col s4">
                                                 <a href="/halaqoh/{{ $h->reference }}" class="secondary-content"> <span class="ultra-small">Lihat &nbsp;</span></a>
                                                 <a href="/halaqoh/{{ $h->reference }}/edit-data" class="secondary-content"> <span class="ultra-small">Edit  &nbsp;</span></a>
+                                                <a class="secondary-content"><span class="ultra-small blue-text text-darken-2" style="border-radius:50%;">{{ $h->peserta_count ?? "" }} &nbsp;</span></a>
                                             </div>
                                             @endallow
                                         </div>

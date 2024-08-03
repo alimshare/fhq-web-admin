@@ -123,17 +123,14 @@ class HalaqohController extends Controller
         ->groupBy('peserta_id')
         ->get()->pluck('count_kehadiran', 'peserta_id');
         
-    	// dd($this->data);
     	return view('pages.halaqoh.form', $this->data);
     }
 
     public function editDetail(Request $request, $reference=null)
     {
-
         $this->data['halaqoh'] = \App\Model\View\ViewHalaqoh::where('halaqoh_reference', $reference)->first();
         $this->data['peserta'] = \App\Model\View\ViewPeserta::where('halaqoh_reference', $reference)->get();
 
-        // dd($this->data);
         return view('pages.halaqoh.form-edit', $this->data);
     }
 
@@ -545,13 +542,18 @@ class HalaqohController extends Controller
     {
         $semesterActive = \App\Model\Semester::getActive();
         $program = \App\Model\Program::select('id','name')->orderBy('sequence','asc')->get();
-        $halaqohs = \App\Model\View\ViewHalaqoh::select('program_id', 'pengajar_name', 'day','halaqoh_reference','jenis_kbm')->where('semester_id', $semesterActive->id)->orderBy('pengajar_name','asc')->get();
+        $halaqohs = \App\Model\View\ViewHalaqoh::select('program_id', 'pengajar_name', 'day','halaqoh_reference','jenis_kbm')->where('semester_id', $semesterActive->id)->orderBy('pengajar_name','asc')->withCount(['peserta'])->get();
 
         $days = explode(",", strtoupper(env('AVAILABLE_DAYS', 'SABTU,AHAD')) );
         
         $data = array_fill_keys($days, []);
         foreach ($halaqohs as $key => $halaqoh) {
-            $data[$halaqoh->day][$halaqoh->program_id][] = (object)['pengajar'=> $halaqoh->pengajar_name, 'reference'=> $halaqoh->halaqoh_reference, 'jenis_kbm' => $halaqoh->jenis_kbm];
+            $data[$halaqoh->day][$halaqoh->program_id][] = (object)[
+                'pengajar'=> $halaqoh->pengajar_name, 
+                'reference'=> $halaqoh->halaqoh_reference, 
+                'jenis_kbm' => $halaqoh->jenis_kbm,
+                'peserta_count' => $halaqoh->peserta_count,
+            ];
         }
 
         return view('pages.halaqoh.manage', compact('program', 'data', 'days'));
