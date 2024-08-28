@@ -241,7 +241,7 @@ class HalaqohController extends Controller
         $template->setValue('program_name', $peserta->program_name);
         $template->setValue('semester_name', $peserta->semester_name);
         
-        if ($peserta->program_name == "TAKHASSUS") {
+        if ($peserta->program_name == "TAKHASSUS" || in_array($peserta->program_id, explode(",", env('TAKHOSSUS_IDS', '')))) {
             $template->setValue('nilai_uts_praktek', $peserta->nilai_uts_teori);
             $template->setValue('nilai_uts_praktek_text', $this->terbilang($peserta->nilai_uts_teori));
             $template->setValue('nilai_uts_teori', "");
