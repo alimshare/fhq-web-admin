@@ -86,6 +86,11 @@
                         @include('layouts.materialized.components.alert')
                     </div>
                 </div>
+                <div class="row mb-3" style="margin-bottom: 1em">
+                    <div class="col s12 text-right">
+                        <a href="{{ route('users.add') }}" class="btn cyan">Tambah User</a>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col s12">
                         <div style="overflow-x: scroll;">

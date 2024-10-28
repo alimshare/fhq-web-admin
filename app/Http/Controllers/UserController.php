@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Model\Pengajar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\User;
 
 class UserController extends Controller
 {
+    private $data = [];
+
     /**
      * Create a new controller instance.
      *
@@ -25,6 +28,41 @@ class UserController extends Controller
         return view('pages.user.list', $this->data);
     }
 
+    function add() {
+        $this->data['profiles'] = $profiles = Pengajar::select('pengajar.id','pengajar.name')
+            ->leftJoin('users', 'users.profile_id', 'pengajar.id')
+            ->whereNull('users.id')->get();
+        
+        return view('pages.user.add', $this->data);
+    }
+
+    function create(Request $request) {
+        
+        $validatedData = $request->validate([
+            'username'      => 'required|unique:users,username',
+            'password'      => 'required|min:6|same:confirm_password',
+            'profile_id'    => 'required|unique:users,profile_id'
+        ]);
+
+        $profile = Pengajar::find($request->profile_id);
+        if (!$profile) {
+            return redirect()->route('users')->with('alert', ['message'=>'Profile Pengajar tidak ditemukan !', 'type'=>'danger']);
+        }
+        
+        $user = new User;
+        $user->username = $request->username;
+        $user->password = Hash::make($request->password);
+        $user->name = $profile->name;
+        $user->email = '';
+        $user->profile_type = 'App\Model\Pengajar';
+        $user->profile_id = $request->profile_id;
+
+        if ($user->save()){
+            return redirect()->route('users')->with('alert', ['message'=>'Create new user success !', 'type'=>'success']);    
+        } else {
+            return redirect()->route('users')->with('alert', ['message'=>'Failed to create new user. please contact administrator !', 'type'=>'danger']);
+        }
+    }
 
     /**
      * Show the change password form

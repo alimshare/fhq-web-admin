@@ -19,6 +19,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PengajarController;
 use App\Http\Controllers\PublicController;
+use App\Http\Controllers\SemesterController;
 
 Auth::routes();
 
@@ -98,6 +99,10 @@ Route::group(['middleware' => []], function () {
 	Route::get('semester', 'SemesterController@index')->name('semester.index')->middleware(['permission:list-semester']);
 	Route::get('semester/{reference}/halaqoh', 'HalaqohController@lists');
 
+	Route::prefix('semester')->name('semester')->group(function(){
+		Route::get('', [SemesterController::class, 'index']);
+	});
+
 	/**
 	 * Program
 	 */
@@ -150,6 +155,8 @@ Route::group(['middleware' => []], function () {
     Route::post('/permissions/save', 'RolePermissionController@permissionsPost')->name('permissions.save');
 
 	Route::get('/users', 							[UserController::class, 'index'])->name('users')->middleware(['permission:users']);
+	Route::get('/users/add', 						[UserController::class, 'add'])->name('users.add')->middleware(['permission:users']);
+	Route::post('/users/add', 						[UserController::class, 'create'])->name('users.add')->middleware(['permission:users']);
 	Route::get('/users/reset-password/{userId}',	[UserController::class, 'resetPassword'])->name('users.reset-password')->middleware(['permission:users.reset-password']);
 
 });
