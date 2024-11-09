@@ -37,7 +37,7 @@
         <div class="container" style="margin-bottom: 25px">
             <section class="section users-view">
                 <div class="row">
-                    <div class="col s12 l6">
+                    <div class="col s12">
                         <div class="card">
                             <table id="" class="display responsive-table datatable-example bordered">
                                 <thead>
@@ -48,6 +48,7 @@
                                         <th>End</th>
                                         <th>Code</th>
                                         <th>Status</th>
+                                        {{-- <th></th> --}}
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -59,6 +60,14 @@
                                             <td>{{ $n->end_period }}</td>
                                             <td>{{ $n->reference }}</td>
                                             <td>{{ $n->active ? "Aktif" : "-" }}</td>
+                                            {{-- <th>
+                                                <a href="#" class="waves-effect waves-light tooltipped" data-position="bottom" data-tooltip="Detail">
+                                                    <i class="mdi-action-search"></i>
+                                                </a>
+                                                <a href="#" class="waves-effect waves-light tooltipped" data-position="bottom" data-tooltip="Edit">
+                                                    <i class="mdi-editor-border-color"></i>
+                                                </a>
+                                            </th> --}}
                                         </tr>
                                     @endforeach
                                 </tbody>

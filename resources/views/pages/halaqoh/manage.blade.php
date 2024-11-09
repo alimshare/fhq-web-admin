@@ -187,7 +187,7 @@
                                             <div class="col s4">
                                                 <a href="/halaqoh/{{ $h->reference }}" class="secondary-content"> <span class="ultra-small">Lihat &nbsp;</span></a>
                                                 <a href="/halaqoh/{{ $h->reference }}/edit-data" class="secondary-content"> <span class="ultra-small">Edit  &nbsp;</span></a>
-                                                <a class="secondary-content"><span class="ultra-small blue-text text-darken-2" style="border-radius:50%;">{{ $h->peserta_count ?? "" }} &nbsp;</span></a>
+                                                <a class="secondary-content"><span class="ultra-small blue-text text-darken-2" style="">{{ $h->peserta_count ?? "" }} &nbsp;</span></a>
                                             </div>
                                             @endallow
                                         </div>
