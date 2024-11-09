@@ -10,6 +10,7 @@ use \App\Model\Halaqoh;
 use \App\Model\ActivityReport;
 use \App\Model\Attendance;
 use Exception;
+use Illuminate\Support\Facades\DB;
 
 class AbsensiController extends Controller
 {
@@ -232,6 +233,32 @@ class AbsensiController extends Controller
         }
 
         return $export->download('rekap-kbm-'.$semester->name.'-'.date('Ymd_Hi').'.xlsx');
+    }
+
+    function remove(Request $request, $id) {
+        $halaqohId = "";
+        if (!empty($request->input('halaqohRef'))){
+            $halaqohId = $request->input('halaqohRef');
+        }
+
+        $activity = ActivityReport::where('id', $id)->with('attendances')->first();
+        if (!$activity) {
+            return redirect("/absensi?halaqohRef=$halaqohId")->with('alert', ['message'=>"Absensi tidak ditemukan", 'type'=>'danger']);
+        }
+
+        $tgl = $activity->tgl;
+
+        DB::beginTransaction();
+
+        if (Attendance::where('activity_id', $id)->delete()) {
+            $activity->delete();
+            DB::commit();
+
+            return redirect("/absensi?halaqohRef=$halaqohId")->with('alert', ['message'=>"Absensi tanggal <b>$tgl</b> berhasil dihapus", 'type'=>'success']);
+        }
+
+        DB::rollBack();
+        return redirect("/absensi?halaqohRef=$halaqohId")->with('alert', ['message'=>"Absensi gagal dihapus", 'type'=>'danger']);
     }
 
 }

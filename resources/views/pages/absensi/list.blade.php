@@ -26,6 +26,43 @@
 
 @section('footer-script')
 
+<script>
+function confirmDelete(elem) {
+
+   // Generate a random math question
+   const num1 = Math.floor(Math.random() * 10) + 1; // Random number between 1 and 10
+   const num2 = Math.floor(Math.random() * 10) + 1; // Random number between 1 and 10
+   const correctAnswer = num1 + num2; // Calculate the correct answer
+
+
+   var span = document.createElement("span");
+   span.innerHTML = `Konfirmasi Hapus: ${num1} + ${num2}`;
+
+	swal({
+		title: `Konfirmasi Hapus: ${num1} + ${num2}`,
+      text: "Data Absensi yang dihapus akan hilang secara permanen !", // Caption before the input
+      content: "input",
+		icon: "warning",
+		buttons: true,
+	}).then((answer) => {
+
+      if (answer === null) {
+         return; // If the user cancels, do nothing
+      }
+
+      if (parseInt(answer) === correctAnswer) {
+         var data = elem.getAttribute("data-target");
+         document.location = data;
+      } else {
+         swal(`Jawaban tidak tepat`);
+      }
+
+      return;
+         
+	});
+}
+</script>
+
 @endsection
 
 @section('content')
@@ -86,6 +123,7 @@
                            <td class="text-left">{!! nl2br($k->description) !!}</td>
                            <td>
                               <a href='/absensi/edit/{{ $k->id }}{{ !empty($halaqohId) ? "?halaqohRef=$halaqohId" : "" }}'>Edit</a>
+                              <a href='#' data-target="/absensi/remove/{{ $k->id }}{{ !empty($halaqohId) ? "?halaqohRef=$halaqohId" : "" }}" onclick="confirmDelete(this)">Hapus</a>
                            </td>
                         </tr>
                      @endforeach

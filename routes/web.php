@@ -49,11 +49,12 @@ Route::group(['middleware' => []], function () {
 	/**
 	 * Absensi KBM
 	 */
-	Route::get('/absensi', 			 [AbsensiController::class, 'absensi'])->name('absensi');
-	Route::get('/absensi/add', 		 [AbsensiController::class, 'absensi_form'])->name('absensi.add');
-	Route::post('/absensi/save', 	 [AbsensiController::class, 'save'])->name('absensi.save');
-	Route::get('/absensi/edit/{id}', [AbsensiController::class, 'edit'])->name('absensi.edit');
-	Route::post('/absensi/update',	 [AbsensiController::class, 'update'])->name('absensi.update');
+	Route::get('/absensi', 			 	[AbsensiController::class, 'absensi'])->name('absensi');
+	Route::get('/absensi/add', 		 	[AbsensiController::class, 'absensi_form'])->name('absensi.add');
+	Route::post('/absensi/save', 	 	[AbsensiController::class, 'save'])->name('absensi.save');
+	Route::get('/absensi/edit/{id}', 	[AbsensiController::class, 'edit'])->name('absensi.edit');
+	Route::post('/absensi/update',	 	[AbsensiController::class, 'update'])->name('absensi.update');
+	Route::get('/absensi/remove/{id}', 	[AbsensiController::class, 'remove'])->name('absensi.remove');
 
 	/**
 	 * Lembaga
@@ -174,3 +175,6 @@ Route::get('halaqoh-33', 'PublicController@halaqoh33');
 Route::get('halaqoh-info/{semesterId}', [PublicController::class, 'halaqohInfo']);
 // Route::view('register', 'auth.register')->name('register');
 
+Route::get('/version', function(){
+	return env('APP_VERSION', '1.0.0');
+});

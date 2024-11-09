@@ -16,8 +16,8 @@ function logout(e) {
 		text: "Apakah anda yakin ingin keluar dari Sistem ?",
 		icon: "warning",
 		buttons: true,
-	}).then((willDelete) => {
-		if (willDelete) {
+	}).then((yes) => {
+		if (yes) {
 		  document.getElementById('logout-form').submit();
 		}
 	});
