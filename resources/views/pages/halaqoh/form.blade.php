@@ -92,6 +92,7 @@
 									<th rowspan="2">Status</th>
 									<th rowspan="2">Catatan</th>
 									<th rowspan="2">Catatan Manajemen</th>
+									<th rowspan="2">Daftar Ulang</th>
 								</tr>
 								@if(in_array($halaqoh->program_id, explode(",", env('TAKHOSSUS_IDS', ''))))
 									<tr> 
@@ -139,6 +140,12 @@
 										@if ($santri->catatan_manajemen != null)
 										<a class="btn-floating waves-effect waves-light primary tooltipped" data-position="bottom" data-tooltip="{{ $santri->catatan_manajemen }}"><i class="mdi-communication-comment"></i></a>
 										@endif
+									</td>
+									<td>
+										<div class="chip green white-text"> <i class="mdi-action-event"></i> DU</span></div>
+										{{-- <div class="chip green white-text"> <i class="mdi-action-event"></i> CUTI</span></div>
+										<div class="chip green white-text"> <i class="mdi-action-event"></i> TIDAK LANJUT</span></div>
+										<div class="chip green white-text"> <i class="mdi-action-event"></i> ...</span></div> --}}
 									</td>
 								</tr>
 								@endforeach

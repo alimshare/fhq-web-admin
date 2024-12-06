@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PengajarController;
+use App\Http\Controllers\PrometheusController;
+use App\Http\Controllers\PSBController;
 use App\Http\Controllers\PublicController;
 use App\Http\Controllers\SemesterController;
 
@@ -177,4 +179,15 @@ Route::get('halaqoh-info/{semesterId}', [PublicController::class, 'halaqohInfo']
 
 Route::get('/version', function(){
 	return env('APP_VERSION', '1.0.0');
+});
+
+Route::get('/metrics', [PrometheusController::class, 'metrics']);
+
+Route::any('/public/daftar-ulang/{semester}/{hash}', [PublicController::class, 'daftarUlang'])->name('public.du.form');
+Route::get('/public/daftar-ulang/success', 		     [PublicController::class, 'daftarUlangSuccess'])->name('public.du.success');
+
+Route::prefix('/daftar-ulang')->name('du')->group(function() {
+	Route::get('', 			[PSBController::class, 'daftarUlang']);
+	Route::get('/add', 		[PSBController::class, 'formDaftarUlang'])->name('.add');
+	Route::get('/summary', 	[PSBController::class, 'daftarUlangSummary'])->name('.summary');
 });
