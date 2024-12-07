@@ -144,26 +144,46 @@ class PublicController extends Controller
     {
         $data = [];
 
+        if ($hash != "d48bc198e533871aa9e0985c083ab9a56efb8197") {
+            abort(403, "Alamat URL tidak valid.");
+        }
+
         if ($request->method() == "POST") {
 
             $data['nis'] = $nis = @$request->nis;
 
             $santri = Santri::select('id', 'nis', 'name', 'phone')->where('nis', $nis)->first();
             if (!$santri) {
-                return redirect()->back()->with('warning', 'Santri tidak ditemukan.');
+                return redirect()->route('public.du.form', [
+                        'semester'=>$semester, 'hash' => "d48bc198e533871aa9e0985c083ab9a56efb8197"]
+                    )->with('alert', ['message'=>"Santri dengan NIS <b>$nis</b> tidak ditemukan !", 'type'=>'danger']);
             }
 
-            $halaqohList = Peserta::join('view_halaqoh', 'view_halaqoh.halaqoh_id', 'peserta.halaqoh_id')
+            $halaqohList = Peserta::join(DB::raw('view_halaqoh AS vh'), 'vh.halaqoh_id', 'peserta.halaqoh_id')
+                ->leftJoin(DB::raw('daftar_ulang as du'), 'du.peserta_id', 'peserta.id')
                 ->where('santri_id', $santri->id)
                 ->where('semester_id', $semester)
-                ->select(DB::raw('peserta.id AS peserta_id'), 'pengajar_name', 'program_name', 'day', 'jenis_kbm', 'semester_id')
+                ->select(DB::raw('peserta.id AS peserta_id'), 'vh.pengajar_name', 'vh.program_name', 'vh.day', 'vh.jenis_kbm', 'vh.semester_id', 
+                    DB::raw('du.id AS daftar_ulang_id'), 'du.verified_at')
                 ->get();
 
-            if ($santri) {
-                $data['santri_name'] = $santri->name;
-                $data['phone_masking'] = $this->maskPhoneNumber($santri->phone);
-                $data['halaqohList'] = $halaqohList;
+            if ($halaqohList->count() == 0) {
+                return redirect()->route('public.du.form', [
+                        'semester'=>$semester, 'hash' => "d48bc198e533871aa9e0985c083ab9a56efb8197"]
+                    )->with('alert', ['message'=>"Santri bukan peserta aktif pada Semester <b>$semester</b> !", 'type'=>'danger']);
             }
+
+            $isCompleted = true;
+            foreach ($halaqohList as $key => $h) {
+                if (empty($h->daftar_ulang_id)) {
+                    $isCompleted = false;
+                }
+            }
+
+            $data['santri_name']    = $santri->name;
+            $data['phone_masking']  = $this->maskPhoneNumber($santri->phone);
+            $data['halaqohList']    = $halaqohList;
+            $data['completed']      = $isCompleted;
 
             /** Submit Daftar Ulang Form */
             if (isset($request->confirm)) {
@@ -189,7 +209,7 @@ class PublicController extends Controller
                     return redirect()->route('public.du.success');
                 }
 
-                return redirect()->route('public.du.form')->withErrors(['error'=>'Terjadi masalah dalam menyimpan data, Harap hubungi admin untuk informasi lebih lanjut.']);
+                return redirect()->route('public.du.form')->with('alert', ['message'=>"Terjadi masalah ketika menyimpan data, Harap hubungi admin untuk informasi lebih lanjut.", 'type'=>'danger']);
 
             }
         }
