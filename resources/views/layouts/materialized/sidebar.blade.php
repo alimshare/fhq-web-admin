@@ -68,18 +68,20 @@
             </li>
             @endallow
 
+            @allow('rekap-nilai.view')
             <li class="no-padding">
                 <ul class="collapsible collapsible-accordion">
-                    <li class="bold"><a class="collapsible-header waves-effect waves-cyan"><i class="mdi-social-person-plus"></i> Manajemen PSB</a>
+                    <li class="bold"><a class="collapsible-header waves-effect waves-cyan"><i class="mdi-toggle-radio-button-on"></i> Manajemen DU</a>
                         <div class="collapsible-body">
                             <ul>
                                 <li><a href="{{ route('du') }}">Daftar Ulang</a></li>
-                                <li><a href="{{ route('du.summary') }}">Rekap Daftar Ulang</a></li>
+                                <li><a href="{{ route('public.du.form', ['semester'=>36, 'hash'=>sha1('fhq.35.du')]) }}">Form Daftar Ulang</a></li>
                             </ul>
                         </div>
                     </li>
                 </ul>
             </li>
+            @endallow
             
             @allow('list-pengajar')
             <li class="bold"><a href="/pengajar" class="waves-effect waves-cyan"><i class="mdi-social-person-outline"></i> Pengajar</a></li>
