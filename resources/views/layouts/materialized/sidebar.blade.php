@@ -75,7 +75,7 @@
                         <div class="collapsible-body">
                             <ul>
                                 <li><a href="{{ route('du') }}">Daftar Ulang</a></li>
-                                <li><a href="{{ route('public.du.form', ['semester'=>36, 'hash'=>sha1('fhq.35.du')]) }}">Form Daftar Ulang</a></li>
+                                <li><a href="{{ route('public.du.form', ['semester'=>35, 'hash'=>sha1('fhq.35.du')]) }}">Form Daftar Ulang</a></li>
                             </ul>
                         </div>
                     </li>

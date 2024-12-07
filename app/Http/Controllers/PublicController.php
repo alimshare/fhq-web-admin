@@ -209,7 +209,9 @@ class PublicController extends Controller
                     return redirect()->route('public.du.success');
                 }
 
-                return redirect()->route('public.du.form')->with('alert', ['message'=>"Terjadi masalah ketika menyimpan data, Harap hubungi admin untuk informasi lebih lanjut.", 'type'=>'danger']);
+                return redirect()->route('public.du.form',[
+                    'semester'=>$semester, 'hash' => "d48bc198e533871aa9e0985c083ab9a56efb8197"]
+                )->with('alert', ['message'=>"Terjadi masalah ketika menyimpan data, Harap hubungi admin untuk informasi lebih lanjut.", 'type'=>'danger']);
 
             }
         }

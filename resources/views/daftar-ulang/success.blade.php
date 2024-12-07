@@ -74,7 +74,7 @@
 	  	<br>
 	  	<br>
 
-	  	<a class="btn btn-primary btn-sm" href="{{ route('public.du.form', ['semester'=>36, 'hash'=>sha1('fhq.35.du')]) }}" role="button">Kembali ke Beranda</a>
+	  	<a class="btn btn-primary btn-sm" href="{{ route('public.du.form', ['semester'=>35, 'hash'=>sha1('fhq.35.du')]) }}" role="button">Kembali ke Beranda</a>
 	  <br>
 	</div>
 </div>
