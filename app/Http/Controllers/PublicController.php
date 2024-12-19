@@ -190,8 +190,8 @@ class PublicController extends Controller
 
                 $validatedData = $request->validate([
                     "peserta_id" => "bail|required",
-                    "hari"       => "required|in:SABTU,AHAD",
-                    "jenis_kbm"  => "required|in:OFFLINE,ONLINE",
+                    "hari"       => "required|in:SABTU,AHAD,CUTI",
+                    "jenis_kbm"  => "required|in:OFFLINE,ONLINE,CUTI",
                     "upload"     => "required|file|max:4096", 
                 ]);
                 

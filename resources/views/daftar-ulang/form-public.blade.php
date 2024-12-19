@@ -226,11 +226,14 @@
                                         &nbsp;&nbsp;&nbsp;
                                     <label for="ahad" style="display: inline-block"><input type="radio" id="ahad" name="hari" value="AHAD">
                                         <span class="label-body">Ahad</span></label>
+                                        &nbsp;&nbsp;&nbsp;
+                                    <label for="cuti" style="display: inline-block"><input type="radio" id="cuti" name="hari" value="CUTI">
+                                        <span class="label-body">Cuti</span></label>
                                 </div>
                             </div>
 
 
-                            <div class="row" style="margin-bottom: 1em">
+                            <div class="row" style="margin-bottom: 1em" id="row-jenis-kbm">
                                 <div class="three columns"><label>Pilihan Jenis KBM</label></div>
                                 <div class="nine columns">
                                     <label for="offline" style="display: inline-block"><input type="radio" id="offline" name="jenis_kbm" value="OFFLINE" required>
@@ -238,6 +241,9 @@
                                         &nbsp;&nbsp;&nbsp;
                                     <label for="online" style="display: inline-block"><input type="radio" id="online" name="jenis_kbm" value="ONLINE">
                                         <span class="label-body">ONLINE</span></label>
+                                        &nbsp;&nbsp;&nbsp;
+                                    <label for="cuti-kbm" style="display: inline-block"><input type="radio" id="cuti-kbm" name="jenis_kbm" value="CUTI">
+                                        <span class="label-body">Cuti</span></label>
                                 </div>
                             </div>
 
