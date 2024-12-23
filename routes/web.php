@@ -187,8 +187,11 @@ Route::any('/public/daftar-ulang/{semester}/{hash}', [PublicController::class, '
 Route::get('/public/daftar-ulang/success', 		     [PublicController::class, 'daftarUlangSuccess'])->name('public.du.success');
 
 Route::prefix('/daftar-ulang')->name('du')->group(function() {
-	Route::get('', 			[PSBController::class, 'daftarUlang']);
-	Route::get('/add', 		[PSBController::class, 'formDaftarUlang'])->name('.add');
-	Route::get('/summary', 	[PSBController::class, 'daftarUlangSummary'])->name('.summary');
+	Route::get('', 				[PSBController::class, 'daftarUlang']);
+	Route::get('/summary', 		[PSBController::class, 'daftarUlangSummary'])->name('.summary');
+
+	Route::match(['get', 'post'], '/{id}/edit', [PSBController::class, 'editDaftarUlang'])->name('.edit');
+
+	// Route::get('/add', 		[PSBController::class, 'formDaftarUlang'])->name('.add');
 	Route::patch('/{id}/verify', [PSBController::class, 'verify'])->name('.verify');
 });

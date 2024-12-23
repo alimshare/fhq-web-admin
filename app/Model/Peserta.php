@@ -19,6 +19,10 @@ class Peserta extends Model
     	return Halaqoh::find($this->halaqoh_id);
     }
 
+    public function halaqoh(){
+    	return $this->belongsTo(Halaqoh::class, 'halaqoh_id', 'id');
+    }
+
     public function getSantri(){
     	return Santri::find($this->santri_id);
     }

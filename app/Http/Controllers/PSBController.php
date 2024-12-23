@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Model\DaftarUlang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class PSBController extends Controller
 {
@@ -30,9 +31,41 @@ class PSBController extends Controller
         return view('pages.psb.daftar-ulang.list', $data);
     }
 
-    function formDaftarUlang()
+    function editDaftarUlang(Request $request, $id)
     {
-        return view('pages.psb.daftar-ulang.add');
+        $du = DaftarUlang::with('peserta')->select('daftar_ulang.*')->where('id', $id)->first();
+        if (!$du) {
+            return redirect()->route('du')->with('alert', ['message'=>"Data DU tidak ditemukan !", 'type'=>'danger']);
+        }
+
+        if ($request->method() == "POST") {
+
+            if(isset($request->upload_file)) {
+
+                $uploadFile = $du->upload_file;
+                if (Storage::exists("public/daftar-ulang/$uploadFile")) {
+                    Storage::delete("public/daftar-ulang/$uploadFile");
+                }
+
+                $file = $request->file('upload_file');
+                $path = $file->store('/public/daftar-ulang');
+                $du->upload_file = $file->hashName();
+
+            } else {
+                $du->hari = $request->hari;
+                $du->jenis_kbm = $request->jenis_kbm;
+                $du->tgl_lahir = $request->tgl_lahir;
+            }
+                
+            if ($du->save()) {
+                return redirect()->route('du.edit', ['id'=>$id])->with('alert', ['message'=>'Informasi DU berhasil diperbarui', 'type'=>'success']);
+            }
+
+            return redirect()->route('du.edit', ['id'=>$id])->with('alert', ['message'=>'Informasi DU gagal diperbarui', 'type'=>'danger']);
+
+        }
+
+        return view('pages.psb.daftar-ulang.edit', compact('du'));
     }
 
     function daftarUlangSummary(Request $request) {}

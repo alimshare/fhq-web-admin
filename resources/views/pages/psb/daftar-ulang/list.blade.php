@@ -192,8 +192,8 @@
                                             <td>{{ $du->hari }}</td>
                                             <td>{{ $du->jenis_kbm }}</td>
                                             <td>
-                                                <a class="btn-outline" data-path="{{ '/storage/daftar-ulang/' . $du->upload_file }}" target="#" onclick="loadImage(this)">Bukti</a>
-                                                {{-- <a class="btn-outline" href="#">Edit</a> --}}
+                                                <a class="btn cyan" style="margin-bottom: 0.25rem;" data-path="{{ '/storage/daftar-ulang/' . $du->upload_file }}" target="#" onclick="loadImage(this)">Bukti</a> &nbsp;
+                                                <a class="btn green" href="{{ route('du.edit', ['id' => $du->id]) }}">Edit</a>
                                             </td>
                                         </tr>
                                     @endforeach
