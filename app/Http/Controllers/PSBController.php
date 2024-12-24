@@ -77,4 +77,23 @@ class PSBController extends Controller
 
         return response()->json(['status'=>'ok']);
     }
+
+    function removeDaftarUlang(Request $request, $id) 
+    {    
+        $du = DaftarUlang::with('peserta')->select('daftar_ulang.*')->where('id', $id)->first();
+        if (!$du) {
+            return redirect()->route('du')->with('alert', ['message'=>"Data DU tidak ditemukan !", 'type'=>'danger']);
+        }
+
+        if ($du->delete()) {            
+            $uploadFile = $du->upload_file;
+            if (Storage::exists("public/daftar-ulang/$uploadFile")) {
+                Storage::delete("public/daftar-ulang/$uploadFile");
+            }
+
+            return redirect()->route('du', ['id'=>$id])->with('alert', ['message'=>'Informasi DU berhasil dihapus, silahkan hubungi admin untuk pemulihan data jika diperlukan.', 'type'=>'success']);
+        }
+
+        return redirect()->route('du')->with('alert', ['message'=>"Data DU gagal dihapus !", 'type'=>'danger']);
+    }
 }

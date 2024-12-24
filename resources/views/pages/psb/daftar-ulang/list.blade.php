@@ -100,6 +100,55 @@
             $("#preview").attr("src", `${target}`);
             $('#modal').openModal();
         }
+
+        function confirmDelete(elem) {
+
+            // Generate a random math question
+            const num1 = Math.floor(Math.random() * 10) + 1; // Random number between 1 and 10
+            const num2 = Math.floor(Math.random() * 10) + 1; // Random number between 1 and 10
+            const correctAnswer = num1 + num2; // Calculate the correct answer
+
+
+            var span = document.createElement("span");
+            span.innerHTML = `Konfirmasi Hapus: ${num1} + ${num2}`;
+
+            swal({
+                title: `Konfirmasi Hapus: ${num1} + ${num2}`,
+                text: "Data DU yang dihapus akan hilang, silahkan hubungi admin untuk pemulihan data, tetapi gambar tidak bisa dipulihkan !", // Caption before the input
+                content: "input",
+                icon: "warning",
+                buttons: true,
+            }).then((answer) => {
+
+            if (answer === null) {
+                return; // If the user cancels, do nothing
+            }
+
+            if (parseInt(answer) === correctAnswer) {
+                var data = elem.getAttribute("data-target");
+                // document.location = data;
+
+                var form = document.createElement("form");
+                form.method = "POST";
+                form.action = data;   
+
+                var token = document.createElement("input");
+                token.name = "_token";
+                token.value = "{{ csrf_token() }}";
+                
+                form.appendChild(token);
+                document.body.appendChild(form);
+                form.submit();
+
+
+            } else {
+                swal(`Jawaban tidak tepat, proses hapus dibatalkan`);
+            }
+
+            return;
+                
+            });
+        }
     </script>
 @endsection
 
@@ -124,6 +173,13 @@
     <!--start container-->
     <div class="container" style="margin-bottom: 25px">
         <section class="section users-view">
+
+            <div class="row">
+                <div class="col s12">
+                    @include('layouts.materialized.components.alert')
+                </div>
+            </div>
+            
             <div class="row">
                 <div class="col s12">
                     <div class="card">
@@ -193,7 +249,8 @@
                                             <td>{{ $du->jenis_kbm }}</td>
                                             <td>
                                                 <a class="btn cyan" style="margin-bottom: 0.25rem;" data-path="{{ '/storage/daftar-ulang/' . $du->upload_file }}" target="#" onclick="loadImage(this)">Bukti</a> &nbsp;
-                                                <a class="btn green" href="{{ route('du.edit', ['id' => $du->id]) }}">Edit</a>
+                                                <a class="btn green" style="margin-bottom: 0.25rem;" href="{{ route('du.edit', ['id' => $du->id]) }}">Edit</a>
+                                                <a class="btn red" style="margin-bottom: 0.25rem;" data-target="{{ route('du.remove', ['id' => $du->id]) }}" onclick="confirmDelete(this)">Hapus</a>
                                             </td>
                                         </tr>
                                     @endforeach

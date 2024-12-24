@@ -191,6 +191,7 @@ Route::prefix('/daftar-ulang')->name('du')->group(function() {
 	Route::get('/summary', 		[PSBController::class, 'daftarUlangSummary'])->name('.summary');
 
 	Route::match(['get', 'post'], '/{id}/edit', [PSBController::class, 'editDaftarUlang'])->name('.edit');
+	Route::post('/{id}/remove', [PSBController::class, 'removeDaftarUlang'])->name('.remove');
 
 	// Route::get('/add', 		[PSBController::class, 'formDaftarUlang'])->name('.add');
 	Route::patch('/{id}/verify', [PSBController::class, 'verify'])->name('.verify');
