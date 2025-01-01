@@ -111,6 +111,7 @@
 								@endif
 							</thead>
 							<tbody> 
+								@php $countDU = 0; @endphp
 								@foreach ($peserta as $santri)
 								<tr> 
 									<td class="text-center">
@@ -142,14 +143,22 @@
 										@endif
 									</td>
 									<td>
-										<div class="chip green white-text"> <i class="mdi-action-event"></i> DU</span></div>
-										{{-- <div class="chip green white-text"> <i class="mdi-action-event"></i> CUTI</span></div>
-										<div class="chip green white-text"> <i class="mdi-action-event"></i> TIDAK LANJUT</span></div>
-										<div class="chip green white-text"> <i class="mdi-action-event"></i> ...</span></div> --}}
+										@if (!empty($santri->daftarUlang))
+											@php $countDU++; @endphp
+											@if(@$santri->daftarUlang->jenis_kbm == "CUTI" || @$santri->daftarUlang->hari == "CUTI") 
+												<div class="chip black white-text"> <span>CUTI</span></div>
+											@else 
+												<div class="chip green white-text"> DU</div>
+											@endif
+										@endif
 									</td>
 								</tr>
 								@endforeach
 							</tbody>
+							<tfoot>
+								<th colspan="12"></th>
+								<th class="text-center">{{ $countDU }} / {{ count($peserta) }}</th>
+							</tfoot>
 						</table>
 					</div>
 				</div>

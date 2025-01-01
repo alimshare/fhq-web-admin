@@ -2,6 +2,7 @@
 
 namespace App\Model\View;
 
+use App\Model\DaftarUlang;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -15,4 +16,7 @@ class ViewPeserta extends Model
     
     protected 	$table 		= "view_peserta";
 
+    function daftarUlang() {
+        return $this->belongsTo(DaftarUlang::class, 'peserta_id', 'peserta_id');
+    }
 }

@@ -110,8 +110,9 @@ class HalaqohController extends Controller
     public function detail(Request $request, $reference=null)
     {
 
-        $this->data['halaqoh'] = $halaqoh = \App\Model\View\ViewHalaqoh::where('halaqoh_reference', $reference)->with('kbm')->first();
-        $this->data['peserta'] = \App\Model\View\ViewPeserta::where('halaqoh_reference', $reference)->get();
+        $this->data['halaqoh'] = $halaqoh = \App\Model\View\ViewHalaqoh::where('halaqoh_reference', $reference)
+            ->with(['kbm'])->first();
+        $this->data['peserta'] = \App\Model\View\ViewPeserta::where('halaqoh_reference', $reference)->with('daftarUlang')->get();
 
         $halaqohId = $halaqoh->halaqoh_id;
         $this->data['total_kehadiran'] = Attendance::selectRaw('peserta_id, COUNT(1) count_kehadiran')
