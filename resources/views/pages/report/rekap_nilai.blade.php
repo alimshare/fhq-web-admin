@@ -134,6 +134,7 @@
                                         <th>Status</th>
                                         <th>Catatan</th>
                                         <th>Catatan Manajemen</th>
+                                        <th>Status DU</th>
                                     </tr>
                                     <tr class="row-filter">
                                         <th>
@@ -170,6 +171,7 @@
                                         </th>
                                         <th><input type="text" placeholder="Cari Catatan" id="paramCatatan" class="input-text"></th>
                                         <th><input type="text" placeholder="Cari Catatan" id="paramCatatanManajemen" class="input-text"></th>
+                                        <th><input type="text" placeholder="Cari Status DU" id="paramStatusDU" class="input-text"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -189,7 +191,16 @@
                                             <td>{{ $n->kehadiran }}</td>
                                             <td>{{ $n->status }}</td>
                                             <td>{{ $n->catatan }}</td>
-                                            <td>{{ $n->catatan_manajemen }}</td>
+                                            <td>{{ $n->catatan_manajemen }}</td>                                            
+                                            <td>
+                                                @if (!empty($n->daftarUlang))
+                                                    @if(@$n->daftarUlang->jenis_kbm == "CUTI" || @$n->daftarUlang->hari == "CUTI") 
+                                                        CUTI
+                                                    @else 
+                                                        Sudah DU
+                                                    @endif
+                                                @endif
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>

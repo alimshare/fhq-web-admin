@@ -143,7 +143,7 @@ class HomeController extends Controller
 
         $data['semester'] = $semester;
         $data['list'] = \App\Model\View\ViewPeserta::where('semester_id', $semesterId)
-            ->orderBy('pengajar_name', 'asc')->orderBy('santri_name','asc')->get();
+            ->orderBy('pengajar_name', 'asc')->with('daftarUlang')->orderBy('santri_name','asc')->get();
         $data['days'] = explode(",", strtoupper(env('AVAILABLE_DAYS', 'SABTU,AHAD')));
 
         return view('pages.report.rekap_nilai',$data);
