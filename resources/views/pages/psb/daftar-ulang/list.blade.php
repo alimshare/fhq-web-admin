@@ -71,12 +71,19 @@
             "paging":false,
             "lengthChange": true,
             ordering: false,
-            "columnDefs": [
-            {
-                // targets : [0,1,2,12,13], 
-                // orderable : false
+            initComplete: function () {
+                this.api().columns().every( function () {
+                    var column = this;
+
+                    $( 'input', this.header() ).on( 'keyup change clear', function () {
+                        if ( column.search() !== this.value ) {
+                            column.search( this.value ).draw();
+                        }
+                    } );
+                    
+
+                } );
             }
-            ]
         });
 
         function verify(e) {
@@ -183,6 +190,8 @@
             <div class="row">
                 <div class="col s12">
                     <div class="card">
+                        {{-- <a class="btn green" style="margin-bottom: 0.25rem;" href="{{ route('du.export') }}">Export</a> --}}
+
                         <div class="table-responsive" style="overflow-x:scroll">
                             <table id="datatable" class="display datatable bordered">
                                 <thead>
@@ -198,37 +207,18 @@
                                         <th>Pilihan KBM</th>
                                         <th>Action</th>
                                     </tr>
-                                    {{-- <tr class="row-filter">
-                                        <td>
-                                            <select id="paramVerified">
-                                                <option value=""></option>
-                                                <option value="checked">Sudah</option>
-                                                <option value="unchecked">Belum</option>
-                                            </select>
-                                        </td>
+                                    <tr class="row-filter">
                                         <td></td>
+                                        <th><input type="text" placeholder="Cari Waktu" id="paramWaktu" class="input-text"></th>
                                         <th><input type="text" placeholder="Cari NIS" id="paramNIS" class="input-text"></th>
                                         <th><input type="text" placeholder="Cari Santri" id="paramSantri" class="input-text"></th>
-                                        <th></th>
+                                        <th><input type="text" placeholder="Cari Tgl Lahir" id="paramDOB" class="input-text"></th>
                                         <th><input type="text" placeholder="Cari Program" id="paramProgram" class="input-text"></th>
                                         <th><input type="text" placeholder="Cari Pengajar" id="paramPengajar" class="input-text"></th>                                        
-                                        <th>
-                                            <select id="paramHari">
-                                                <option value=""></option>
-                                                @foreach ($days as $day)
-                                                    <option value="{{ $day }}">{{ $day }}</option>
-                                                @endforeach
-                                            </select>
-                                        </th>
-                                        <td>
-                                            <select id="paramKbm">
-                                                <option value=""></option>
-                                                <option value="OFFLINE">OFFLINE</option>
-                                                <option value="ONLINE">ONLINE</option>
-                                            </select>
-                                        </td>
+                                        <th><input type="text" placeholder="Cari Hari" id="paramHari" class="input-text"></th> 
+                                        <th><input type="text" placeholder="Cari KBM" id="paramKBM" class="input-text"></th> 
                                         <td data-dt-order="disable"></td>
-                                    </tr> --}}
+                                    </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($list as $du)
