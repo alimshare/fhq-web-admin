@@ -60,6 +60,12 @@
         .btn-outline:hover {
             background-color: #ddd;
         }
+
+        .select-wrapper span.caret {
+            color: darkgray;
+            right: 4px;
+            top: 9px;
+        }
     </style>
 @endsection
 
@@ -75,11 +81,34 @@
                 this.api().columns().every( function () {
                     var column = this;
 
-                    $( 'input', this.header() ).on( 'keyup change clear', function () {
-                        if ( column.search() !== this.value ) {
-                            column.search( this.value ).draw();
-                        }
-                    } );
+                    // $( 'input', this.header() ).on( 'keyup change clear', function () {
+                    //     if ( column.search() !== this.value ) {
+                    //         column.search( this.value ).draw();
+                    //     }
+                    // } );
+
+                    if ([6].includes(column.index())) {
+                        var select = $('<select><option value=""></option></select>')
+                            .appendTo( $(column.header()).empty() )
+                            .on( 'change', function () {
+                                var val = $.fn.dataTable.util.escapeRegex(
+                                    $(this).val()
+                                );
+        
+                                column.search( val ? '^'+val+'$' : '', true, false).draw();
+                            });
+        
+                        column.data().unique().sort().each( function ( d, j ) {
+                            select.append( '<option value="'+d+'">'+d+'</option>' )
+                        });
+
+                    } else {
+                        $( 'input', this.header() ).on( 'keyup change clear', function () {
+                            if ( column.search() !== this.value ) {
+                                column.search( this.value ).draw();
+                            }
+                        } );
+                    }
                     
 
                 } );
@@ -196,33 +225,41 @@
                             <table id="datatable" class="display datatable bordered">
                                 <thead>
                                     <tr class="cyan darken-3 white-text" class="row-header">
+                                        <th>No</th>
                                         <th>Verifikasi</th>
                                         <th>Waktu</th>
                                         <th>NIS</th>
                                         <th>Santri</th>
-                                        <th>Tanggal Lahir</th>
+                                        <th>Umur</th>
+                                        <th>Semester</th>
                                         <th>Program</th>
                                         <th>Pengajar</th>
+                                        <th>Status</th>
                                         <th>Pilihan Hari</th>
                                         <th>Pilihan KBM</th>
                                         <th>Action</th>
                                     </tr>
                                     <tr class="row-filter">
                                         <td></td>
+                                        <td></td>
                                         <th><input type="text" placeholder="Cari Waktu" id="paramWaktu" class="input-text"></th>
                                         <th><input type="text" placeholder="Cari NIS" id="paramNIS" class="input-text"></th>
                                         <th><input type="text" placeholder="Cari Santri" id="paramSantri" class="input-text"></th>
-                                        <th><input type="text" placeholder="Cari Tgl Lahir" id="paramDOB" class="input-text"></th>
+                                        <th><input type="text" placeholder="Cari Umur" id="paramAge" class="input-text"></th>
+                                        <th><input type="text" placeholder="Cari Semester" id="paramSemester" class="input-text"></th>
                                         <th><input type="text" placeholder="Cari Program" id="paramProgram" class="input-text"></th>
                                         <th><input type="text" placeholder="Cari Pengajar" id="paramPengajar" class="input-text"></th>                                        
+                                        <th><input type="text" placeholder="Cari Status" id="paramStatus" class="input-text"></th> 
                                         <th><input type="text" placeholder="Cari Hari" id="paramHari" class="input-text"></th> 
                                         <th><input type="text" placeholder="Cari KBM" id="paramKBM" class="input-text"></th> 
                                         <td data-dt-order="disable"></td>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @php $i = 1; @endphp
                                     @foreach ($list as $du)
                                         <tr>
+                                            <td>{{ $i++ }}.</td>
                                             <td class="text-center">
                                                 <input type="checkbox" style="position:inherit;visibility:visible"
                                                     name="verified" id="verified" data-id="{{ $du->id }}"
@@ -232,9 +269,11 @@
                                             <td>{{ $du->created_at }}</td>
                                             <td>{{ $du->nis }}</td>
                                             <td>{{ $du->santri_name }}</td>
-                                            <td>{{ $du->tgl_lahir }}</td>
+                                            <td>{{ date('Y') - date('Y', strtotime($du->tgl_lahir)) }}</td>
+                                            <td>{{ $du->semester_name }}</td>
                                             <td>{{ $du->program_name }}</td>
                                             <td>{{ $du->pengajar_name }}</td>
+                                            <td>{{ $du->status }}</td>
                                             <td>{{ $du->hari }}</td>
                                             <td>{{ $du->jenis_kbm }}</td>
                                             <td>

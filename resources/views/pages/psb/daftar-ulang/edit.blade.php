@@ -131,6 +131,15 @@
                                                 </div>
                                             </div>
 
+                                            <div class="row">
+                                                <label for="" class="col s12">
+                                                    Nomor Handphone
+                                                </label>
+                                                <div class="input-field col s12">
+                                                    <input type="text" name="phone" id="" class="disable" value="{{ $du->peserta->santri->phone }}" readonly>
+                                                </div>
+                                            </div>
+
                                             <div class="card-footer text-right" style="margin-top: 1rem;">
                                                 <button class="btn waves-effect waves-light light-blue darken-4"
                                                     type="submit" name="submit" id="submit">
@@ -150,6 +159,18 @@
 
                                         <table class="table bordered">
                                             <tr>
+                                                <td>Semester</td>
+                                                <td>{{ $du->peserta->halaqoh->getSemester()->id }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Hari</td>
+                                                <td>{{ $du->peserta->halaqoh->day }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Jenis KBM</td>
+                                                <td>{{ $du->peserta->halaqoh->jenis_kbm }}</td>
+                                            </tr>
+                                            <tr>
                                                 <td>Program</td>
                                                 <td>{{ $du->peserta->halaqoh->getProgram()->name }}</td>
                                             </tr>
@@ -158,8 +179,8 @@
                                                 <td>{{ $du->peserta->halaqoh->getPengajar()->name }}</td>
                                             </tr>
                                             <tr>
-                                                <td>Hari</td>
-                                                <td>{{ $du->peserta->halaqoh->day }}</td>
+                                                <td>Status</td>
+                                                <td>{{ $du->peserta->status }}</td>
                                             </tr>
                                         </table>
                                         
