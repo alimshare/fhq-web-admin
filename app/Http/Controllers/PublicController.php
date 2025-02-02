@@ -144,6 +144,10 @@ class PublicController extends Controller
     {
         $data = [];
 
+        if ($hash == "d48bc198e533871aa9e0985c083ab9a56efb8197") {
+            abort(403, "Periode Daftar Ulang sudah berakhir, Silahkan hubungi admin untuk informasi lebih lanjut.");
+        }
+
         if ($hash != "d48bc198e533871aa9e0985c083ab9a56efb8197") {
             abort(403, "Alamat URL tidak valid.");
         }
