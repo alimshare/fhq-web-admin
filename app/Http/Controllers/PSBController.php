@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Model\Daftar\CalonSantri;
 use App\Model\DaftarUlang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -101,5 +102,14 @@ class PSBController extends Controller
         }
 
         return redirect()->route('du')->with('alert', ['message'=>"Data DU gagal dihapus !", 'type'=>'danger']);
+    }
+
+    function daftarCalonSantri() {
+        $calonSantri = CalonSantri::select('calon_santri.registration_number','name','calon_santri.program','calon_santri.is_child',
+                'jenis_kbm', 'birth_date', 'gender','day', 'calon_santri.created_at', DB::raw('placement_test.program AS program_pt'), 
+                'placement_test.penguji', 'calon_santri.upload_file')
+            ->leftJoin('placement_test', 'placement_test.registration_number', 'calon_santri.registration_number')->get();
+        
+        return view('pages.psb.psb.list')->with('data', $calonSantri);
     }
 }

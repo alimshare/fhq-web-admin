@@ -196,3 +196,7 @@ Route::prefix('/daftar-ulang')->name('du')->group(function() {
 	// Route::get('/add', 		[PSBController::class, 'formDaftarUlang'])->name('.add');
 	Route::patch('/{id}/verify', [PSBController::class, 'verify'])->name('.verify');
 });
+
+Route::prefix('/psb')->name('psb')->group(function() {
+	Route::get('', 				[PSBController::class, 'daftarCalonSantri']);
+});
