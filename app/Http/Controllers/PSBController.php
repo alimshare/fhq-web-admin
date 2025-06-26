@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Model\DaftarUlang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 
 class PSBController extends Controller
@@ -21,10 +22,15 @@ class PSBController extends Controller
 
     function daftarUlang(Request $request)
     {
+        $semester = !empty($request->semester_id) ?  $request->semester_id : Session::get('semesterActive')->next_semester_id;
+
         $data['list'] = DaftarUlang::join(DB::raw('view_peserta AS v'), 'v.peserta_id', 'daftar_ulang.peserta_id')
             ->select('daftar_ulang.id', 'daftar_ulang.peserta_id', 'daftar_ulang.hari', 'daftar_ulang.jenis_kbm', 
             'daftar_ulang.upload_file','daftar_ulang.created_at','daftar_ulang.verified_at', 
-            'daftar_ulang.tgl_lahir', 'v.nis', 'v.santri_name', 'v.pengajar_name', 'v.program_name','v.status','v.semester_name')->orderBy('created_at', 'DESC')->get();
+            'daftar_ulang.tgl_lahir', 'v.nis', 'v.santri_name', 'v.pengajar_name', 'v.program_name','v.status','v.semester_name')
+            ->where('next_semester_id', $semester)
+            ->orderBy('created_at', 'DESC')
+            ->get();
             
         $data['days'] = explode(",", strtoupper(env('AVAILABLE_DAYS', 'SABTU,AHAD')));
         

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Model\DaftarUlang;
 use App\Model\Peserta;
 use App\Model\Santri;
+use App\Model\Semester;
 use App\Model\View\ViewHalaqoh;
 use App\Model\View\ViewPeserta;
 use Illuminate\Http\Request;
@@ -144,36 +145,38 @@ class PublicController extends Controller
     {
         $data = [];
 
-        if ($hash == "d48bc198e533871aa9e0985c083ab9a56efb8197") {
-            abort(403, "Periode Daftar Ulang sudah berakhir, Silahkan hubungi admin untuk informasi lebih lanjut.");
-        }
+        $validHash = env('PSB_SECURITY_HASH', sha1('fhq.37.du'));
 
-        if ($hash != "d48bc198e533871aa9e0985c083ab9a56efb8197") {
+        // if ($hash == "d48bc198e533871aa9e0985c083ab9a56efb8197") {
+            // abort(403, "Periode Daftar Ulang sudah berakhir, Silahkan hubungi admin untuk informasi lebih lanjut.");
+        // }
+
+        if ($hash != $validHash) {
             abort(403, "Alamat URL tidak valid.");
         }
 
         if ($request->method() == "POST") {
 
             $data['nis'] = $nis = @$request->nis;
+            $semesterActive   = Semester::getActive();
 
             $santri = Santri::select('id', 'nis', 'name', 'phone')->where('nis', $nis)->first();
             if (!$santri) {
-                return redirect()->route('public.du.form', [
-                        'semester'=>$semester, 'hash' => "d48bc198e533871aa9e0985c083ab9a56efb8197"]
-                    )->with('alert', ['message'=>"Santri dengan NIS <b>$nis</b> tidak ditemukan !", 'type'=>'danger']);
+                return redirect()->route('public.du.form', ['semester'=>$semester, 'hash' => $hash])
+                    ->with('alert', ['message'=>"Santri dengan NIS <b>$nis</b> tidak ditemukan !", 'type'=>'danger']);
             }
 
             $halaqohList = Peserta::join(DB::raw('view_halaqoh AS vh'), 'vh.halaqoh_id', 'peserta.halaqoh_id')
                 ->leftJoin(DB::raw('daftar_ulang as du'), 'du.peserta_id', 'peserta.id')
                 ->where('santri_id', $santri->id)
-                ->where('semester_id', $semester)
+                ->where('vh.semester_id', $semester)
                 ->select(DB::raw('peserta.id AS peserta_id'), 'vh.pengajar_name', 'vh.program_name', 'vh.day', 'vh.jenis_kbm', 'vh.semester_id', 
-                    DB::raw('du.id AS daftar_ulang_id'), 'du.verified_at')
+                    DB::raw('du.id AS daftar_ulang_id'), 'du.verified_at', 'du.next_semester_id')
                 ->get();
 
             if ($halaqohList->count() == 0) {
                 return redirect()->route('public.du.form', [
-                        'semester'=>$semester, 'hash' => "d48bc198e533871aa9e0985c083ab9a56efb8197"]
+                        'semester'=>$semester, 'hash' => $hash]
                     )->with('alert', ['message'=>"Santri bukan peserta aktif pada Semester <b>$semester</b> !", 'type'=>'danger']);
             }
 
@@ -208,13 +211,14 @@ class PublicController extends Controller
                 $o->jenis_kbm = $request->jenis_kbm;
                 $o->tgl_lahir = $request->tgl_lahir;
                 $o->upload_file = $file->hashName();
+                $o->next_semester_id = $semesterActive->next_semester_id;
 
                 if ($o->save()) {
                     return redirect()->route('public.du.success');
                 }
 
                 return redirect()->route('public.du.form',[
-                    'semester'=>$semester, 'hash' => "d48bc198e533871aa9e0985c083ab9a56efb8197"]
+                    'semester'=>$semester, 'hash' => $hash]
                 )->with('alert', ['message'=>"Terjadi masalah ketika menyimpan data, Harap hubungi admin untuk informasi lebih lanjut.", 'type'=>'danger']);
 
             }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Model\Semester;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 
@@ -28,6 +29,8 @@ class LoginController extends Controller
 
     protected function authenticated(Request $request, $user)
     {
+        $request->session()->put('semesterActive', Semester::getActive());
+        
         if ( $user->isPengajar() ) {// do your magic here
             return redirect()->route('profile');
         }

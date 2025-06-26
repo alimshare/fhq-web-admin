@@ -75,7 +75,7 @@
                         <div class="collapsible-body">
                             <ul>
                                 <li><a href="{{ route('du') }}">Daftar Ulang</a></li>
-                                <li><a href="{{ route('public.du.form', ['semester'=>35, 'hash'=>sha1('fhq.35.du')]) }}">Form Daftar Ulang</a></li>
+                                <li><a target="_blank" href="{{ route('public.du.form', ['semester'=> Session::get('semesterActive')->id, 'hash'=> env('PSB_SECURITY_HASH') ]) }}">Form Daftar Ulang</a></li>
                             </ul>
                         </div>
                     </li>
