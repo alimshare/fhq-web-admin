@@ -11,6 +11,7 @@ use \App\Model\ActivityReport;
 use \App\Model\Attendance;
 use Exception;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class AbsensiController extends Controller
 {
@@ -204,9 +205,11 @@ class AbsensiController extends Controller
 
     public function rekapKBM(Request $request)
     {
-        $semesterActive = \App\Model\Semester::getActive();
-        $data['kbm']    = ActivityReport::whereIn('halaqoh_id', function ($query) use ($semesterActive) {
-                $query->select('id')->from('halaqoh')->where('semester_id', $semesterActive->id);
+        $semesterActive = Session::get('semesterActive');
+        $semesterId = empty($request->semester_id) ? $semesterActive->id : $request->semester_id;
+
+        $data['kbm']    = ActivityReport::whereIn('halaqoh_id', function ($query) use ($semesterId) {
+                $query->select('id')->from('halaqoh')->where('semester_id', $semesterId);
             })
             ->with('halaqoh')
             ->withCount(['attendances', 'hadir'])

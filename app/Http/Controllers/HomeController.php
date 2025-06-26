@@ -13,7 +13,7 @@ use \App\Model\ActivityReport;
 use \App\Model\Attendance;
 use \App\Exports\RekapNilaiExport;
 use Excel;
-
+use Illuminate\Support\Facades\Session;
 
 class HomeController extends Controller
 {
@@ -199,11 +199,12 @@ class HomeController extends Controller
 
     public function rekapKehadiran(Request $request)
     {
-        $semesterActive = \App\Model\Semester::getActive();
+        $semesterActive = Session::get('semesterActive');
+        $semesterId = empty($request->semester_id) ? $semesterActive->id : $request->semester_id;
         $data['kehadiran'] = Attendance::selectRaw('peserta_id, COUNT(1) count_kehadiran')
             ->with('peserta')
-            ->whereIn('peserta_id', function ($query) use ($semesterActive) {
-                $query->select('peserta_id')->from('view_peserta')->where('semester_id', $semesterActive->id);
+            ->whereIn('peserta_id', function ($query) use ($semesterId) {
+                $query->select('peserta_id')->from('view_peserta')->where('semester_id', $semesterId);
             })
             ->where('status', 1)
             ->groupBy('peserta_id')

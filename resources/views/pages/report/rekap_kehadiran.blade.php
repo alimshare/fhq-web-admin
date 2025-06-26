@@ -86,6 +86,10 @@
         }
     });
 
+    @if (!empty(Request::get('semester_id'))) 
+        $('#filter-semester').val({{ Request::get('semester_id') }}).trigger('change');
+    @endif
+
 </script>
 @endsection
 
@@ -111,6 +115,19 @@
 
 <div class="col s12">
     <div class="container">
+
+        <div class="section" style="display: flex; justify-content:space-between; padding:0px;">
+            <form action="" method="get" style="display: inline-flex; align-items:center; gap:1.5rem;">
+                <select name="semester_id" id="filter-semester" class="browser-default">
+                    <option value="">- Pilih Semester -</option>
+                    @for($i=0; $i < 5; $i++)
+                        @php $semesterId = Session::get('semesterActive')->id - $i; @endphp
+                        <option value="{{ $semesterId }}">Semester {{ $semesterId }}</option>
+                    @endfor
+                </select>
+                <button type="submit">Pilih</button>
+            </form>
+        </div>
   
         <div class="section">
             <div class="card-panel l6 no-padding" style="padding-bottom: 15px !important">

@@ -72,6 +72,10 @@
             } );
         }
     });
+
+    @if (!empty(Request::get('semester_id'))) 
+        $('#filter-semester').val({{ Request::get('semester_id') }}).trigger('change');
+    @endif
 </script>
 @endsection
 
@@ -108,9 +112,22 @@
 
           <div class="row text-right">
               <div class="col s12">
-                @allow('rekap-kbm.download')
-                <a href="{{ route('rekap.kbm.download') }}" class="btn cyan darken-2">Download</a>
-                @endallow
+                <div class="section" style="display: flex; justify-content:space-between">
+                    <form action="" method="get" style="display: inline-flex; align-items:center; gap:1.5rem;">
+                        <select name="semester_id" id="filter-semester" class="browser-default">
+                            <option value="">- Pilih Semester -</option>
+                            @for($i=0; $i < 5; $i++)
+                                @php $semesterId = Session::get('semesterActive')->id - $i; @endphp
+                                <option value="{{ $semesterId }}">Semester {{ $semesterId }}</option>
+                            @endfor
+                        </select>
+                        <button type="submit">Pilih</button>
+                    </form>
+
+                    @allow('rekap-kbm.download')
+                    <a href="{{ route('rekap.kbm.download') }}" class="btn cyan darken-2">Download</a>
+                    @endallow
+                </div>
               </div>
           </div>
 
