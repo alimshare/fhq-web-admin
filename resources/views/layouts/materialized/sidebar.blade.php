@@ -74,7 +74,7 @@
                     <li class="bold"><a class="collapsible-header waves-effect waves-cyan"><i class="mdi-toggle-radio-button-on"></i> Manajemen DU</a>
                         <div class="collapsible-body">
                             <ul>
-                                <li><a href="{{ route('du') }}">Daftar Ulang</a></li>
+                                <li><a href="{{ route('du') }}">Peserta Daftar Ulang</a></li>
                                 @if(Session::has('semesterActive'))
                                     <li><a target="_blank" href="{{ route('public.du.form', ['semester'=> Session::get('semesterActive')->id, 'hash'=> env('PSB_SECURITY_HASH') ]) }}">Form Daftar Ulang</a></li>
                                 @endif
