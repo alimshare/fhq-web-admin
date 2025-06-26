@@ -77,9 +77,11 @@
                         <time class="media-meta" datetime="2015-06-12T20:50:48+08:00">1 week ago</time>
                       </li>
                     </ul> -->
-                  <div class="text-right" style="margin-right: 2rem">
-                    <div class="chip green white-text">Semester {{ @Session::get('semesterActive')->name }}</div>
-                  </div>
+                    @if(Session::has('semesterActive'))
+                      <div class="text-right" style="margin-right: 2rem">
+                        <div class="chip green white-text">Semester {{ Session::get('semesterActive')->name }}</div>
+                      </div>
+                    @endif
                 </div>
             </nav>
         </div>
