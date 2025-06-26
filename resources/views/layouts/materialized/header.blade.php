@@ -78,7 +78,7 @@
                       </li>
                     </ul> -->
                   <div class="text-right" style="margin-right: 2rem">
-                    <div class="chip green white-text">Semester {{ Session::get('semesterActive')->name }}</div>
+                    <div class="chip green white-text">Semester {{ @Session::get('semesterActive')->name }}</div>
                   </div>
                 </div>
             </nav>
