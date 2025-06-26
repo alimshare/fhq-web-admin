@@ -78,9 +78,13 @@
         table.order([columnIndex, type]).draw();
     }
 
-        $("#btn_add").click(function(){
-            $("form-daftar").show();
-        });
+    $("#btn_add").click(function(){
+        $("form-daftar").show();
+    });
+
+    @if (!empty(Request::get('semester_id'))) 
+        $('#filter-semester').val({{ Request::get('semester_id') }}).trigger('change');
+    @endif
 
 </script>
 @endsection
@@ -108,11 +112,24 @@
 
         <!--start container-->
         <div class="container" style="margin-bottom: 25px">
-            <div class="section text-right">
+            <div class="section" style="display: flex; justify-content:space-between">
+                <form action="" method="get" style="display: inline-flex; align-items:center; gap:1.5rem;">
+                    <select name="semester_id" id="filter-semester" class="browser-default">
+                        <option value="">- Pilih Semester -</option>
+                        @for($i=0; $i < 5; $i++)
+                            @php $semesterId = Session::get('semesterActive')->id - $i; @endphp
+                            <option value="{{ $semesterId }}">Semester {{ $semesterId }}</option>
+                        @endfor
+                    </select>
+                    <button type="submit">Pilih</button>
+                </form>
+
                 @allow('rekap-nilai.download')
                 <a href="{{ route('rekap.nilai.download') }}" class="btn cyan darken-2">Download</a>
                 @endallow
-                </div>
+            </div>
+
+
                 <div class="row">
                     <div class="col s12">
                         <div style="overflow-x: scroll;">

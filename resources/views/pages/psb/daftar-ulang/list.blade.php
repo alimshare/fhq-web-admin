@@ -185,6 +185,10 @@
                 
             });
         }
+
+        @if (!empty(Request::get('semester_id'))) 
+            $('#filter-semester').val({{ Request::get('semester_id') }}).trigger('change');
+        @endif
     </script>
 @endsection
 
@@ -217,7 +221,7 @@
             </div>
             
             <form action="" method="get" style="display: inline-flex; align-items:center; gap:1.5rem;">
-                <select name="semester_id" class="browser-default">
+                <select name="semester_id" id="filter-semester" class="browser-default">
                     <option value="">- Pilih Semester -</option>
                     <option value="37">Semester 37</option>
                     <option value="36">Semeter 36</option>
