@@ -129,10 +129,10 @@
         <div class="container">
             <div class="row">
                 <div class="col s12 m12 l12">
-                    <h5 class="breadcrumbs-title">Peserta Daftar Ulang</h5>
+                    <h5 class="breadcrumbs-title">Pendaftaran Peserta Baru</h5>
                     <ol class="breadcrumbs">
                         <li><a href="/" class="cyan-text">Home</a></li>
-                        <li class="active">Peserta Daftar Ulang</li>
+                        <li class="active">Peserta Baru</li>
                     </ol>
                 </div>
             </div>
