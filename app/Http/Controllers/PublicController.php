@@ -144,6 +144,7 @@ class PublicController extends Controller
     function daftarUlang(Request $request, $semester, $hash)
     {
         $data = [];
+        $data['semester'] = $semester;
 
         $validHash = env('PSB_SECURITY_HASH', sha1('fhq.37.du'));
 

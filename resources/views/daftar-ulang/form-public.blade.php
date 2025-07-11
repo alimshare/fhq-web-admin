@@ -119,6 +119,11 @@
                     <label for="nis">NIS (Nomor Induk Santri)</label>
                     <input type="number" name="nis" value="{{ $nis ?? '' }}">
                     <button type="submit" class="button button-primary">Cek Kepesertaan</button>
+                    @if($semester == "36")
+                    <p>
+                        Cek Kepesertaan pada link berikut: <a href="https://bit.ly/Halaqah36FHQ" target="_blank">bit.ly/Halaqah36FHQ</a>
+                    </p>
+                    @endif
                 </form>
 
                 @if (session('alert'))
