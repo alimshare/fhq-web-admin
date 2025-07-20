@@ -186,12 +186,17 @@ class PublicController extends Controller
                 if (empty($h->daftar_ulang_id)) {
                     $isCompleted = false;
                 }
+
+                if ($h->next_semester_id != $semesterActive->next_semester_id) {
+                    $isCompleted = false;
+                }
             }
 
             $data['santri_name']    = $santri->name;
             $data['phone_masking']  = $this->maskPhoneNumber($santri->phone);
             $data['halaqohList']    = $halaqohList;
             $data['completed']      = $isCompleted;
+            $data['semesterActive'] = $semesterActive;
 
             /** Submit Daftar Ulang Form */
             if (isset($request->confirm)) {

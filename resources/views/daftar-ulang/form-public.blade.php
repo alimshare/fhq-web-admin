@@ -212,7 +212,7 @@
                                                     <td>{{ $item->program_name }}</td>
                                                     <td>{{ $item->pengajar_name }}</td>
                                                     <td>{{ empty($item->jenis_kbm) ? 'OFFLINE' : $item->jenis_kbm }}</td>
-                                                    <td>{{ $item->semester_id }}</td>
+                                                    <td>{{ $semesterActive->next_semester_id }}</td>
                                                 </tr>
                                             @endforeach
                                         </table>
