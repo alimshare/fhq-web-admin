@@ -170,6 +170,7 @@
                                         <th scope="col">Hasil PT</th>
                                         <th scope="col">Hari</th>
                                         <th scope="col">KBM</th>
+                                        <th scope="col">Nomor HP</th>
                                         <th scope="col"></th>
                                     </tr>
                                     <tr class="row-filter">
@@ -184,6 +185,7 @@
                                         <th><input type="text" placeholder="Hasil PT" id="paramHasilPt" class="input-text"></th> 
                                         <th><input type="text" placeholder="Cari Hari" id="paramHari" class="input-text"></th> 
                                         <th><input type="text" placeholder="Cari KBM" id="paramKBM" class="input-text"></th> 
+                                        <th><input type="text" placeholder="Cari Nomor HP" id="paramNoHp" class="input-text"></th> 
                                         <td data-dt-order="disable"></td>
                                     </tr>
                                 </thead>
@@ -210,6 +212,7 @@
                                             <td>{{ $cs->program_pt }}</td>
                                             <td>{{ $cs->day }}</td>
                                             <td>{{ $cs->jenis_kbm }}</td>
+                                            <td>{{ @$cs->phone }}</td>
                                             <td>
                                                 <a class="btn cyan" style="margin-bottom: 0.25rem;" data-path="{{ env('WEB_DAFTAR_IMAGE_PATH', "https://daftar.fhqannashr.org/storage/upload/") . $cs->upload_file }}" target="#" onclick="loadImage(this)">Bukti</a> &nbsp;
                                             </td>
