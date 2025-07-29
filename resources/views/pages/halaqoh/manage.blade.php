@@ -180,7 +180,7 @@
                                     <li class="collection-item">
                                         <div class="row">
                                             <div class="col s8">                                                
-                                                <label>{{ $h->pengajar }} </label>
+                                                <label>{{ $h->pengajar ?? "Belum Ditentukan" }} </label>
                                                 @if(strtoupper($h->jenis_kbm) == "ONLINE") <span class="badge new">Online</span> @endif
                                             </div>
                                             @allow('admin::manage::halaqoh')
