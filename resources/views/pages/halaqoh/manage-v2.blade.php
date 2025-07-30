@@ -26,6 +26,13 @@
     span.badge.new:after {
         content: "";
     }
+    .btn-move-up {
+        top: -8px;
+    }
+    h6 {
+        font-size: 1.1rem;
+        line-height: 180%;
+    }
 </style>
 @endsection
 
@@ -215,7 +222,7 @@
                                         <ul class="collection program-container-body" id="collection-{{ $h->reference }}" data-ref="{{ $h->reference }}" style="width:100%;height:270px;overflow-y:scroll">
                                             
                                             @foreach($h->peserta as $peserta)
-                                            <li class="collection-item" draggable="true" id="collection-item-{{ $peserta->peserta_reference }}" data-ref="{{ $peserta->peserta_reference }}">
+                                            <li class="collection-item" @allow('admin::manage::halaqoh') draggable="true" @endallow id="collection-item-{{ $peserta->peserta_reference }}" data-ref="{{ $peserta->peserta_reference }}">
                                                 <div class="row">
                                                     <div class="col s8"><label>{{ $peserta->santri_name }}</label></div>
 
