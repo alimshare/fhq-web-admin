@@ -37,7 +37,9 @@
 
             <li class="bold"><a href="/halaqoh/manage" class="waves-effect waves-cyan"><i class="mdi-toggle-radio-button-off"></i> Halaqoh Aktif</a></li>
 
+            
             @allow('edit-halaqoh')
+            <li class="bold"><a href="/halaqoh/manage/v2" class="waves-effect waves-cyan"><i class="mdi-toggle-radio-button-off"></i> Peserta Aktif</a></li>
             <li class="no-padding">
                 <ul class="collapsible collapsible-accordion">
                     <li class="bold"><a class="collapsible-header waves-effect waves-cyan"><i class="mdi-action-view-carousel"></i> Manajemen Halaqoh</a>

@@ -118,6 +118,7 @@ Route::group(['middleware' => []], function () {
 	Route::delete('halaqoh/remove', 'HalaqohController@remove');
 	Route::get('halaqoh/add', 'HalaqohController@add')->name('halaqoh.add');
 	Route::get('halaqoh/manage', 'HalaqohController@manage')->name('halaqoh.manage');
+	Route::get('halaqoh/manage/v2', 'HalaqohController@manage_v2')->name('halaqoh.manage.v2');
 	Route::post('halaqoh/add', 'HalaqohController@save')->name('halaqoh.addPost');
 
 	Route::get('halaqoh/{halaqohReference?}/edit-data', 'HalaqohController@editView')->name('halaqoh.edit');

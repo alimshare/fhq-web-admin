@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-use DB;
 use App\Model\{Semester, Halaqoh, Attendance, Peserta};
 use App\Model\View\ViewHalaqoh;
 use App\Model\View\ViewPeserta;
+use Illuminate\Support\Facades\DB;
 
 class HalaqohController extends Controller
 {
@@ -543,7 +543,7 @@ class HalaqohController extends Controller
     {
         $semesterActive = \App\Model\Semester::getActive();
         $program = \App\Model\Program::select('id','name')->orderBy('sequence','asc')->get();
-        $halaqohs = \App\Model\View\ViewHalaqoh::select('program_id', 'pengajar_name', 'day','halaqoh_reference','jenis_kbm')->where('semester_id', $semesterActive->id)->orderBy('pengajar_name','asc')->withCount(['peserta'])->get();
+        $halaqohs = \App\Model\View\ViewHalaqoh::select('program_id', 'pengajar_name', 'day','halaqoh_reference','jenis_kbm','program_name')->where('semester_id', $semesterActive->id)->orderBy('pengajar_name','asc')->withCount(['peserta'])->get();
 
         $days = explode(",", strtoupper(env('AVAILABLE_DAYS', 'SABTU,AHAD')) );
         
@@ -554,10 +554,46 @@ class HalaqohController extends Controller
                 'reference'=> $halaqoh->halaqoh_reference, 
                 'jenis_kbm' => $halaqoh->jenis_kbm,
                 'peserta_count' => $halaqoh->peserta_count,
+                'day' => $halaqoh->day,
+                'program' => $halaqoh->program_name,
+                'kbm' => $halaqoh->jenis_kbm,
             ];
         }
 
         return view('pages.halaqoh.manage', compact('program', 'data', 'days'));
+    }
+
+    public function manage_v2(Request $request)
+    {
+        $semesterActive = \App\Model\Semester::getActive();
+        $program = \App\Model\Program::select('id','name')->orderBy('sequence','asc')->get();
+        $halaqohs = \App\Model\View\ViewHalaqoh::select('halaqoh_id','program_id', 'pengajar_name', 'day','halaqoh_reference','jenis_kbm','program_name')
+            ->where('semester_id', $semesterActive->id)->orderBy('pengajar_name','asc')->withCount(['peserta'])->get();
+
+        $days = explode(",", strtoupper(env('AVAILABLE_DAYS', 'SABTU,AHAD')) );
+        
+        $data = array_fill_keys($days, []);
+        foreach ($halaqohs as $key => $halaqoh) {
+            $daftarPeserta = ViewPeserta::where('halaqoh_id', $halaqoh->halaqoh_id)
+                ->select('peserta_reference','santri_name', 'santri.gender', DB::raw("TIMESTAMPDIFF( YEAR, santri.birth_date, CURDATE( ) ) AS umur"))
+                ->leftJoin('santri', 'santri.id', 'view_peserta.santri_id')
+                ->orderBy('santri.gender')
+                ->orderBy('santri.birth_date')
+                ->get();
+
+            $data[$halaqoh->day][$halaqoh->program_id][] = (object)[
+                'pengajar'=> $halaqoh->pengajar_name, 
+                'reference'=> $halaqoh->halaqoh_reference, 
+                'jenis_kbm' => $halaqoh->jenis_kbm,
+                'peserta_count' => $halaqoh->peserta_count,
+                'day' => $halaqoh->day,
+                'program' => $halaqoh->program_name,
+                'kbm' => $halaqoh->jenis_kbm,
+                'peserta' => $daftarPeserta
+            ];
+        }
+
+        return view('pages.halaqoh.manage-v2', compact('program', 'data', 'days'));
     }
 
     public function cuti(Request $request)

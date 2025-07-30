@@ -18,6 +18,10 @@ class ViewHalaqoh extends Model
         return $this->hasMany(Peserta::class, 'halaqoh_id', 'halaqoh_id');
     }
 
+    public function getPeserta(){
+        return Peserta::where('halaqoh_id', '=', $this->id)->get();
+    }
+
     public function kbm()
     {
         return $this->hasMany(ActivityReport::class, 'halaqoh_id', 'halaqoh_id')->orderBy('tgl', 'asc');
