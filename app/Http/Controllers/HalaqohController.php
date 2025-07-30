@@ -72,7 +72,7 @@ class HalaqohController extends Controller
         $program_id     = $request->program;
         $pengajar_id    = $request->pengajar;
         $semester_id    = Semester::getActive()->id;
-        $redirectTo     = !empty($request->redirectTo) ? $request->redirectTo : '/halaqoh/add';
+        $redirectTo     = !empty($request->redirectTo) ? $request->redirectTo : '/halaqoh/add';  
 
         $halaqoh = Halaqoh::where('semester_id', $semester_id)
             ->where('pengajar_id', $pengajar_id)
@@ -176,9 +176,10 @@ class HalaqohController extends Controller
     public function editView(Request $request, $halaqohReference)
     {
         $this->data['halaqoh']  = ViewHalaqoh::where('halaqoh_reference', $halaqohReference)->first();                        
-    	$this->data['program']  = \App\Model\Program::orderBy('name','asc')->get();
-        $this->data['pengajar'] = \App\Model\Pengajar::orderBy('name','asc')->get();
+    	$this->data['program']  = Program::orderBy('name','asc')->get();
+        $this->data['pengajar'] = Pengajar::orderBy('name','asc')->get();
         $this->data['days']     = explode(",", strtoupper(env('AVAILABLE_DAYS', 'SABTU,AHAD')));
+        $this->data['redirectTo'] = $request->get('ref');
 
     	return view('pages.halaqoh.edit', $this->data);
     }
@@ -188,9 +189,11 @@ class HalaqohController extends Controller
      */
     public function editPost(Request $request)
     {
-        $halaqoh = Halaqoh::where('id', $request->input('id'))->first();
+        $halaqoh    = Halaqoh::where('id', $request->input('id'))->first();
+        $redirectTo = !empty($request->redirectTo) ? $request->redirectTo : 'halaqoh.manage';
+
         if (!$halaqoh) {
-            return redirect()->route('halaqoh.manage')->with('alert', ['message'=>"Data halaqoh tidak ditemukan", 'type'=>'danger']);
+            return redirect()->route($redirectTo)->with('alert', ['message'=>"Data halaqoh tidak ditemukan", 'type'=>'danger']);
         }
 
         if (!empty($request->input('program'))) {
@@ -208,9 +211,9 @@ class HalaqohController extends Controller
         $halaqoh->jenis_kbm     = $request->input('jenis_kbm');
 
         if ($halaqoh->save()){
-            return redirect()->route('halaqoh.manage')->with('alert', ['message'=>"Halaqoh berhasil diubah", 'type'=>'success']);
+            return redirect()->route($redirectTo)->with('alert', ['message'=>"Halaqoh berhasil diubah", 'type'=>'success']);
         } else {
-            return redirect()->route('halaqoh.manage')->with('alert', ['message'=>"Perubahan informasi halaqoh gagal dilakukan", 'type'=>'danger']);
+            return redirect()->route($redirectTo)->with('alert', ['message'=>"Perubahan informasi halaqoh gagal dilakukan", 'type'=>'danger']);
         }
 
     }

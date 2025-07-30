@@ -172,7 +172,7 @@
                                             
                                             @allow('admin::manage::halaqoh')
 
-                                                <a class="btn-floating activator btn-move-up waves-effect waves-light red accent-2 z-depth-4 right" href="/halaqoh/{{ $h->reference }}/edit-data">
+                                                <a class="btn-floating activator btn-move-up waves-effect waves-light red accent-2 z-depth-4 right" href="/halaqoh/{{ $h->reference }}/edit-data?ref=halaqoh.manage.v2">
                                                     <i class="mdi-action-settings"></i>
                                                 </a>
 

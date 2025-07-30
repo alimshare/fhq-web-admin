@@ -32,6 +32,7 @@
               <form class="" action="{{ route('halaqoh.editPost', ['halaqohReference'=>$halaqoh->halaqoh_reference]) }}" method="POST" id="formValidate" autocomplete="off">
                  <div class="card-panel" id="profile-card">
                     @csrf
+                    <input type="hidden" name="redirectTo" value="{{ $redirectTo }}">
                     <input type="hidden" name="id" value="{{ $halaqoh->halaqoh_id }}">
                     <div class="row">
                        <div class="col s12">
