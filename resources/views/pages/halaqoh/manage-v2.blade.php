@@ -174,7 +174,7 @@ function dropHandler(ev) {
                                                 <i class="mdi-action-settings"></i>
                                             </a>
 
-                                            <a class="btn-floating activator btn-move-up waves-effect waves-light red accent-2 z-depth-4 right" href="/halaqoh/add?hari={{ $day }}&program={{ $o->id }}&ref=/halaqoh/manage">
+                                            <a class="btn-floating activator btn-move-up waves-effect waves-light red accent-2 z-depth-4 right" href="/halaqoh/add?hari={{ $day }}&program={{ $o->id }}&kbm={{ $h->jenis_kbm }}&ref=/halaqoh/manage">
                                                 <i class="mdi-social-person-add"></i>
                                             </a>
                                             <a class="btn-floating activator btn-move-up waves-effect waves-light red accent-2 z-depth-4 right" href="/halaqoh/{{ $h->reference }}">

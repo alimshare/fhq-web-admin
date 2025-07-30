@@ -72,7 +72,7 @@
                     <div class="row" style="margin-top:1rem;">
                         <label for="old_halaqoh" class="col s12">Jenis KBM</label>
                         <div class="input-field col s12">
-                           <input type="text" name="jenis_kbm" id="jenis_kbm" style="height: 1.8rem">
+                           <input type="text" name="jenis_kbm" id="jenis_kbm" style="height: 1.8rem" value="{{ $kbm ?? "" }}">
                         </div>
                     </div>
 

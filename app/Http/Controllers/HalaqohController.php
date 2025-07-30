@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-use App\Model\{Semester, Halaqoh, Attendance, Peserta};
+use App\Model\{Semester, Halaqoh, Attendance, Pengajar, Peserta, Program};
 use App\Model\View\ViewHalaqoh;
 use App\Model\View\ViewPeserta;
 use Illuminate\Support\Facades\DB;
@@ -51,12 +51,13 @@ class HalaqohController extends Controller
      */
     public function add(Request $request)
     {
-    	$this->data['program']  = \App\Model\Program::orderBy('name','asc')->get();
-        $this->data['pengajar'] = \App\Model\Pengajar::orderBy('name','asc')->get();
+    	$this->data['program']  = Program::orderBy('name','asc')->get();
+        $this->data['pengajar'] = Pengajar::orderBy('name','asc')->get();
         $this->data['days']     = explode(",", strtoupper(env('AVAILABLE_DAYS', 'SABTU,AHAD')));
         
         $this->data['hari']       = $request->get('hari');
         $this->data['program_id'] = $request->get('program');
+        $this->data['kbm']        = $request->get('kbm');
         $this->data['redirectTo'] = $request->get('ref');
 
     	return view('pages.halaqoh.form-add', $this->data);
