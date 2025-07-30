@@ -577,7 +577,7 @@ class HalaqohController extends Controller
         $program = Program::select('id','name')->orderBy('sequence','asc')->get();
         $halaqohs = ViewHalaqoh::select('halaqoh_id','program_id', 'pengajar_name', 'day','halaqoh_reference','jenis_kbm','program_name')
             ->where('semester_id', $semester)
-            ->orderBy('program_name')
+            ->orderBy('gender')
             ->orderBy('jenis_kbm')
             ->withCount(['peserta'])->get();
 
