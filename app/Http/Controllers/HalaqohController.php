@@ -78,6 +78,7 @@ class HalaqohController extends Controller
             ->where('pengajar_id', $pengajar_id)
             ->where('program_id', $program_id)
             ->where('day', $hari)
+            ->where('jenis_kbm', $request->jenis_kbm)
             ->first();
             
         if (!is_null($halaqoh)) {
