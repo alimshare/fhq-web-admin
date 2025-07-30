@@ -1,44 +1,7 @@
 @extends('layouts.materialized')
 
 @section('header-script')
-<link href="{{ asset('assets/plugins/datatables/css/jquery.dataTables.min.css') }}" rel="stylesheet">
 <style type="text/css">
-    .dataTables_filter {
-        display: none;
-    }
-
-    table.dataTable thead .row-filter .sorting_asc {
-        background-image: none;
-    }
-
-    table.dataTable thead th {
-        border: 1px solid #ddd;
-    }
-
-    table.dataTable thead tr.row-filter th {
-        padding: 5px;
-    }
-
-    #input-select .input-field label {
-        position: absolute;
-        top: -14px;
-        font-size: 0.8rem;
-    }
-
-    table.dataTable input[type=text],
-    table .select-wrapper input.select-dropdown {
-        height: 2rem;
-        font-size: 12px;
-        border: 1px solid #ddd;
-        text-indent: 10px;
-        margin: 0;
-    }
-
-    table.dataTable tbody th,
-    table.dataTable tbody td {
-        padding: 5px;
-    }
-
     li.active a {
         color: white;
     }
@@ -66,44 +29,43 @@
 @endsection
 
 @section('footer-script')
-<script src="{{ asset('assets/plugins/datatables/js/jquery.dataTables.min.js') }}"></script>
-<script type="text/javascript">
-    let table = $('#user-role-table').DataTable({
-        "lengthChange": false,
-        "order": [1, 'asc'],
-        "columnDefs": [{
-            targets: [0, 1, 2],
-            orderable: false
-        }]
-    });
+<script>
+    function loadPeserta(reference, day, program, kbm, pengajar) {
 
-    // Apply the search
-    table.columns().every(function() {
-        var that = this;
-        $('input', this.header()).on('keyup change clear', function() {
-            if (that.search() !== this.value) {
-                that.search(this.value).draw();
-            }
-        });
-        $('select', this.header()).on('change', function() {
-            let val = $.fn.dataTable.util.escapeRegex($(this).val());
-            that.search(val ? '^' + val + '$' : '', true, false).draw();
-        });
-    });
+        // $("#modalSemester").html(semester);
+        $("#modalDay").html(day);
+        $("#modalProgram").html(program);
+        $("#modalKbm").html(kbm);
+        $("#modalPengajar").html(pengajar);
 
-    function toggle(source) {
-        checkboxes = document.getElementsByClassName('permission-item');
-        for (var i = 0, n = checkboxes.length; i < n; i++) {
-            checkboxes[i].checked = source.checked;
-        }
+        $.get("/api/halaqoh/"+reference+"/peserta", function(res){
+            console.log(res);
+            $('.modal-collection-item').remove();
+            res.forEach(function(obj){
+                let color = "cyan";
+                if (obj.gender == 'FEMALE') color = 'pink accent-2';
+
+                let chip = `<div class="chip ${color} white-text class="secondary-content""> <i class="mdi-social-person-outline"></i> <span id="modalPengajar"></span> ${obj.umur} Thn </div>`;
+
+                let elem = `<div class='modal-collection-item collection-item'>
+                    <div> ${obj.santri_name} `+
+                        `<a class="secondary-content">
+                            ${chip}
+                        </a>                    
+                    </diV>
+                </div>`;
+
+                $("#modal-collection").append(elem);
+            });
+        });
+
+        $('#modal').openModal();
+
     }
-
-    // var checkShowAll = document.getElementById("showAll");
-    // checkShowAll.addEventListener("click", ()=>{
-    //     // if (checkShowAll.checked) {
-
-    //     // }
-    // });
+    
+    @if (!empty(Request::get('semester_id'))) 
+        $('#filter-semester').val({{ Request::get('semester_id') }}).trigger('change');
+    @endif
 </script>
 @endsection
 
@@ -135,14 +97,24 @@
             </div>
         </div>
 
-        {{-- <div class="row">
-            <div class="col" style="float: right">
-                <input type="checkbox" id="showAll">                     
-                <label for="showAll">
-                    <span>Tampilkan Semua</span>
-                </label>
+        <div class="row">
+            <div class="col s12" style="margin-bottom:1rem">
+
+                <form action="" method="get" style="display: inline-flex; align-items:center; gap:1.5rem;">
+                    <select name="semester_id" id="filter-semester" class="browser-default">
+                        <option value="">- Pilih Semester -</option>
+                        <option value="36">Semester 36</option>
+                        <option value="35">Semester 35</option>
+                        <option value="34">Semester 34</option>
+                        <option value="33">Semester 33</option>
+                        <option value="32">Semester 32</option>
+                        <option value="31">Semester 31</option>
+                    </select>
+                    <button type="submit">Pilih</button>
+                </form>
+
             </div>
-        </div> --}}
+        </div>
 
         <div class="row">
 
@@ -180,14 +152,22 @@
                                     <li class="collection-item">
                                         <div class="row">
                                             <div class="col s8">                                                
-                                                <label>{{ $h->pengajar ?? "Belum Ditentukan" }} </label>
+                                                <label>
+                                                    {{ $h->pengajar ?? "Belum Ditentukan" }} 
+                                                    @if(empty($h->pengajar))
+                                                        <a onclick="loadPeserta(`{{ $h->reference }}`,`{{ $h->day }}`,`{{ $h->program }}`,`{{ $h->kbm }}`)" class="btn-floating waves-effect waves-light green tooltipped modal-triggers" 
+                                                            data-position="bottom" data-tooltip="Daftar Peserta"><i class="mdi-social-people"></i></a>
+                                                    @endif
+                                                </label>
                                                 @if(strtoupper($h->jenis_kbm) == "ONLINE") <span class="badge new">Online</span> @endif
                                             </div>
                                             @allow('admin::manage::halaqoh')
                                             <div class="col s4">
                                                 <a href="/halaqoh/{{ $h->reference }}" class="secondary-content"> <span class="ultra-small">Lihat &nbsp;</span></a>
                                                 <a href="/halaqoh/{{ $h->reference }}/edit-data" class="secondary-content"> <span class="ultra-small">Edit  &nbsp;</span></a>
-                                                <a class="secondary-content"><span class="ultra-small blue-text text-darken-2" style="">{{ $h->peserta_count ?? "" }} &nbsp;</span></a>
+                                                <a onclick="loadPeserta(`{{ $h->reference }}`,`{{ $h->day }}`,`{{ $h->program }}`,`{{ $h->kbm }}`,`{{ $h->pengajar }}`)"  class="secondary-content">
+                                                    <span class="ultra-small blue-text text-darken-2 badge" style="">{{ $h->peserta_count ?? "" }} &nbsp;</span>
+                                                </a>
                                             </div>
                                             @endallow
                                         </div>
@@ -203,6 +183,26 @@
                 @endforeach
             </div>
         </div>
+    </div>
+</div>
+
+
+<div id="modal" class="modal modal-fixed-footer" >
+    <div class="modal-content" style="padding: 0">
+        <ul class="collection with-header" style="margin-top: 0" id="modal-collection">
+            <li class="collection-header">
+                <h5>Daftar Peserta Halaqoh</h5>
+                <p>
+                    <div class="chip cyan white-text"> <i class="mdi-action-event"></i> <span id="modalKbm"></span> </div>
+                    <div class="chip cyan white-text"> <i class="mdi-action-event"></i> <span id="modalDay"></span> </div>
+                    <div class="chip cyan white-text"> <i class="mdi-content-flag"></i> <span id="modalProgram"></span> </div>
+                    <div class="chip cyan white-text"> <i class="mdi-social-person-outline"></i> <span id="modalPengajar"></span> </div>
+                </p>
+            </li>
+        </ul>
+    </div>
+    <div class="modal-footer">
+    <a href="#" class="waves-effect waves-green btn-flat modal-action modal-close">Cancel</a>
     </div>
 </div>
 <!--end container-->

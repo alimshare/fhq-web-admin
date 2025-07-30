@@ -113,6 +113,10 @@
       }
     });
   });
+
+    @if (!empty(Request::get('semester_id'))) 
+        $('#filter-semester').val({{ Request::get('semester_id') }}).trigger('change');
+    @endif
 </script>
 @endsection
 
@@ -144,6 +148,25 @@
                 @include('layouts.materialized.components.alert')
             </div>
         </div>  
+
+        <div class="row">
+            <div class="col s12" style="margin-bottom:1rem">
+
+                <form action="" method="get" style="display: inline-flex; align-items:center; gap:1.5rem;">
+                    <select name="semester_id" id="filter-semester" class="browser-default">
+                        <option value="">- Pilih Semester -</option>
+                        <option value="36">Semester 36</option>
+                        <option value="35">Semester 35</option>
+                        <option value="34">Semester 34</option>
+                        <option value="33">Semester 33</option>
+                        <option value="32">Semester 32</option>
+                        <option value="31">Semester 31</option>
+                    </select>
+                    <button type="submit">Pilih</button>
+                </form>
+
+            </div>
+        </div>
 
         <div class="row">
 
