@@ -154,10 +154,6 @@
                                             <div class="col s8">                                                
                                                 <label>
                                                     {{ $h->pengajar ?? "Belum Ditentukan" }} 
-                                                    @if(empty($h->pengajar))
-                                                        <a onclick="loadPeserta(`{{ $h->reference }}`,`{{ $h->day }}`,`{{ $h->program }}`,`{{ $h->kbm }}`)" class="btn-floating waves-effect waves-light green tooltipped modal-triggers" 
-                                                            data-position="bottom" data-tooltip="Daftar Peserta"><i class="mdi-social-people"></i></a>
-                                                    @endif
                                                 </label>
                                                 @if(strtoupper($h->jenis_kbm) == "ONLINE") <span class="badge new">Online</span> @endif
                                             </div>
