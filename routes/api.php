@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,3 +19,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('/halaqoh/{halaqohReference?}/peserta', 'Api\DataController@getPesertaHalaqoh');
+Route::get('/peserta/{pesertaReference}/pindah/{halaqohReference}', 'Api\DataController@pindahHalaqoh');
