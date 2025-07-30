@@ -37,9 +37,9 @@
                               <option disabled selected>-- Pilih Halaqoh Awal --</option>
                               @foreach($halaqoh as $h)
                                  @if($currentHalaqoh == $h->halaqoh_id) 
-                                       <option value="{{ $h->halaqoh_id }}" selected="selected">{{ $h->pengajar_name. ' - ' . $h->program_name .' ('. $h->day . ')'   }}</option>
+                                       <option value="{{ $h->halaqoh_id }}" selected="selected">{{ $h->pengajar_name. ' - ' . $h->program_name .' ('. $h->day . ' - '. $h->jenis_kbm .')'   }}</option>
                                  @else
-                                       <option value="{{ $h->halaqoh_id }}">{{ $h->pengajar_name. ' - ' . $h->program_name .' ('. $h->day . ')'   }}</option>
+                                       <option value="{{ $h->halaqoh_id }}">{{ $h->pengajar_name. ' - ' . $h->program_name .' ('. $h->day . ' - '. $h->jenis_kbm .')'   }}</option>
                                  @endif
                               @endforeach
                            </select>
@@ -66,7 +66,7 @@
                            <option disabled selected>-- Pilih Halaqoh Tujuan --</option>
                             @foreach($halaqoh as $h)
                                 @if ($h->halaqoh_id != $currentHalaqoh)
-                                    <option value="{{ $h->halaqoh_id }}">{{ $h->pengajar_name. ' - ' . $h->program_name .' ('. $h->day . ')'   }}</option>
+                                    <option value="{{ $h->halaqoh_id }}">{{ $h->pengajar_name. ' - ' . $h->program_name .' ('. $h->day . ' - '. $h->jenis_kbm .')'   }}</option>
                                 @endif
                             @endforeach
                           </select>
