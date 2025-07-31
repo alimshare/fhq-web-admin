@@ -37,7 +37,7 @@
                            <select name="halaqoh" id="halaqoh" class="select2">
                            <option disabled selected>-- Pilih Halaqoh --</option>
                               @foreach($halaqoh as $h)
-                                 <option value="{{ $h->halaqoh_id }}">{{ $h->pengajar_name. ' - ' . $h->program_name .' ('. $h->day . ')'   }}</option>
+                                 <option value="{{ $h->halaqoh_id }}">{{ $h->pengajar_name. ' - ' . $h->program_name .' ('. $h->day . ' - '. $h->jenis_kbm .')'   }}</option>
                               @endforeach
                            </select>
                            <div id="halaqoh-error" class="error"></div>
