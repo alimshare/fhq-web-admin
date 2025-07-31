@@ -236,6 +236,11 @@
                                             </li>
                                             @endforeach
 
+                                            @allow('admin::manage::halaqoh')
+                                            <li class="collection-item">
+                                                <a href="{{ route('halaqoh.peserta.add', ['halaqohId' => $h->reference]) }}" class="" style="text-align: center"> (+) Tambah Peserta </a> 
+                                            </li>
+                                            @endallow
                                         </ul>
                                     </div>                            
                                 @endforeach
