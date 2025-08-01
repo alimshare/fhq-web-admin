@@ -225,8 +225,8 @@
                                             <li class="collection-item" @allow('admin::manage::halaqoh') draggable="true" @endallow id="collection-item-{{ $peserta->peserta_reference }}" data-ref="{{ $peserta->peserta_reference }}">
                                                 <div class="row">
                                                     <div class="col s8"><label>{{ $peserta->santri_name }}</label></div>
-
-                                                    @allow('admin::manage::halaqoh')
+                                                    
+                                                    @allow('rekap-nilai.view')
                                                     <div class="col s4">
                                                         <div class="chip {{ $peserta->gender == 'FEMALE' ? 'pink accent-2' : 'cyan' }} white-text secondary-content"> <i class="mdi-social-person-outline"></i> <span id="modalPengajar"></span> {{ $peserta->umur }} Thn </div>
                                                     </div>
