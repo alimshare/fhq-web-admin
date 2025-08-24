@@ -104,16 +104,19 @@
                             <table>
                                 <thead>
                                     <tr class="green white-text lighten-2">
+                                        <th>No.</th>
                                         <th>Peserta</th>
                                         <th>Status</th>
                                         <th>Catatan / Keterangan</th>
                                     </tr>
                                 </thead>
 
+                                @php $no = 1; @endphp
                                 <tbody id="attendee">
                                     @foreach($activity->attendances as $a)
-                                        <tr>
-                                            <td>{{ $a->peserta->santri_name }}</td>
+                                        <tr @empty($a->peserta) style="display:none" @endempty >
+                                            <td>{{ $no++ }}</td>
+                                            <td>{{ @$a->peserta->santri_name }}</td>
                                             <td>
                                                 <input type="radio" name="attendances[{{ $a->id }}][hadir]" id="hadir-true-{{ $a->id }}" value="1" {{ $a->status == "1" ? "checked" : "" }}><label for="hadir-true-{{ $a->id }}">Hadir</label>
                                                 &nbsp; | &nbsp;
@@ -130,8 +133,13 @@
 
 
                             <div class="text-right" style="margin-top: 1rem;">
+
+                                <a href="{{ route('absensi.reload', ['id'=>$activity->id]) }}{{ !empty($activity->halaqoh_id) ? "?halaqohRef=".$activity->halaqoh_id : "" }}" class="btn waves-effect waves-light light-green" name="reload"  title="Reload Daftar Peserta Absen">
+                                    <i class="mdi-navigation-refresh"></i>
+                                </a>
                                 <button class="btn waves-effect waves-light light-blue darken-4 " type="submit" name="action" >
-                                    <span>Ubah</span></button>
+                                    <span>Ubah</span>
+                                </button>
                                 <a href='/absensi{{ !empty($activity->halaqoh_id) ? "?halaqohRef=".$activity->halaqoh_id : "" }}' class="btn">Batal</a>
                             </div>
 

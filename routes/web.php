@@ -57,6 +57,7 @@ Route::group(['middleware' => []], function () {
 	Route::get('/absensi/edit/{id}', 	[AbsensiController::class, 'edit'])->name('absensi.edit');
 	Route::post('/absensi/update',	 	[AbsensiController::class, 'update'])->name('absensi.update');
 	Route::get('/absensi/remove/{id}', 	[AbsensiController::class, 'remove'])->name('absensi.remove');
+	Route::get('/absensi/{id}/reload',	[AbsensiController::class, 'reloadPeserta'])->name('absensi.reload');
 
 	/**
 	 * Lembaga

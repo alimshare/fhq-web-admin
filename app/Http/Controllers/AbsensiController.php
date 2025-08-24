@@ -11,6 +11,7 @@ use \App\Model\ActivityReport;
 use \App\Model\Attendance;
 use Exception;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 
 class AbsensiController extends Controller
@@ -262,6 +263,45 @@ class AbsensiController extends Controller
 
         DB::rollBack();
         return redirect("/absensi?halaqohRef=$halaqohId")->with('alert', ['message'=>"Absensi gagal dihapus", 'type'=>'danger']);
+    }
+
+    function reloadPeserta(Request $request, $id) {
+        $halaqohId = "";
+        if (!empty($request->input('halaqohRef'))){
+            $halaqohId = $request->input('halaqohRef');
+        }
+        
+        $activity = ActivityReport::where('id', $id)->with('attendances')->first();
+        if (!$activity) {
+            return redirect()->route('absensi.edit', ['id'=> $id, 'halaqohRef'=>$halaqohId])->with('alert', ['message'=>"Riwayat Absensi tidak ditemukan", 'type'=>'danger']);
+        }
+
+
+        try {
+            DB::beginTransaction();
+
+            $pesertaAbsen = $activity->attendances->pluck('peserta_id')->toArray();
+            $daftarPesertaHalaqoh = Peserta::where('halaqoh_id', $activity->halaqoh_id)->pluck('id');
+
+            foreach ($daftarPesertaHalaqoh as $pesertaId) {
+                if (in_array($pesertaId, $pesertaAbsen)) continue;
+
+                $attendance = new Attendance;
+                $attendance->activity_id = $activity->id;
+                $attendance->peserta_id = $pesertaId;
+
+                if (!$attendance->save()) {
+                    DB::rollBack();
+                    return redirect()->route('absensi.edit', ['id'=> $id, 'halaqohRef'=>$halaqohId])->with('alert', ['message'=>"Terjadi kesalahan ketika Reload Peserta", 'type'=>'danger']);
+                }
+            }
+
+            DB::commit();
+            return redirect()->route('absensi.edit', ['id'=> $id, 'halaqohRef'=>$halaqohId])->with('alert', ['message'=>"Reload Peserta berhasil", 'type'=>'success']);
+        } catch (Exception $e) {
+            Log::error("[reloadPeserta][$id] : ". $e->getMessage());
+            return redirect()->route('absensi.edit', ['id'=> $id, 'halaqohRef'=>$halaqohId])->with('alert', ['message'=>"Terjadi kesalahan ketika Reload Peserta : ".$e->getMessage(), 'type'=>'danger']);
+        }
     }
 
 }
