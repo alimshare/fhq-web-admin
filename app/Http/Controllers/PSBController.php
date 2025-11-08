@@ -104,12 +104,19 @@ class PSBController extends Controller
         return redirect()->route('du')->with('alert', ['message'=>"Data DU gagal dihapus !", 'type'=>'danger']);
     }
 
-    function daftarCalonSantri() {
+    function daftarCalonSantri(Request $request) {
+        $daftarSemester = CalonSantri::orderByDesc('semester_psb')->distinct()->pluck('semester_psb');
+
+        $semester = empty($request->semester_id) ?   @$daftarSemester[0] : $request->semester_id;
+        
         $calonSantri = CalonSantri::select('calon_santri.registration_number','name','calon_santri.program','calon_santri.is_child',
                 'jenis_kbm', 'birth_date', 'gender','day', 'calon_santri.created_at', DB::raw('placement_test.program AS program_pt'), 
                 'placement_test.penguji', 'calon_santri.upload_file', 'calon_santri.phone')
-            ->leftJoin('placement_test', 'placement_test.registration_number', 'calon_santri.registration_number')->get();
+            ->leftJoin('placement_test', 'placement_test.registration_number', 'calon_santri.registration_number')
+            ->where('semester_psb', $semester)
+            ->get();
         
-        return view('pages.psb.psb.list')->with('data', $calonSantri);
+        
+        return view('pages.psb.psb.list', compact('daftarSemester', 'calonSantri', 'semester'));
     }
 }

@@ -150,6 +150,16 @@
                     @include('layouts.materialized.components.alert')
                 </div>
             </div>
+            
+            <form action="" method="get" style="display: inline-flex; align-items:center; gap:1.5rem;">
+                <select name="semester_id" id="filter-semester" class="browser-default">
+                    <option value="">- Pilih Semester -</option>
+                    @foreach ($daftarSemester as $item)
+                        <option value="{{ $item }}" {{ $item == $semester ? 'selected' : '' }}>Semester {{ $item }}</option>
+                    @endforeach
+                </select>
+                <button type="submit">Pilih</button>
+            </form>
 
             <div class="row">
                 <div class="col s12">
@@ -191,7 +201,7 @@
                                 </thead>
                                 <tbody>
                                     @php $i = 1; @endphp
-                                    @foreach($data as $cs)
+                                    @foreach($calonSantri as $cs)
                                         <tr>
                                             <td>{{ $i++ }}.</td>
                                             <td>{{ $cs->created_at }}</td>
