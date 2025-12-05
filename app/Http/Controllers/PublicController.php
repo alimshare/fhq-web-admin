@@ -146,7 +146,7 @@ class PublicController extends Controller
         $data = [];
         $data['semester'] = $semester;
 
-        $validHash = env('PSB_SECURITY_HASH', sha1('fhq.37.du'));
+        $validHash = env('PSB_SECURITY_HASH', sha1('fhq.38.du'));
 
         // if ($hash == "d48bc198e533871aa9e0985c083ab9a56efb8197") {
             // abort(403, "Periode Daftar Ulang sudah berakhir, Silahkan hubungi admin untuk informasi lebih lanjut.");
