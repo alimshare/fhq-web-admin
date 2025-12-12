@@ -287,7 +287,7 @@
                                         style="text-decoration: none">Hubungi Admin</a></p>
 
                                     <div class="box-penting">Bagi kelas Tahsin / Tahfizh Dewasa jika melunasi infaq pendidikan
-                                        sebelum tanggal <b>01 Agustus 2025</b>, mendapat potongan <b>Rp. 150.000</b>,
+                                        sebelum tanggal <b>04 Januari 2026</b>, mendapat potongan <b>Rp. 150.000</b>,
                                         sehingga cukup melunasi <b>Rp. 600.000</b> </div>
 
                                     <input type="file" name="upload" id="upload" accept="image/*" data-target="preview" onchange="loadFile(event, this)" required>
