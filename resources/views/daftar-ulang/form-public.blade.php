@@ -334,7 +334,7 @@
 
                 <span class="text-red" style="font-size: 1.2em">*</span>) <small>Potongan Rp. 150.000,- bagi kelas
                     Tahsin /
-                    Tahfizh Dewasa jika melunasi infaq pendidikan sebelum tanggal <b>01 Agustus 2025</b></small>
+                    Tahfizh Dewasa jika melunasi infaq pendidikan sebelum tanggal <b>04 Januari 2026</b></small>
                 </p>
                 <p>
                     Infaq daftar ulang minimal <b>Rp 100.037</b> <br>
