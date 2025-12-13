@@ -262,7 +262,7 @@
                             <div class="row" style="margin-bottom: 1em">
                                 <div class="three columns"><label>Bukti Daftar Ulang</label></div>
                                 <div class="nine columns">
-                                    <p>Infaq daftar ulang = <b>Rp 100.037</b></p>
+                                    <p>Infaq daftar ulang = <b>Rp 100.038</b></p>
 
                                     Transfer ke rekening:
                                     <table style="margin-top: 0; margin-bottom:1rem" class="table table-bordered w-full">
@@ -337,7 +337,7 @@
                     Tahfizh Dewasa jika melunasi infaq pendidikan sebelum tanggal <b>04 Januari 2026</b></small>
                 </p>
                 <p>
-                    Infaq daftar ulang minimal <b>Rp 100.037</b> <br>
+                    Infaq daftar ulang minimal <b>Rp 100.038</b> <br>
                     <span class="text-red" style="font-size: 1.2em">*</span>) <small>Angsuran awal infaq
                         pendidikan semester berikutnya.</small>
                 </p>
