@@ -247,7 +247,7 @@ class HalaqohController extends Controller
         $template->setValue('program_name', $peserta->program_name);
         $template->setValue('semester_name', $peserta->semester_name);
         
-        if ($peserta->program_name == "TAKHASSUS" || in_array($peserta->program_id, explode(",", env('TAKHOSSUS_IDS', '')))) {
+        if (in_array($peserta->program_name, ["TAKHASSUS", "PRA TAKHASSUS"]) || in_array($peserta->program_id, explode(",", env('TAKHOSSUS_IDS', '')))) {
             $template->setValue('nilai_uts_praktek', $peserta->nilai_uts_teori);
             $template->setValue('nilai_uts_praktek_text', $this->terbilang($peserta->nilai_uts_teori));
             $template->setValue('nilai_uts_teori', "");
@@ -359,6 +359,9 @@ class HalaqohController extends Controller
             $minKhatamIkhwan = 2;
             $minKhatamAkhwat = 1;
         } else if ($program == "TAHSIN 2") {
+            $minKhatamIkhwan = 3;
+            $minKhatamAkhwat = 2;
+        } else if ($program == "PRA TAKHASSUS") {
             $minKhatamIkhwan = 4;
             $minKhatamAkhwat = 3;
         } else if ($program == "TAKHASSUS") {
@@ -389,7 +392,8 @@ class HalaqohController extends Controller
             case 'PRA TAHSIN A': return 'PRA TAHSIN B';
             case 'PRA TAHSIN B': return 'TAHSIN 1';
             case 'TAHSIN 1': return 'TAHSIN 2';
-            case 'TAHSIN 2': return 'TAKHASSUS';
+            case 'TAHSIN 2': return 'PRA TAKHASSUS';
+            case 'PRA TAKHASSUS': return 'TAKHASSUS';
             case 'TAKHASSUS': return 'TAHFIDZ';
             case 'TAHFIDZ': return 'TAHFIDZ';
             case 'TADARUS': return 'TADARUS';
