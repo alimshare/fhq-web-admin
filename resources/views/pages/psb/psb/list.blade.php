@@ -74,8 +74,8 @@
     <script src="{{ asset('assets/plugins/datatables/js/jquery.dataTables.min.js') }}"></script>
     <script type="text/javascript">
         let table = $('#datatable').DataTable({
-            "paging":false,
-            "lengthChange": true,
+            "paging":true,
+            "lengthChange": false,
             ordering: false,
             initComplete: function () {
                 this.api().columns().every( function () {
