@@ -241,7 +241,7 @@
                                     <div style="width: 100%;">
                                         <span style="position: absolute; background-color:orange;padding:5px;">{{ $i-- }}</span>
                                         <a data-path="{{ '/storage/daftar-ulang/' . $du->upload_file }}" target="#" onclick="loadImage(this)">
-                                            <img src="{{ '/storage/daftar-ulang/' . $du->upload_file }}" alt="" srcset="" style="width:100%; height:200px">
+                                            <img src="{{ '/storage/daftar-ulang/' . $du->upload_file }}" alt="" srcset="" style="width:100%; height:200px" loading="lazy">
                                         </a>
                                         <div style="padding-left:10px; display:flex; justify-content:space-between;">
                                             <div style="overflow: hidden; width:80%;">
