@@ -35,6 +35,10 @@ class PSBController extends Controller
             
         $data['days'] = explode(",", strtoupper(env('AVAILABLE_DAYS', 'SABTU,AHAD')));
         
+        if ($request->view == "gallery") {
+            return view('pages.psb.daftar-ulang.list-gallery', $data);        
+        }
+
         return view('pages.psb.daftar-ulang.list', $data);
     }
 
