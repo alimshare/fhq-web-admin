@@ -208,6 +208,10 @@ class HalaqohController extends Controller
             $halaqoh->day           = $request->input('day');
         }
 
+        if (!empty($request->input('gender'))) {
+            $halaqoh->gender        = $request->input('gender');
+        }
+
         $halaqoh->jenis_kbm     = $request->input('jenis_kbm');
 
         if ($halaqoh->save()){

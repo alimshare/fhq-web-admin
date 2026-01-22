@@ -75,12 +75,25 @@
                           <div id="pengajar-error" class="error"></div>
                        </div>
                     </div>
-
-                    <div class="row" style="margin-top:1rem;">
-                        <label for="old_halaqoh" class="col s12">Jenis KBM</label>
-                        <div class="input-field col s12">
-                           <input type="text" name="jenis_kbm" id="jenis_kbm" style="height: 1.8rem" value="{{ $halaqoh->jenis_kbm }}">
-                        </div>
+                    <div class="row">
+                       <div class="input-field col s12">
+                          <select name="gender" id="gender" class="select2">
+                              <option disabled selected>-- Pilih Gender --</option>
+                              <option value="MALE" {{ $halaqoh->halaqoh_gender == 'MALE' ? 'selected' : '' }}>IKHWAN</option>
+                              <option value="FEMALE" {{ $halaqoh->halaqoh_gender == 'FEMALE' ? 'selected' : '' }}>AKHWAT</option>
+                          </select>
+                          <div id="gender-error" class="error"></div>
+                       </div>
+                    </div>
+                    <div class="row">
+                       <div class="input-field col s12">
+                          <select name="jenis_kbm" id="jenis_kbm" class="select2">
+                              <option disabled selected>-- Pilih Jenis KBM --</option>
+                              <option value="OFFLINE" {{ strtoupper($halaqoh->jenis_kbm) == 'OFFLINE' ? 'selected' : '' }}>OFFLINE</option>
+                              <option value="ONLINE" {{ strtoupper($halaqoh->jenis_kbm) == 'ONLINE' ? 'selected' : '' }}>ONLINE</option>
+                          </select>
+                          <div id="jenis_kbm-error" class="error"></div>
+                       </div>
                     </div>
 
                     <div class="card-footer text-right" style="margin-top: 1rem;">                                           
