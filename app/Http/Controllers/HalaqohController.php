@@ -553,7 +553,7 @@ class HalaqohController extends Controller
         $semester = !empty($request->semester_id) ?  $request->semester_id : $semesterActive->id;
         
         $program = Program::select('id','name')->orderBy('sequence','asc')->get();
-        $halaqohs = ViewHalaqoh::select('program_id', 'pengajar_name', 'day','halaqoh_reference','jenis_kbm','program_name')->where('semester_id', $semester)->orderBy('pengajar_name','asc')->withCount(['peserta'])->get();
+        $halaqohs = ViewHalaqoh::select('program_id', 'pengajar_name', 'day','halaqoh_reference','jenis_kbm','program_name','halaqoh_gender')->where('semester_id', $semester)->orderBy('pengajar_name','asc')->withCount(['peserta'])->get();
 
         $days = explode(",", strtoupper(env('AVAILABLE_DAYS', 'SABTU,AHAD')) );
         $semesterList = Semester::orderByDesc('id')->get();
@@ -580,7 +580,7 @@ class HalaqohController extends Controller
         $semester = !empty($request->semester_id) ?  $request->semester_id : $semesterActive->id;
 
         $program = Program::select('id','name')->orderBy('sequence','asc')->get();
-        $halaqohs = ViewHalaqoh::select('halaqoh_id','program_id', 'pengajar_name', 'day','halaqoh_reference','jenis_kbm','program_name')
+        $halaqohs = ViewHalaqoh::select('halaqoh_id','program_id', 'pengajar_name', 'day','halaqoh_reference','jenis_kbm','program_name','halaqoh_gender')
             ->where('semester_id', $semester)
             ->orderBy('gender')
             ->orderBy('jenis_kbm')
