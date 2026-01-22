@@ -251,6 +251,7 @@
                                         <th>Status</th>
                                         <th>Pilihan Hari</th>
                                         <th>Pilihan KBM</th>
+                                        <th>Halaqoh Terbaru</th>
                                         <th>Action</th>
                                     </tr>
                                     <tr class="row-filter">
@@ -266,6 +267,7 @@
                                         <th><input type="text" placeholder="Cari Status" id="paramStatus" class="input-text"></th> 
                                         <th><input type="text" placeholder="Cari Hari" id="paramHari" class="input-text"></th> 
                                         <th><input type="text" placeholder="Cari KBM" id="paramKBM" class="input-text"></th> 
+                                        <th></th> 
                                         <td data-dt-order="disable"></td>
                                     </tr>
                                 </thead>
@@ -290,6 +292,11 @@
                                             <td>{{ $du->status }}</td>
                                             <td>{{ $du->hari }}</td>
                                             <td>{{ $du->jenis_kbm }}</td>
+                                            <td>
+                                                @if(!empty($du->nextPeserta))
+                                                    <a href="/halaqoh/{{ @$du->nextPeserta->halaqoh->id }}">Lihat</a>
+                                                @endif
+                                            </td>
                                             <td>
                                                 <a class="btn cyan" style="margin-bottom: 0.25rem;" data-path="{{ '/storage/daftar-ulang/' . $du->upload_file }}" target="#" onclick="loadImage(this)">Bukti</a> &nbsp;
                                                 <a class="btn green" style="margin-bottom: 0.25rem;" href="{{ route('du.edit', ['id' => $du->id]) }}">Edit</a>

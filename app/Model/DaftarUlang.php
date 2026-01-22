@@ -15,4 +15,9 @@ class DaftarUlang extends Model
     {
         return $this->belongsTo(Peserta::class, 'peserta_id', 'id');
     }
+
+    public function nextPeserta()
+    {
+        return $this->belongsTo(Peserta::class, 'next_peserta_id', 'id');
+    }
 }
