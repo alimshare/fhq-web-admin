@@ -162,12 +162,9 @@
                 <form action="" method="get" style="display: inline-flex; align-items:center; gap:1.5rem;">
                     <select name="semester_id" id="filter-semester" class="browser-default">
                         <option value="">- Pilih Semester -</option>
-                        <option value="36">Semester 36</option>
-                        <option value="35">Semester 35</option>
-                        <option value="34">Semester 34</option>
-                        <option value="33">Semester 33</option>
-                        <option value="32">Semester 32</option>
-                        <option value="31">Semester 31</option>
+                        @foreach ($semesterList as $item)
+                            <option value="{{ $item->id }}">Semester {{ $item->name }}</option>
+                        @endforeach
                     </select>
                     <button type="submit">Pilih</button>
                 </form>
