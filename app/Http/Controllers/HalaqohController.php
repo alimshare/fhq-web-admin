@@ -58,6 +58,7 @@ class HalaqohController extends Controller
         $this->data['hari']       = $request->get('hari');
         $this->data['program_id'] = $request->get('program');
         $this->data['kbm']        = $request->get('kbm');
+        $this->data['gender']     = $request->get('gender');
         $this->data['redirectTo'] = $request->get('ref');
 
     	return view('pages.halaqoh.form-add', $this->data);
@@ -81,7 +82,7 @@ class HalaqohController extends Controller
             ->where('jenis_kbm', $request->jenis_kbm)
             ->first();
             
-        if (!is_null($halaqoh)) {
+        if (!is_null($halaqoh) && !empty($pengajar_id)) {
             return redirect($redirectTo)
                 ->with('alert', ['message'=>"Halaqoh sudah tersedia!", 'type'=>'danger']);
         }
