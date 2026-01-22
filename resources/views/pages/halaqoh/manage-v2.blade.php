@@ -193,7 +193,7 @@
                                 @foreach($halaqoh[$o->id] as $h)
                                     <div class="col s12 m6 l4 program-container {{ empty($halaqoh[$o->id]) ? 'd-none' : '' }}">
                                         
-                                        <div class="cyan white-text program-container-header" style="width:100%; padding:15px;">
+                                        <div class="{{ $halaqoh->gender == 'FEMALE' ? 'pink' : 'cyan' }} white-text program-container-header" style="width:100%; padding:15px;">
                                             <h6 class="mb-3" style="font-weight:300;">{{ $o->name }} - {{ $h->pengajar ?? "Belum Ditentukan" }}</h6>
                                             <small class="mb-3" style="font-weight:300;">{{ $h->peserta_count ?? 0 }} Peserta</small> 
                                             
