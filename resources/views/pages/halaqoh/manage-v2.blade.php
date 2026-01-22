@@ -203,7 +203,7 @@
                                                     <i class="mdi-action-settings"></i>
                                                 </a>
 
-                                                <a class="btn-floating activator btn-move-up waves-effect waves-light red accent-2 z-depth-4 right" href="/halaqoh/add?hari={{ $day }}&program={{ $o->id }}&kbm={{ $h->jenis_kbm }}&ref=/halaqoh/manage/v2">
+                                                <a class="btn-floating activator btn-move-up waves-effect waves-light red accent-2 z-depth-4 right" href="/halaqoh/add?hari={{ $day }}&program={{ $o->id }}&kbm={{ $h->jenis_kbm }}&gender={{ $h->gender }}&ref=/halaqoh/manage/v2">
                                                     <i class="mdi-social-person-add"></i>
                                                 </a>
 
