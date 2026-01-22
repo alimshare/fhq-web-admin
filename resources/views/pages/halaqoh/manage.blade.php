@@ -132,7 +132,7 @@
                         @foreach($program as $o)
                             <div class="col s12 m6 l4 program-container {{ empty($halaqoh[$o->id]) ? 'd-none' : '' }}">
 
-                                <div class="{{ @$halaqoh->halaqoh_gender == 'FEMALE' ? 'pink' : 'cyan' }} white-text program-container-header" style="width:100%; padding:15px;">
+                                <div class="cyan white-text program-container-header" style="width:100%; padding:15px;">
                                     <h6 class="mb-3" style="font-weight:300;">{{ $o->name }}</h6>
                                     <small class="mb-3" style="font-weight:300;">@if(!empty($halaqoh[$o->id])) {{ count($halaqoh[$o->id]) }} @else 0 @endif Halaqoh</small>
                                     @allow('add-halaqoh')
@@ -149,8 +149,8 @@
                                     <li class="collection-item">
                                         <div class="row">
                                             <div class="col s8">                                                
-                                                <label>
-                                                    {{ $h->pengajar ?? "Belum Ditentukan" }} 
+                                                <label class="{{ @$h->gender == 'FEMALE' ? 'pink-text' : ''  }}">
+                                                    {{ $h->pengajar ?? "Belum Ditentukan" }}
                                                 </label>
                                                 @if(strtoupper($h->jenis_kbm) == "ONLINE") <span class="badge new">Online</span> @endif
                                             </div>

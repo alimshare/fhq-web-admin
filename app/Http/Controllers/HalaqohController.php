@@ -568,6 +568,7 @@ class HalaqohController extends Controller
                 'day' => $halaqoh->day,
                 'program' => $halaqoh->program_name,
                 'kbm' => $halaqoh->jenis_kbm,
+                'gender' => $halaqoh->halaqoh_gender
             ];
         }
 
@@ -606,7 +607,8 @@ class HalaqohController extends Controller
                 'day' => $halaqoh->day,
                 'program' => $halaqoh->program_name,
                 'kbm' => $halaqoh->jenis_kbm,
-                'peserta' => $daftarPeserta
+                'peserta' => $daftarPeserta,
+                'gender' => $halaqoh->halaqoh_gender
             ];
         }
 
