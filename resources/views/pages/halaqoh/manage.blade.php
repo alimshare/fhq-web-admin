@@ -104,7 +104,7 @@
                     <select name="semester_id" id="filter-semester" class="browser-default">
                         <option value="">- Pilih Semester -</option>
                         @foreach ($semesterList as $item)
-                            <option value="{{ $item->id }}">Semester {{ $item->id }}</option>
+                            <option value="{{ $item->id }}">Semester {{ $item->name }}</option>
                         @endforeach
                     </select>
                     <button type="submit">Pilih</button>
