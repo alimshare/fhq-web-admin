@@ -213,7 +213,7 @@
                                                 
                                             @endallow
                                             
-                                            @if(strtoupper($h->jenis_kbm) == "ONLINE") <span class="badge new">Online</span> @endif
+                                            @if(strtoupper($h->jenis_kbm) == "ONLINE") <span class="badge new green">Online</span> @endif
                                         </div>
 
                                         <ul class="collection program-container-body" id="collection-{{ $h->reference }}" data-ref="{{ $h->reference }}" style="width:100%;height:270px;overflow-y:scroll">
