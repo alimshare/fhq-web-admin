@@ -124,6 +124,18 @@
     @if (!empty(Request::get('semester_id'))) 
         $('#filter-semester').val({{ Request::get('semester_id') }}).trigger('change');
     @endif
+
+    @if (!empty(Request::get('gender'))) 
+        $('#filter-gender').val("{{ Request::get('gender')}}").trigger('change');
+    @endif
+
+    @if (!empty(Request::get('kbm'))) 
+        $('#filter-kbm').val("{{ Request::get('kbm') }}").trigger('change');
+    @endif
+
+    @if (!empty(Request::get('program'))) 
+        $('#filter-program').val("{{ Request::get('program') }}").trigger('change');
+    @endif
 </script>
 @endsection
 
@@ -164,6 +176,22 @@
                         <option value="">- Pilih Semester -</option>
                         @foreach ($semesterList as $item)
                             <option value="{{ $item->id }}">Semester {{ $item->name }}</option>
+                        @endforeach
+                    </select>
+                    <select name="gender" id="filter-gender" class="browser-default">
+                        <option value="">- Pilih Jenis Kelamin -</option>
+                        <option value="MALE">IKHWAN</option>
+                        <option value="FEMALE">AKHWAT</option>
+                    </select>
+                    <select name="kbm" id="filter-kbm" class="browser-default">
+                        <option value="">- Pilih Jenis KBM -</option>
+                        <option value="OFFLINE">OFFLINE</option>
+                        <option value="ONLINE">ONLINE</option>
+                    </select>
+                    <select name="program" id="filter-program" class="browser-default">
+                        <option value="">- Pilih Program -</option>
+                        @foreach ($programList as $item)
+                            <option value="{{ $item->id }}">{{ $item->name }}</option>
                         @endforeach
                     </select>
                     <button type="submit">Pilih</button>

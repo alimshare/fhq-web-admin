@@ -586,14 +586,19 @@ class HalaqohController extends Controller
         $semester = !empty($request->semester_id) ?  $request->semester_id : $semesterActive->id;
 
         $program = Program::select('id','name')->orderBy('sequence','asc')->get();
-        $halaqohs = ViewHalaqoh::select('halaqoh_id','program_id', 'pengajar_name', 'day','halaqoh_reference','jenis_kbm','program_name','halaqoh_gender')
+        $queryHalaqoh = ViewHalaqoh::select('halaqoh_id','program_id', 'pengajar_name', 'day','halaqoh_reference','jenis_kbm','program_name','halaqoh_gender')
             ->where('semester_id', $semester)
             ->orderBy('gender')
             ->orderBy('jenis_kbm')
-            ->withCount(['peserta'])->get();
+            ->withCount(['peserta']);
+        if (!empty($request->kbm)) $queryHalaqoh->where('jenis_kbm', $request->kbm);
+        if (!empty($request->program)) $queryHalaqoh->where('program_id', $request->program);
+        if (!empty($request->gender)) $queryHalaqoh->where('halaqoh_gender', $request->gender);
+        $halaqohs = $queryHalaqoh->get();
 
         $days = explode(",", strtoupper(env('AVAILABLE_DAYS', 'SABTU,AHAD')) );
         $semesterList = Semester::orderByDesc('id')->get();
+        $programList = Program::select('id','name')->orderBy('sequence','asc')->get();
         
         $data = array_fill_keys($days, []);
         foreach ($halaqohs as $key => $halaqoh) {
@@ -617,7 +622,7 @@ class HalaqohController extends Controller
             ];
         }
 
-        return view('pages.halaqoh.manage-v2', compact('program', 'data', 'days', 'semesterList'));
+        return view('pages.halaqoh.manage-v2', compact('program', 'data', 'days', 'semesterList', 'programList'));
     }
 
     public function cuti(Request $request)
