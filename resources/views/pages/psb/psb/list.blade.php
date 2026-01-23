@@ -172,6 +172,7 @@
                                         <th scope="col">No</th>
                                         <th scope="col">Waktu</th>
                                         <th scope="col">Kode</th>
+                                        <th scope="col">NIS</th>
                                         <th scope="col">Nama</th>
                                         <th scope="col">Jenis Kelamin</th>
                                         <th scope="col">Umur</th>
@@ -187,6 +188,7 @@
                                         <td></td>
                                         <th><input type="text" placeholder="Cari Waktu" id="paramWaktu" class="input-text"></th>
                                         <th><input type="text" placeholder="Nomor Pendaftaran" id="paramRegisterNumber" class="input-text"></th>
+                                        <th><input type="text" placeholder="Cari NIS" id="paramNis" class="input-text"></th> 
                                         <th><input type="text" placeholder="Cari Nama" id="paramNama" class="input-text"></th>
                                         <th><input type="text" placeholder="Cari Jenkel" id="paramJenkel" class="input-text"></th>
                                         <th><input type="text" placeholder="Cari Umur" id="paramAge" class="input-text"></th>
@@ -206,6 +208,7 @@
                                             <td>{{ $i++ }}.</td>
                                             <td>{{ $cs->created_at }}</td>
                                             <td>{{ $cs->registration_number }}</td>
+                                            <td>{{ $cs->nis }}</td>
                                             <td>{{ $cs->name }}</td>
                                             <td>
                                                 @if ($cs->gender == 'MALE')

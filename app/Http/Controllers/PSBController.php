@@ -116,7 +116,7 @@ class PSBController extends Controller
         
         $calonSantri = CalonSantri::select('calon_santri.registration_number','name','calon_santri.program','calon_santri.is_child',
                 'jenis_kbm', 'birth_date', 'gender','day', 'calon_santri.created_at', DB::raw('placement_test.program AS program_pt'), 
-                'placement_test.penguji', 'calon_santri.upload_file', 'calon_santri.phone')
+                'placement_test.penguji', 'calon_santri.upload_file', 'calon_santri.phone', 'calon_santri.nis')
             ->leftJoin('placement_test', 'placement_test.registration_number', 'calon_santri.registration_number')
             ->where('semester_psb', $semester)
             ->get();
