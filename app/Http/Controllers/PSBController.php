@@ -119,6 +119,7 @@ class PSBController extends Controller
                 'placement_test.penguji', 'calon_santri.upload_file', 'calon_santri.phone', 'calon_santri.nis')
             ->leftJoin('placement_test', 'placement_test.registration_number', 'calon_santri.registration_number')
             ->where('semester_psb', $semester)
+            ->orderByDesc('created_at')
             ->get();
         
         
