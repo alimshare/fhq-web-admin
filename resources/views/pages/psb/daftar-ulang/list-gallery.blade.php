@@ -220,15 +220,22 @@
                 </div>
             </div>
             
-            <form action="" method="get" style="display: inline-flex; align-items:center; gap:1.5rem;">
-                <select name="semester_id" id="filter-semester" class="browser-default">
-                    <option value="">- Pilih Semester -</option>
-                    <option value="38">Semester 37</option>
-                    <option value="37">Semester 36</option>
-                    <option value="36">Semester 35</option>
-                </select>
-                <button type="submit">Pilih</button>
-            </form>
+            <div class="row">
+                <div class="col">
+                    <form action="" method="get" style="display: inline-flex; align-items:center; gap:1.5rem;">
+                        <select name="semester_id" id="filter-semester" class="browser-default">
+                            <option value="">- Pilih Semester -</option>
+                            <option value="38">Semester 37</option>
+                            <option value="37">Semester 36</option>
+                            <option value="36">Semester 35</option>
+                        </select>
+                        <button type="submit">Pilih</button>
+                    </form>
+                </div>
+                <div class="col" style="float: right">
+                    <a class="btn info" style="margin-bottom: 0.25rem;" href="{{ route('du') }}">View Table</a>    
+                </div>
+            </div>                    
 
             <div class="row">
                 <div class="col s12">
