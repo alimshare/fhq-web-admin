@@ -233,7 +233,7 @@
             <div class="row">
                 <div class="col s12">
                     <div class="card">
-                        {{-- <a class="btn green" style="margin-bottom: 0.25rem;" href="{{ route('du.export') }}">Export</a> --}}                        
+                        <a class="btn green" style="margin-bottom: 0.25rem;" href="{{ route('du') }}?is_export={{ date('YmdHis') }}">Export</a>                        
 
                         <div class="table-responsive" style="overflow-x:scroll">
                             <table id="datatable" class="display datatable bordered">

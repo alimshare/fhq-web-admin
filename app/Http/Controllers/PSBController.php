@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\RekapDaftarUlang;
+use App\Exports\RekapDaftarUlangExport;
 use App\Model\Daftar\CalonSantri;
 use App\Model\DaftarUlang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PSBController extends Controller
 {
@@ -25,11 +28,11 @@ class PSBController extends Controller
     {
         $semester = !empty($request->semester_id) ?  $request->semester_id : Session::get('semesterActive')->next_semester_id;
 
-        $data['list'] = DaftarUlang::join(DB::raw('view_peserta AS v'), 'v.peserta_id', 'daftar_ulang.peserta_id')
+        $data['list'] = $list = DaftarUlang::join(DB::raw('view_peserta AS v'), 'v.peserta_id', 'daftar_ulang.peserta_id')
             ->select('daftar_ulang.id', 'daftar_ulang.peserta_id', 'daftar_ulang.hari', 'daftar_ulang.jenis_kbm', 
             'daftar_ulang.upload_file','daftar_ulang.created_at','daftar_ulang.verified_at', 
             'daftar_ulang.tgl_lahir', 'v.nis', 'v.santri_name', 'v.pengajar_name', 'v.program_name','v.status','v.semester_name',
-            'daftar_ulang.next_peserta_id')
+            'daftar_ulang.next_peserta_id', 'v.gender', DB::raw('v.day as hari_lama'), DB::raw('v.jenis_kbm as jenis_kbm_lama'))
             ->where('next_semester_id', $semester)
             ->orderBy('created_at', 'DESC')
             ->get();
@@ -38,6 +41,10 @@ class PSBController extends Controller
         
         if ($request->view == "gallery") {
             return view('pages.psb.daftar-ulang.list-gallery', $data);        
+        }
+
+        if (!empty($request->is_export)) {
+            return Excel::download(new RekapDaftarUlangExport($list), sprintf('rekap_du_smt%s_%s.xlsx', $semester, date('Ymd_His')));
         }
 
         return view('pages.psb.daftar-ulang.list', $data);
