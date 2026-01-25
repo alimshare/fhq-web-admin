@@ -62,20 +62,20 @@
                                 <br>
 
                                 <div class="row">
-                                    <div class="input-field col s12">
-                                        <input id="tgl" name="tgl" type="text" value="{{ $activity->tgl }}" maxlength="10">
+                                    <div class="col s12">
                                         <label for="tgl">Tanggal Absensi</label>
+                                        <input id="tgl" name="tgl" type="date" value="{{ $activity->tgl }}" maxlength="10">
                                     </div>
                                 </div>
                                 
                                 <div class="row">
-                                    <div class="input-field col s12 l6">
-                                        <input id="start_time" name="start_time" type="text" value="{{ date('H:i', strtotime($activity->start_time)) }}" style="font-size:15pt" maxlength="5">
+                                    <div class="col s12 l6">
                                         <label for="start_time">Waktu Mulai</label>
+                                        <input id="start_time" name="start_time" type="time" value="{{ date('H:i', strtotime($activity->start_time)) }}" style="font-size:15pt" maxlength="5">
                                     </div>
-                                    <div class="input-field col s12 l6">
-                                        <input id="end_time" name="end_time" type="text" value="{{ date('H:i', strtotime($activity->end_time)) ?? date('H:i', strtotime($activity->start_time."+2 hours")) }}" style="font-size:15pt" maxlength="5">
+                                    <div class="col s12 l6">
                                         <label for="end_time">Waktu Selesai</label>
+                                        <input id="end_time" name="end_time" type="time" value="{{ date('H:i', strtotime($activity->end_time)) ?? date('H:i', strtotime($activity->start_time."+2 hours")) }}" style="font-size:15pt" maxlength="5">
                                     </div>
                                 </div>
 
