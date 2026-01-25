@@ -180,19 +180,19 @@
           <div class="row">
                 <div class="col s12 l4">
                     <div class="card-panel">
-                        <h5>Download berdasarkan tanggal</h5>
+                        <h6>Download berdasarkan periode</h6>
                         <form action="{{ route('rekap.kbm.download') }}" method="GET">
 
                             <div class="row">
-                                <div class="input-field col s12">
-                                    <input id="tgl" name="start_date" type="text" value="{{ date('Y-m-d') }}" maxlength="10">
+                                <div class="col s12">
                                     <label for="tgl">Tanggal Awal</label>
+                                    <input id="tgl" name="start_date" type="date" value="{{ date('Y-m-d') }}" maxlength="10">
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="input-field col s12">
-                                    <input id="tgl" name="end_date" type="text" value="{{ date('Y-m-d') }}" maxlength="10">
+                                <div class="col s12">
                                     <label for="tgl">Tanggal Akhir</label>
+                                    <input id="tgl" name="end_date" type="date" value="{{ date('Y-m-d') }}" maxlength="10">
                                 </div>
                             </div>
 
