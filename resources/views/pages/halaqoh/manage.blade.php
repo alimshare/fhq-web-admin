@@ -162,6 +162,12 @@
                                                     <span class="ultra-small blue-text text-darken-2 badge" style="">{{ $h->peserta_count ?? "" }} &nbsp;</span>
                                                 </a>
                                             </div>
+                                            @else 
+                                            <div class="col s4">
+                                                <a class="secondary-content">
+                                                    <span class="ultra-small blue-text text-darken-2 badge" style="">{{ $h->peserta_count ?? "" }} &nbsp;</span>
+                                                </a>
+                                            </div>
                                             @endallow
                                         </div>
                                     </li>
