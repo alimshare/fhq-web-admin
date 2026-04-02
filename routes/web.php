@@ -164,6 +164,11 @@ Route::group(['middleware' => []], function () {
 	Route::post('/users/add', 						[UserController::class, 'create'])->name('users.add')->middleware(['permission:users']);
 	Route::get('/users/reset-password/{userId}',	[UserController::class, 'resetPassword'])->name('users.reset-password')->middleware(['permission:users.reset-password']);
 
+	/**
+	 * Settings
+	 */
+	Route::resource('settings', 'SettingController');
+
 });
 
 Route::get('halaqoh-25', 'PublicController@halaqoh25');

@@ -186,3 +186,16 @@ INSERT INTO roles_permissions (role_id,permission_id) VALUES
 INSERT INTO users_roles (user_id,role_id) VALUES 
 (1,2)
 ;
+
+CREATE TABLE `settings` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `key` varchar(255) NOT NULL,
+  `value` text,
+  `type` varchar(255) NOT NULL DEFAULT 'string',
+  `group` varchar(255) DEFAULT NULL,
+  `description` text,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `settings_key_unique` (`key`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
