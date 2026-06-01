@@ -1,168 +1,132 @@
-@extends('layouts.materialized')
+@extends('layouts.tailwind')
 
-@section('header-script')
-<style>
-    .display-flex {
-        display: flex
-    }
-    .users-view .media .avatar {
-        margin-right: 2.6rem;
-    }
-    h6 {
-        font-size: 1.15rem;
-        margin: .575rem 0 .46rem;
-    }
-    h5, h6 {
-        line-height: 110%;
-        font-family: Muli,sans-serif;
-    }
-    table.bordered td, table.bordered th {
-        border: 1px solid rgba(0,0,0,.12) !important;
-        padding: 15px !important;
-    }
-
-    @media(max-width: 430px) {
-        .table-responsive {
-            overflow-x: scroll;
-            scroll-behavior: smooth;
-        }
-    }
-</style>
-@endsection
-
-@section('footer-script')
-    <script>
-
-    </script>
-@endsection
+@section('title', 'Profil Santri')
+@section('page-title', 'Profil Santri')
 
 @section('content')
 
-<div class="row">
+{{-- Breadcrumb --}}
+<nav class="mb-6">
+    <ol class="flex items-center gap-x-2 text-sm text-gray-500">
+        <li><a href="/" class="hover:text-primary-600">Home</a></li>
+        <li><span class="text-gray-300">/</span></li>
+        <li><a href="/santri" class="hover:text-primary-600">Santri</a></li>
+        <li><span class="text-gray-300">/</span></li>
+        <li class="text-gray-900 font-medium">Profile</li>
+    </ol>
+</nav>
 
-    <div class="breadcrumbs-dark pb-0 pt-4" id="breadcrumbs-wrapper">
-		<div class="container">
-			<div class="row">
-				<div class="col s10 m6 l6">
-					<h5 class="breadcrumbs-title mt-0 mb-0">
-						<span>Santri <small>Profile</small></span>
-					</h5>
-					<ol class="breadcrumbs mb-0">
-						<li class="breadcrumb-item "><a href="/">Home</a></li>
-						<li class="breadcrumb-item active">Santri</li>
-						<li class="breadcrumb-item active">Profile</li>
-					</ol>
-				</div>
-			</div>
-		</div>
-    </div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-    <div class="col s12">
-        <div class="container">
-            <div class="section users-view">
-                <div class="row">
-                    <div class="col s12 m6 l4">
-                        <div class="card-panel" id="profile-card">
-
-                            <div class="row" style="margin-top: 0.8rem">
-                                <div class="col s12">
-                                <table class="striped bordered">
-                                    <tbody>
-                                        <tr>
-                                          <td width="30%">NIS:</td>
-                                          <td class="">{{ $profile->nis }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Nama:</td>
-                                            <td class="">{{ $profile->name }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Jenis Kelamin:</td>
-                                            <td>{{ $profile->gender == 'MALE' ? 'Laki-laki' : 'Perempuan' }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Telepon:</td>
-                                            <td class="">{{ $profile->phone }}</td>
-                                        </tr>
-                                    </tbody>
-                                  </table>
-
-                                  <br>
-                                  @if (Request::input('referer'))
-                                    <a href="{{ Request::input('referer') }}" class="waves-effect waves-light btn btn-small">Kembali</a>
-                                  @endif
-
-                                </div>
-                            </div>
-                            <div class="card-footer text-right" style="margin-top: 1rem;">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col s12 l8">
-
-                        @isset($mutabaah)
-                            <div class="card-panel table-responsive" id="card-halaqoh-active">
-                                <h5 class="h5">Catatan Pekanan</h5>
-                                <table id="daftar_mutabaah" class="bordered" cellspacing="0" width="100%">
-                                    <thead>
-                                        <tr class="cyan darken-3 white-text" class="row-header">
-                                            <th>Tanggal</th>
-                                            <th>Kehadiran</th>
-                                            <th>Catatan</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($mutabaah as $m)
-                                            <tr>
-                                                <td>{{ $m->activity->tgl }}</td>
-                                                <td>{{ ($m->status == 1) ? "Hadir" : "Tidak Hadir"  }}</td>
-                                                <td>{{ $m->note }}</td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                    <tfoot>
-                                    </tfoot>
-                                </table>
-                            </div>
-                        @endisset
-                        
-                        @isset($halaqoh)
-                            <div class="card-panel table-responsive" id="card-halaqoh-active">
-                                <h5 class="h5">Daftar Riwayat Halaqoh</h5>
-                                <table id="daftar_halaqoh_aktif" class="bordered" cellspacing="0" width="100%">
-                                    <thead>
-                                        <tr class="cyan darken-3 white-text" class="row-header">
-                                            <th>Semester</th>
-                                            <th>Hari</th>
-                                            <th>Program</th>
-                                            <th>Pengajar</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($halaqoh as $n)
-                                            <tr>
-                                                <td>{{ $n->semester_name }}</td>
-                                                <td>{{ $n->day }}</td>
-                                                <td>{{ $n->program_name }}</td>
-                                                <td>{{ $n->pengajar_name }}</td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                    <tfoot>
-                                    </tfoot>
-                                </table>
-                            </div>
-                        @endisset
-
-                    </div>
-
+    {{-- Profile Card --}}
+    <div class="lg:col-span-1">
+        <div class="card">
+            <dl class="divide-y divide-gray-100">
+                <div class="py-3 flex justify-between gap-x-4">
+                    <dt class="text-sm text-gray-500">NIS</dt>
+                    <dd class="text-sm font-medium text-gray-900">{{ $profile->nis }}</dd>
                 </div>
+                <div class="py-3 flex justify-between gap-x-4">
+                    <dt class="text-sm text-gray-500">Nama</dt>
+                    <dd class="text-sm font-medium text-gray-900">{{ $profile->name }}</dd>
+                </div>
+                <div class="py-3 flex justify-between gap-x-4">
+                    <dt class="text-sm text-gray-500">Jenis Kelamin</dt>
+                    <dd class="text-sm font-medium text-gray-900">{{ $profile->gender == 'MALE' ? 'Laki-laki' : 'Perempuan' }}</dd>
+                </div>
+                <div class="py-3 flex justify-between gap-x-4">
+                    <dt class="text-sm text-gray-500">Telepon</dt>
+                    <dd class="text-sm font-medium text-gray-900">{{ $profile->phone }}</dd>
+                </div>
+            </dl>
 
-            </div>
+            @if (Request::input('referer'))
+                <div class="mt-4">
+                    <a href="{{ Request::input('referer') }}" class="btn-secondary">
+                        <svg class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />
+                        </svg>
+                        Kembali
+                    </a>
+                </div>
+            @endif
         </div>
     </div>
-    
+
+    {{-- Tables --}}
+    <div class="lg:col-span-2 space-y-6">
+
+        {{-- Catatan Pekanan --}}
+        @isset($mutabaah)
+        <div class="card">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Catatan Pekanan</h3>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead>
+                        <tr class="bg-primary-600">
+                            <th class="px-4 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Tanggal</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Kehadiran</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Catatan</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        @forelse ($mutabaah as $m)
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-4 py-3 text-sm text-gray-900">{{ $m->activity->tgl }}</td>
+                                <td class="px-4 py-3 text-sm">
+                                    @if($m->status == 1)
+                                        <span class="badge-success">Hadir</span>
+                                    @else
+                                        <span class="badge-danger">Tidak Hadir</span>
+                                    @endif
+                                </td>
+                                <td class="px-4 py-3 text-sm text-gray-700">{{ $m->note }}</td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="3" class="px-4 py-8 text-center text-sm text-gray-500">Belum ada catatan</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        @endisset
+
+        {{-- Riwayat Halaqoh --}}
+        @isset($halaqoh)
+        <div class="card">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Daftar Riwayat Halaqoh</h3>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead>
+                        <tr class="bg-primary-600">
+                            <th class="px-4 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Semester</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Hari</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Program</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Pengajar</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        @forelse ($halaqoh as $n)
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-4 py-3 text-sm text-gray-900">{{ $n->semester_name }}</td>
+                                <td class="px-4 py-3 text-sm text-gray-700">{{ $n->day }}</td>
+                                <td class="px-4 py-3 text-sm text-gray-700">{{ $n->program_name }}</td>
+                                <td class="px-4 py-3 text-sm text-gray-700">{{ $n->pengajar_name }}</td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="4" class="px-4 py-8 text-center text-sm text-gray-500">Belum ada riwayat halaqoh</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        @endisset
+
+    </div>
 </div>
 
 @endsection

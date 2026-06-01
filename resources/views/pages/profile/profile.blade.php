@@ -1,201 +1,164 @@
-@extends('layouts.materialized')
+@extends('layouts.tailwind')
 
-@section('header-script')
-<style>
-    .display-flex {
-        display: flex
-    }
-    .users-view .media .avatar {
-        margin-right: 2.6rem;
-    }
-    h6 {
-        font-size: 1.15rem;
-        margin: .575rem 0 .46rem;
-    }
-    h5, h6 {
-        line-height: 110%;
-        font-family: Muli,sans-serif;
-    }
-    table.bordered td, table.bordered th {
-        border: 1px solid rgba(0,0,0,.12) !important;
-        padding: 15px !important;
-    }
-
-    @media(max-width: 430px) {
-        .table-responsive {
-            overflow-x: scroll;
-            scroll-behavior: smooth;
-        }
-    }
-</style>
-@endsection
-
-@section('footer-script')
-    <script>
-
-    </script>
-@endsection
+@section('title', 'Profil')
+@section('page-title', 'Profil')
 
 @section('content')
 
-<div class="row">
+{{-- Breadcrumb --}}
+<nav class="mb-6">
+    <ol class="flex items-center gap-x-2 text-sm text-gray-500">
+        <li><a href="/" class="hover:text-primary-600">Home</a></li>
+        <li><span class="text-gray-300">/</span></li>
+        <li class="text-gray-900 font-medium">Profile</li>
+    </ol>
+</nav>
 
-    <div class="breadcrumbs-dark pb-0 pt-4" id="breadcrumbs-wrapper">
-		<div class="container">
-			<div class="row">
-				<div class="col s10 m6 l6">
-					<h5 class="breadcrumbs-title mt-0 mb-0">
-						<span>Profil</span>
-					</h5>
-					<ol class="breadcrumbs mb-0">
-						<li class="breadcrumb-item "><a href="/">Home</a></li>
-						<li class="breadcrumb-item active">Profile</li>
-					</ol>
-				</div>
-			</div>
-		</div>
-    </div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
-    <div class="col s12">
-        <div class="container">
-            <div class="section users-view">
-                <div class="row">
-                    <div class="col s12 m6 l4">
-                        <div class="card-panel" id="profile-card" style="overflow-x: scroll">
-                            <div class="display-flex media">
-                                <a href="#" class="avatar">
-                                    <img src="/images/user-default.png" alt="users view avatar" class="z-depth-1 circle" width="64" height="64">
-                                </a>
-                                <div class="media-body">
-                                    <h6 class="media-heading">
-                                    <span class="users-view-name">{{  $profile->name }}</span>
-                                    </h6>
-                                    <span>NIP :</span>
-                                    <span class="users-view-id">{{ $profile->nip }}</span>
-                                </div>
-                            </div>
-
-                            <div class="row" style="margin-top: 0.8rem";>
-                                <div class="col s12">
-                                <table class="striped">
-                                    <tbody>
-                                      <tr>
-                                        <td width="30%">Jenis Kelamin:</td>
-                                        <td>{{ $profile->gender == 'MALE' ? 'Laki-laki' : 'Perempuan' }}</td>
-                                      </tr>
-                                      <tr>
-                                        <td>Telepon:</td>
-                                        <td class="">{{ $profile->phone }}</td>
-                                      </tr>
-                                      <tr>
-                                        <td>Email:</td>
-                                        <td class="">{{ $profile->email }}</td>
-                                      </tr>
-                                      <tr>
-                                        <td>Alamat:</td>
-                                        <td class="">{{ $profile->address }}</td>
-                                      </tr>
-                                      <tr>
-                                        <td>Role:</td>
-                                        <td class="users-view-role">
-                                            {{ implode(", ", $roles) }}
-                                        </td>
-                                      </tr>
-                                      {{-- <tr>
-                                        <td width="30%">Join Date</td>
-                                        <td>{{ date('d/m/Y', strtotime($profile->join_date)) }}</td>
-                                      </tr> --}}
-                                      <tr>
-                                        <td>Status:</td>
-                                        <td><span class=" users-view-status chip green lighten-5 green-text">Active</span></td>
-                                      </tr>
-                                    </tbody>
-                                  </table>
-                                    
-                                </div>
-                            </div>
-                            <div class="card-footer text-right" style="margin-top: 1rem;">
-                            <a href="{{ route('profile.edit') }}" class="btn green">Edit</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col s12 l8">
-                        <div class="card-panel table-responsive" id="card-halaqoh-active">
-                            <h5 class="h5">Daftar Halaqoh Aktif</h5>
-                            <table id="daftar_halaqoh_aktif" class="bordered" cellspacing="0" width="100%">
-                                <thead>
-                                    <tr class="cyan darken-3 white-text" class="row-header">
-                                        <th>Semester</th>
-                                        <th>Hari</th>
-                                        <th>Program</th>
-                                        <th>Jumlah Santri</th>
-                                        @allow('detail-halaqoh')
-                                        <th>Action</th>
-                                        @endallow
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($halaqoh_aktif as $n)
-                                        <tr>
-                                            <td>{{ $n->semester_name }}</td>
-                                            <td>{{ $n->day }}</td>
-                                            <td>{{ $n->program_name }}</td>
-                                            <td>{{ $n->peserta_count }}</td>
-                                            @allow('detail-halaqoh')
-                                            <td class="text-center">
-                                                <a href="/halaqoh/{{ $n->halaqoh_reference }}?referer=/profile" class="btn-floating waves-effect waves-light primary tooltipped" data-position="bottom" data-tooltip="Detail"><i class="mdi-action-search"></i></a>
-                                                <a href="/absensi?halaqohRef={{ $n->halaqoh_reference }}" class="btn-floating green waves-effect waves-light primary tooltipped" data-position="bottom" data-tooltip="Absensi"><i class="mdi-action-assignment"></i></a>
-                                            </td>
-                                            @endallow
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                                <tfoot>
-                                </tfoot>
-                            </table>
-                        </div>
-
-                        <div class="card-panel table-responsive" id="card-halaqoh-history">
-                            <h5 class="h5">Daftar Halaqoh Lampau</h5>
-
-                            <table id="daftar_halaqoh_lampau" class="bordered" cellspacing="0" width="100%">
-                                <thead>
-                                    <tr class="cyan darken-3 white-text" class="row-header">
-                                        <th>Semester</th>
-                                        <th>Hari</th>
-                                        <th>Program</th>
-                                        <th>Jumlah Santri</th>
-                                        @allow('detail-halaqoh')
-                                        <th>Action</th>
-                                        @endallow
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($halaqoh_lampau as $n)
-                                        <tr>
-                                            <td>{{ $n->semester_name }}</td>
-                                            <td>{{ $n->day }}</td>
-                                            <td>{{ $n->program_name }}</td>
-                                            <td>{{ $n->peserta_count }}</td>
-                                            @allow('detail-halaqoh')
-                                            <td class="text-center">
-                                                <a href="/halaqoh/{{ $n->halaqoh_reference }}?referer=/profile" class="btn-floating waves-effect waves-light primary tooltipped" data-position="bottom" data-tooltip="Detail"><i class="mdi-action-search"></i></a>
-                                            </td>
-                                            @endallow
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                                <tfoot>
-                                </tfoot>
-                            </table>
-                        </div>
-                    </div>
+    {{-- Profile Card --}}
+    <div class="lg:col-span-1">
+        <div class="card">
+            {{-- Avatar & Name --}}
+            <div class="flex items-center gap-x-4 mb-6">
+                <img src="/images/user-default.png" alt="avatar" class="h-16 w-16 rounded-full bg-gray-100 object-cover ring-2 ring-gray-200">
+                <div class="min-w-0">
+                    <h2 class="text-lg font-semibold text-gray-900 truncate">{{ $profile->name }}</h2>
+                    <p class="text-sm text-gray-500">NIP: {{ $profile->nip }}</p>
                 </div>
+            </div>
 
+            {{-- Info Table --}}
+            <dl class="divide-y divide-gray-100">
+                <div class="py-3 flex justify-between gap-x-4">
+                    <dt class="text-sm text-gray-500">Jenis Kelamin</dt>
+                    <dd class="text-sm font-medium text-gray-900">{{ $profile->gender == 'MALE' ? 'Laki-laki' : 'Perempuan' }}</dd>
+                </div>
+                <div class="py-3 flex justify-between gap-x-4">
+                    <dt class="text-sm text-gray-500">Telepon</dt>
+                    <dd class="text-sm font-medium text-gray-900">{{ $profile->phone }}</dd>
+                </div>
+                <div class="py-3 flex justify-between gap-x-4">
+                    <dt class="text-sm text-gray-500">Email</dt>
+                    <dd class="text-sm font-medium text-gray-900">{{ $profile->email }}</dd>
+                </div>
+                <div class="py-3 flex justify-between gap-x-4">
+                    <dt class="text-sm text-gray-500">Alamat</dt>
+                    <dd class="text-sm font-medium text-gray-900 text-right">{{ $profile->address }}</dd>
+                </div>
+                <div class="py-3 flex justify-between gap-x-4">
+                    <dt class="text-sm text-gray-500">Role</dt>
+                    <dd class="text-sm font-medium text-gray-900">{{ implode(', ', $roles) }}</dd>
+                </div>
+                <div class="py-3 flex justify-between gap-x-4">
+                    <dt class="text-sm text-gray-500">Status</dt>
+                    <dd><span class="badge-success">Active</span></dd>
+                </div>
+            </dl>
+
+            {{-- Edit Button --}}
+            <div class="mt-6 text-right">
+                <a href="{{ route('profile.edit') }}" class="btn-primary">
+                    <svg class="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                    </svg>
+                    Edit Profile
+                </a>
             </div>
         </div>
     </div>
-    
+
+    {{-- Halaqoh Tables --}}
+    <div class="lg:col-span-2 space-y-6">
+
+        {{-- Halaqoh Aktif --}}
+        <div class="card">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Daftar Halaqoh Aktif</h3>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead>
+                        <tr class="bg-primary-600">
+                            <th class="px-4 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Semester</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Hari</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Program</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Jumlah Santri</th>
+                            @allow('detail-halaqoh')
+                            <th class="px-4 py-3 text-center text-xs font-medium text-white uppercase tracking-wider">Action</th>
+                            @endallow
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        @forelse ($halaqoh_aktif as $n)
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-4 py-3 text-sm text-gray-900">{{ $n->semester_name }}</td>
+                                <td class="px-4 py-3 text-sm text-gray-700">{{ $n->day }}</td>
+                                <td class="px-4 py-3 text-sm text-gray-700">{{ $n->program_name }}</td>
+                                <td class="px-4 py-3 text-sm text-gray-700">{{ $n->peserta_count }}</td>
+                                @allow('detail-halaqoh')
+                                <td class="px-4 py-3 text-center">
+                                    <div class="flex items-center justify-center gap-x-2">
+                                        <a href="/halaqoh/{{ $n->halaqoh_reference }}?referer=/profile" class="inline-flex items-center rounded-md bg-primary-50 px-2 py-1 text-xs font-medium text-primary-700 hover:bg-primary-100" title="Detail">
+                                            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" /></svg>
+                                        </a>
+                                        <a href="/absensi?halaqohRef={{ $n->halaqoh_reference }}" class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 hover:bg-green-100" title="Absensi">
+                                            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15a2.25 2.25 0 012.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z" /></svg>
+                                        </a>
+                                    </div>
+                                </td>
+                                @endallow
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="5" class="px-4 py-8 text-center text-sm text-gray-500">Belum ada halaqoh aktif</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        {{-- Halaqoh Lampau --}}
+        <div class="card">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Daftar Halaqoh Lampau</h3>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead>
+                        <tr class="bg-primary-600">
+                            <th class="px-4 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Semester</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Hari</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Program</th>
+                            <th class="px-4 py-3 text-left text-xs font-medium text-white uppercase tracking-wider">Jumlah Santri</th>
+                            @allow('detail-halaqoh')
+                            <th class="px-4 py-3 text-center text-xs font-medium text-white uppercase tracking-wider">Action</th>
+                            @endallow
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        @forelse ($halaqoh_lampau as $n)
+                            <tr class="hover:bg-gray-50">
+                                <td class="px-4 py-3 text-sm text-gray-900">{{ $n->semester_name }}</td>
+                                <td class="px-4 py-3 text-sm text-gray-700">{{ $n->day }}</td>
+                                <td class="px-4 py-3 text-sm text-gray-700">{{ $n->program_name }}</td>
+                                <td class="px-4 py-3 text-sm text-gray-700">{{ $n->peserta_count }}</td>
+                                @allow('detail-halaqoh')
+                                <td class="px-4 py-3 text-center">
+                                    <a href="/halaqoh/{{ $n->halaqoh_reference }}?referer=/profile" class="inline-flex items-center rounded-md bg-primary-50 px-2 py-1 text-xs font-medium text-primary-700 hover:bg-primary-100" title="Detail">
+                                        <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" /></svg>
+                                    </a>
+                                </td>
+                                @endallow
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="5" class="px-4 py-8 text-center text-sm text-gray-500">Belum ada halaqoh lampau</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
 </div>
 
 @endsection
