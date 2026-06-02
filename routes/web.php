@@ -12,13 +12,14 @@
 */
 
 use App\Http\Controllers\AbsensiController;
+use App\Http\Controllers\FinanceController;
 use App\Http\Controllers\HalaqohController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PengajarController;
-use App\Http\Controllers\PrometheusController;
+// use App\Http\Controllers\PrometheusController;
 use App\Http\Controllers\PSBController;
 use App\Http\Controllers\PublicController;
 use App\Http\Controllers\SemesterController;
@@ -169,6 +170,19 @@ Route::group(['middleware' => []], function () {
 	 */
 	Route::resource('settings', 'SettingController');
 
+	/**
+	 * Finance & Accounting (Kas Masuk & Keluar)
+	 */
+	Route::prefix('keuangan')->name('keuangan.')->group(function () {
+		Route::get('', 				[FinanceController::class, 'index'])->name('index')->middleware(['permission:list-keuangan']);
+		Route::get('export', 		[FinanceController::class, 'export'])->name('export')->middleware(['permission:list-keuangan']);
+		Route::get('add', 			[FinanceController::class, 'create'])->name('create')->middleware(['permission:add-keuangan']);
+		Route::post('add', 			[FinanceController::class, 'store'])->name('store')->middleware(['permission:add-keuangan']);
+		Route::get('{id}/edit', 	[FinanceController::class, 'edit'])->name('edit')->middleware(['permission:edit-keuangan']);
+		Route::put('{id}', 			[FinanceController::class, 'update'])->name('update')->middleware(['permission:edit-keuangan']);
+		Route::delete('{id}', 		[FinanceController::class, 'destroy'])->name('destroy')->middleware(['permission:delete-keuangan']);
+	});
+
 });
 
 Route::get('halaqoh-25', 'PublicController@halaqoh25');
@@ -188,7 +202,7 @@ Route::get('/version', function(){
 	return env('APP_VERSION', '1.0.0');
 });
 
-Route::get('/metrics', [PrometheusController::class, 'metrics']);
+// Route::get('/metrics', [PrometheusController::class, 'metrics']);
 
 Route::any('/public/daftar-ulang/{semester}/{hash}', [PublicController::class, 'daftarUlang'])->name('public.du.form');
 Route::get('/public/daftar-ulang/success', 		     [PublicController::class, 'daftarUlangSuccess'])->name('public.du.success');

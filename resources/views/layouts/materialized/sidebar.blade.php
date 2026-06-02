@@ -136,6 +136,24 @@
 
             <li class="li-hover"><div class="divider"></div></li>
 
+            @allow('list-keuangan')
+            <li class="no-padding">
+                <ul class="collapsible collapsible-accordion">
+                    <li class="bold"><a class="collapsible-header waves-effect waves-cyan"><i class="mdi-editor-attach-money"></i> Keuangan</a>
+                        <div class="collapsible-body">
+                            <ul>
+                                <li><a href="{{ route('keuangan.index') }}">Kas Masuk &amp; Keluar</a></li>
+                                @allow('add-keuangan')
+                                <li><a href="{{ route('keuangan.create') }}">Tambah Transaksi</a></li>
+                                @endallow
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </li>
+            <li class="li-hover"><div class="divider"></div></li>
+            @endallow
+
             @allow('change-password')
             <li class="bold"><a href="/change-password" class="waves-effect waves-cyan"><i class="mdi-communication-vpn-key"></i> Ubah Password</a></li>
             @endallow
