@@ -136,6 +136,7 @@
 
             <li class="li-hover"><div class="divider"></div></li>
 
+            @if(env('FEATURE_FINANCE', false))
             @allow('list-keuangan')
             <li class="no-padding">
                 <ul class="collapsible collapsible-accordion">
@@ -153,6 +154,7 @@
             </li>
             <li class="li-hover"><div class="divider"></div></li>
             @endallow
+            @endif
 
             @allow('change-password')
             <li class="bold"><a href="/change-password" class="waves-effect waves-cyan"><i class="mdi-communication-vpn-key"></i> Ubah Password</a></li>

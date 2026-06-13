@@ -173,15 +173,17 @@ Route::group(['middleware' => []], function () {
 	/**
 	 * Finance & Accounting (Kas Masuk & Keluar)
 	 */
-	Route::prefix('keuangan')->name('keuangan.')->group(function () {
-		Route::get('', 				[FinanceController::class, 'index'])->name('index')->middleware(['permission:list-keuangan']);
-		Route::get('export', 		[FinanceController::class, 'export'])->name('export')->middleware(['permission:list-keuangan']);
-		Route::get('add', 			[FinanceController::class, 'create'])->name('create')->middleware(['permission:add-keuangan']);
-		Route::post('add', 			[FinanceController::class, 'store'])->name('store')->middleware(['permission:add-keuangan']);
-		Route::get('{id}/edit', 	[FinanceController::class, 'edit'])->name('edit')->middleware(['permission:edit-keuangan']);
-		Route::put('{id}', 			[FinanceController::class, 'update'])->name('update')->middleware(['permission:edit-keuangan']);
-		Route::delete('{id}', 		[FinanceController::class, 'destroy'])->name('destroy')->middleware(['permission:delete-keuangan']);
-	});
+	if (env('FEATURE_FINANCE', false)) {
+		Route::prefix('keuangan')->name('keuangan.')->group(function () {
+			Route::get('', 				[FinanceController::class, 'index'])->name('index')->middleware(['permission:list-keuangan']);
+			Route::get('export', 		[FinanceController::class, 'export'])->name('export')->middleware(['permission:list-keuangan']);
+			Route::get('add', 			[FinanceController::class, 'create'])->name('create')->middleware(['permission:add-keuangan']);
+			Route::post('add', 			[FinanceController::class, 'store'])->name('store')->middleware(['permission:add-keuangan']);
+			Route::get('{id}/edit', 	[FinanceController::class, 'edit'])->name('edit')->middleware(['permission:edit-keuangan']);
+			Route::put('{id}', 			[FinanceController::class, 'update'])->name('update')->middleware(['permission:edit-keuangan']);
+			Route::delete('{id}', 		[FinanceController::class, 'destroy'])->name('destroy')->middleware(['permission:delete-keuangan']);
+		});
+	}
 
 });
 
