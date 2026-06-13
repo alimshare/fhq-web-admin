@@ -262,7 +262,7 @@
                             <div class="row" style="margin-bottom: 1em">
                                 <div class="three columns"><label>Bukti Daftar Ulang</label></div>
                                 <div class="nine columns">
-                                    <p>Infaq daftar ulang = <b>Rp 100.038</b></p>
+                                    <p>Infaq daftar ulang = <b>Rp 100.039</b></p>
 
                                     Transfer ke rekening:
                                     <table style="margin-top: 0; margin-bottom:1rem" class="table table-bordered w-full">
@@ -287,8 +287,11 @@
                                         style="text-decoration: none">Hubungi Admin</a></p>
 
                                     <div class="box-penting">Bagi kelas Tahsin / Tahfizh Dewasa jika melunasi infaq pendidikan
-                                        sebelum tanggal <b>04 Januari 2026</b>, mendapat potongan <b>Rp. 150.000</b>,
-                                        sehingga cukup melunasi <b>Rp. 600.000</b> </div>
+                                        sebelum tanggal <b>01 Agustus 2026</b>, mendapat potongan <b>Rp. 150.000</b>,
+                                        sehingga cukup melunasi <b>Rp. 700.000</b> </div>
+                                    
+                                    <div class="box-penting">Bagi kelas Anak mendapat potongan <b>Rp. 50.000</b>,
+                                        jika orang tua menjadi santri dewasa, sehingga cukup melunasi <b>Rp. 450.000</b> </div>
 
                                     <input type="file" name="upload" id="upload" accept="image/*" data-target="preview" onchange="loadFile(event, this)" required>
                                     
@@ -312,19 +315,16 @@
                 style="margin-top: 2em; outline:1px solid #ccc; padding:1em; box-shadow:8px 12px #888888;"
                 id="section-info">
                 <h4>Info</h4>
-                {{-- <p>
-                    Periode Daftar Ulang: <b>7 Desember 2024</b> s.d. <b>12 Januari 2025</b>
-                </p> --}}
 
                 Infaq Pendidikan per Semester
                 <table class="w-full table-bordered td-p-1" style="margin-bottom: 0px; font-size: 0.8em">
                     <tr>
                         <td>Tahsin / Tahfizh Dewasa</td>
-                        <td>Rp. 750.000 (<span class="text-red">*</span>)</td>
+                        <td>Rp. 850.000 (<span class="text-red">*</span>)</td>
                     </tr>
                     <tr>
                         <td>Tahsin / Tahfizh Anak</td>
-                        <td>Rp. 500.000</td>
+                        <td>Rp. 500.000 (<span class="text-red">**</span>)</td>
                     </tr>
                     <tr>
                         <td>Bahasa Arab</td>
@@ -332,14 +332,17 @@
                     </tr>
                 </table>
 
-                <span class="text-red" style="font-size: 1.2em">*</span>) <small>Potongan Rp. 150.000,- bagi kelas
-                    Tahsin /
-                    Tahfizh Dewasa jika melunasi infaq pendidikan sebelum tanggal <b>04 Januari 2026</b></small>
+                <span class="text-red" style="font-size: 1.2em">*</span>) 
+                <small>Potongan Rp. 150.000,- bagi kelas Tahsin / Tahfizh Dewasa jika melunasi infaq pendidikan sebelum tanggal <b>01 Agustus 2026</b></small>
+                <br>
+                <span class="text-red" style="font-size: 1.2em">**</span>) 
+                <small>Potongan Rp. 50.000,- bagi Santri Anak jika orang tua menjadi santri dewasa</small>
+
                 </p>
                 <p>
-                    Infaq daftar ulang minimal <b>Rp 100.038</b> <br>
-                    <span class="text-red" style="font-size: 1.2em">*</span>) <small>Angsuran awal infaq
-                        pendidikan semester berikutnya.</small>
+                    Infaq daftar ulang minimal <b>Rp 100.039</b> <br>
+                    {{-- <span class="text-red" style="font-size: 1.2em">*</span>) <small>Angsuran awal infaq
+                        pendidikan semester berikutnya.</small> --}}
                 </p>
                 <p>
                     Tersedia <b>Program Santri Sosial</b> bagi santri yang memiliki kendala terkait infaq
