@@ -158,14 +158,73 @@ class PublicController extends Controller
 
         if ($request->method() == "POST") {
 
-            $data['nis'] = $nis = @$request->nis;
-            $semesterActive   = Semester::getActive();
+            $semesterActive = Semester::getActive();
 
-            $santri = Santri::select('id', 'nis', 'name', 'phone')->where('nis', $nis)->first();
-            if (!$santri) {
-                return redirect()->route('public.du.form', ['semester'=>$semester, 'hash' => $hash])
-                    ->with('alert', ['message'=>"Santri dengan NIS <b>$nis</b> tidak ditemukan !", 'type'=>'danger']);
+            // Support search by NIS, name, or phone. The confirm step still sends 'nis' as hidden field.
+            $query = trim($request->input('search', $request->input('nis', '')));
+            $data['search'] = $query;
+
+            if (!$request->filled('confirm') && !$request->filled('santri_id') && mb_strlen($query) < 3) {
+                return redirect()->route('public.du.form', ['semester' => $semester, 'hash' => $hash])
+                    ->with('alert', ['message' => "Masukkan minimal 3 karakter untuk pencarian.", 'type' => 'danger'])
+                    ->withInput();
             }
+
+            $semesterSubquery = function ($q) use ($semester) {
+                $q->select('santri_id')
+                  ->from('peserta')
+                  ->join('view_halaqoh as vh', 'vh.halaqoh_id', '=', 'peserta.halaqoh_id')
+                  ->where('vh.semester_id', $semester);
+            };
+
+            // If a specific santri_id was chosen from a disambiguation list
+            if ($request->filled('santri_id') && !$request->filled('confirm')) {
+                // Bug fix: scope to semester so arbitrary santri_id cannot be injected
+                $santri = Santri::select('id', 'nis', 'name', 'phone')
+                    ->whereIn('id', $semesterSubquery)
+                    ->find((int) $request->santri_id);
+                if (!$santri) {
+                    return redirect()->route('public.du.form', ['semester' => $semester, 'hash' => $hash])
+                        ->with('alert', ['message' => "Santri tidak ditemukan!", 'type' => 'danger']);
+                }
+            } elseif ($request->filled('confirm')) {
+                // Bug fix: confirm step carries exact NIS — search by NIS only to avoid wrong-santri via name/phone OR match
+                $santri = Santri::select('id', 'nis', 'name', 'phone')
+                    ->where('nis', $query)
+                    ->whereIn('id', $semesterSubquery)
+                    ->first();
+                if (!$santri) {
+                    return redirect()->route('public.du.form', ['semester' => $semester, 'hash' => $hash])
+                        ->with('alert', ['message' => "Santri tidak ditemukan!", 'type' => 'danger']);
+                }
+            } else {
+                // Search by NIS (exact), phone (normalized, contains), or name (contains)
+                // scoped to santri who are active peserta in the given semester
+                $phoneCore = $this->normalizePhone($query);
+                $results = Santri::select('id', 'nis', 'name', 'phone')
+                    ->where(function ($q) use ($query, $phoneCore) {
+                        $q->where('nis', $query)
+                          ->orWhere('name', 'LIKE', "%{$query}%")
+                          ->when($phoneCore, fn($q) => $q->orWhere('phone', 'LIKE', "%{$phoneCore}%"));
+                    })
+                    ->whereIn('id', $semesterSubquery)
+                    ->get();
+
+                if ($results->isEmpty()) {
+                    return redirect()->route('public.du.form', ['semester' => $semester, 'hash' => $hash])
+                        ->with('alert', ['message' => "Santri dengan data <b>" . e($query) . "</b> tidak ditemukan!", 'type' => 'danger'])
+                        ->withInput();
+                }
+
+                if ($results->count() > 1) {
+                    $data['search_results'] = $results;
+                    return view('daftar-ulang.form-public', $data);
+                }
+
+                $santri = $results->first();
+            }
+
+            $data['nis'] = $nis = $santri->nis;
 
             $halaqohList = Peserta::join(DB::raw('view_halaqoh AS vh'), 'vh.halaqoh_id', 'peserta.halaqoh_id')
                 ->leftJoin(DB::raw('daftar_ulang as du'), 'du.peserta_id', 'peserta.id')
@@ -239,6 +298,29 @@ class PublicController extends Controller
         return view('daftar-ulang.success');
     }
 
+
+    /**
+     * Strip Indonesian phone prefixes (+62, 62, 0) to get core digits for flexible LIKE matching.
+     * Returns null if the input doesn't look like a phone number (not enough digits).
+     */
+    private function normalizePhone(string $input): ?string
+    {
+        $digits = preg_replace('/[^0-9]/', '', $input);
+
+        if (strlen($digits) < 7) {
+            return null;
+        }
+
+        if (str_starts_with($digits, '62')) {
+            return substr($digits, 2);
+        }
+
+        if (str_starts_with($digits, '0')) {
+            return substr($digits, 1);
+        }
+
+        return $digits;
+    }
 
     /**
      * Mask a phone number by replacing the middle digits with asterisks.

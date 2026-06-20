@@ -116,8 +116,11 @@
                 <h2 style="font-size: 2.5rem">Konfirmasi Daftar Ulang</h2>
                 <form action="" method="post" style="margin-bottom: 0">
                     @csrf
-                    <label for="nis">NIS (Nomor Induk Santri)</label>
-                    <input type="number" name="nis" value="{{ $nis ?? '' }}">
+                    <label for="search">Cari Santri</label>
+                    <input type="text" name="search" id="search"
+                        value="{{ old('search', $search ?? '') }}"
+                        placeholder="NIS, Nama, atau Nomor HP"
+                        minlength="3">
                     <button type="submit" class="button button-primary">Cek Kepesertaan</button>
                     @if($semester == "36")
                     <p>
@@ -147,7 +150,35 @@
                     </div>
                 @endif
 
-
+                @isset($search_results)
+                    <h4 style="font-size: 1.8rem; margin-top:1em; margin-bottom:0.5em">Pilih Santri</h4>
+                    <p>Ditemukan {{ $search_results->count() }} santri dengan kata kunci <b>{{ $search ?? '' }}</b>. Pilih salah satu:</p>
+                    <form action="" method="post">
+                        @csrf
+                        <input type="hidden" name="search" value="{{ $search ?? '' }}">
+                        <table class="w-full table-bordered td-p-1" style="margin-bottom: 1rem">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>NIS</th>
+                                    <th>Nama</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($search_results as $item)
+                                    <tr>
+                                        <td class="text-center" style="padding: 0 10px">
+                                            <input type="radio" name="santri_id" value="{{ $item->id }}" required>
+                                        </td>
+                                        <td>{{ $item->nis }}</td>
+                                        <td>{{ $item->name }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        <button type="submit" class="button button-primary">Cek Kepesertaan</button>
+                    </form>
+                @endisset
 
                 @isset($santri_name)
 
