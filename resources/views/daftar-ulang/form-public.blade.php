@@ -372,9 +372,11 @@
                 </p>
                 <p>
                     Infaq daftar ulang minimal <b>Rp 100.039</b> <br>
+                    <small style="font-size: 0.8em">Infaq Daftar Ulang sudah termasuk dalam Infaq Pendidikan.</small>
                     {{-- <span class="text-red" style="font-size: 1.2em">*</span>) <small>Angsuran awal infaq
                         pendidikan semester berikutnya.</small> --}}
                 </p>
+                <hr>
                 <p>
                     Tersedia <b>Program Santri Sosial</b> bagi santri yang memiliki kendala terkait infaq
                     pendidikan.<br><br>
