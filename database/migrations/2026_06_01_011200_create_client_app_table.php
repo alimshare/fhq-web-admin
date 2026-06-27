@@ -15,7 +15,6 @@ class CreateClientAppTable extends Migration
     {
         Schema::create('client_app', function (Blueprint $table) {
             $table->engine = 'MyISAM';
-            $table->charset = 'latin1';
 
             $table->increments('id');
             $table->string('client_id', 100);

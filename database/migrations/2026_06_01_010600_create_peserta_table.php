@@ -15,7 +15,6 @@ class CreatePesertaTable extends Migration
     {
         Schema::create('peserta', function (Blueprint $table) {
             $table->engine = 'MyISAM';
-            $table->charset = 'latin1';
 
             $table->increments('id');
             $table->integer('santri_id')->index();
@@ -30,8 +29,8 @@ class CreatePesertaTable extends Migration
             $table->string('khatam', 50)->nullable();
             $table->integer('kehadiran')->nullable();
             $table->string('status', 30)->nullable();
-            $table->text('note')->nullable()->collation('utf8mb3_unicode_ci');
-            $table->text('management_note')->nullable()->collation('utf8mb3_unicode_ci');
+            $table->text('note')->nullable();
+            $table->text('management_note')->nullable();
             $table->timestamps();
             $table->softDeletes();
             $table->string('reference', 100)->nullable();

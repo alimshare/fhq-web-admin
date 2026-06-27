@@ -15,7 +15,6 @@ class CreateInfaqTable extends Migration
     {
         Schema::create('infaq', function (Blueprint $table) {
             $table->engine = 'MyISAM';
-            $table->charset = 'latin1';
 
             $table->increments('id');
             $table->integer('peserta_id')->index();

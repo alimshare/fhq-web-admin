@@ -15,13 +15,12 @@ class CreateActivityReportTable extends Migration
     {
         Schema::create('activity_report', function (Blueprint $table) {
             $table->engine = 'MyISAM';
-            $table->charset = 'latin1';
 
             $table->increments('id');
             $table->integer('halaqoh_id')->index();
             $table->date('tgl')->nullable();
-            $table->text('description')->nullable()->collation('utf8mb3_unicode_ci');
-            $table->text('management_note')->nullable()->collation('utf8mb3_unicode_ci');
+            $table->text('description')->nullable();
+            $table->text('management_note')->nullable();
             $table->timestamp('created_at')->useCurrent()->useCurrentOnUpdate();
             $table->timestamp('updated_at')->nullable();
             $table->enum('status', ['NORMAL', 'BADAL', 'GABUNG'])->nullable();

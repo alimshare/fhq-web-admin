@@ -15,7 +15,6 @@ class CreatePengajarTable extends Migration
     {
         Schema::create('pengajar', function (Blueprint $table) {
             $table->engine = 'MyISAM';
-            $table->charset = 'latin1';
 
             $table->increments('id');
             $table->string('nip', 100)->nullable();

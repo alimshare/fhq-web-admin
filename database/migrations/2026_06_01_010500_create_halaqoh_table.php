@@ -15,7 +15,6 @@ class CreateHalaqohTable extends Migration
     {
         Schema::create('halaqoh', function (Blueprint $table) {
             $table->engine = 'MyISAM';
-            $table->charset = 'latin1';
 
             $table->increments('id');
             $table->integer('semester_id')->index();

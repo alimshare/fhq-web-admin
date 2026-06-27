@@ -15,7 +15,6 @@ class CreateBadalTable extends Migration
     {
         Schema::create('badal', function (Blueprint $table) {
             $table->engine = 'MyISAM';
-            $table->charset = 'latin1';
 
             $table->increments('id');
             $table->integer('halaqoh_id')->index();

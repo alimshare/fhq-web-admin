@@ -15,7 +15,6 @@ class CreateLembagaTable extends Migration
     {
         Schema::create('lembaga', function (Blueprint $table) {
             $table->engine = 'MyISAM';
-            $table->charset = 'latin1';
 
             $table->increments('id');
             $table->string('name', 60);

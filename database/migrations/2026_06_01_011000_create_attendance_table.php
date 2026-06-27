@@ -15,13 +15,12 @@ class CreateAttendanceTable extends Migration
     {
         Schema::create('attendance', function (Blueprint $table) {
             $table->engine = 'MyISAM';
-            $table->charset = 'latin1';
 
             $table->increments('id');
             $table->integer('peserta_id')->index();
             $table->integer('activity_id')->index();
             $table->integer('status')->default(0);
-            $table->text('note')->nullable()->collation('utf8mb3_unicode_ci');
+            $table->text('note')->nullable();
             $table->timestamp('created_at')->useCurrent()->useCurrentOnUpdate();
             $table->timestamp('updated_at')->nullable();
         });

@@ -15,7 +15,6 @@ class CreateKeluargaPengajarTable extends Migration
     {
         Schema::create('keluarga_pengajar', function (Blueprint $table) {
             $table->engine = 'MyISAM';
-            $table->charset = 'latin1';
 
             $table->increments('id');
             $table->integer('pengajar_id')->index();

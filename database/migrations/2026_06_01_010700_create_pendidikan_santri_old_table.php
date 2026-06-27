@@ -15,7 +15,6 @@ class CreatePendidikanSantriOldTable extends Migration
     {
         Schema::create('pendidikan_santri_old', function (Blueprint $table) {
             $table->engine = 'MyISAM';
-            $table->charset = 'latin1';
 
             $table->increments('id');
             $table->integer('santri_id')->index();

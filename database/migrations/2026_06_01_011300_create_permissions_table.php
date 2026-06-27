@@ -14,7 +14,6 @@ class CreatePermissionsTable extends Migration
     public function up()
     {
         Schema::create('permissions', function (Blueprint $table) {
-            $table->charset = 'latin1';
 
             $table->increments('id');
             $table->string('name', 60)->nullable();
