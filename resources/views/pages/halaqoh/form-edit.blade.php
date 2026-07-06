@@ -35,6 +35,35 @@
             return false;
         return true;
     }
+
+    function saveDU(pesertaId, halaqohReference) {
+        var hari = document.getElementById('du_hari_' + pesertaId).value;
+        var kbm = document.getElementById('du_kbm_' + pesertaId).value;
+        if (!hari || !kbm) {
+            alert('Pilih Hari dan KBM terlebih dahulu');
+            return;
+        }
+        var form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '{{ route("halaqoh.du.save") }}';
+        form.innerHTML = '<input type="hidden" name="_token" value="{{ csrf_token() }}">' +
+            '<input type="hidden" name="peserta_id" value="' + pesertaId + '">' +
+            '<input type="hidden" name="halaqoh_reference" value="' + halaqohReference + '">' +
+            '<input type="hidden" name="hari" value="' + hari + '">' +
+            '<input type="hidden" name="jenis_kbm" value="' + kbm + '">';
+        document.body.appendChild(form);
+        form.submit();
+    }
+
+    function removeDU(url) {
+        if (!confirm('Hapus Daftar Ulang?')) return;
+        var form = document.createElement('form');
+        form.method = 'POST';
+        form.action = url;
+        form.innerHTML = '<input type="hidden" name="_token" value="{{ csrf_token() }}">';
+        document.body.appendChild(form);
+        form.submit();
+    }
 </script>
 @endsection
 
@@ -87,7 +116,10 @@
         							<th rowspan="2">Kehadiran</th>
         							<th rowspan="2">Status</th>
         							<th rowspan="2">Catatan</th>
-        							<th rowspan="2">Catatan Manajemen</th>				
+        							<th rowspan="2">Catatan Manajemen</th>
+										@if(env('ENABLE_PENGAJAR_DU'))
+        							<th rowspan="2">Daftar Ulang</th>
+										@endif
         						</tr>
                         
                                 @if(in_array($halaqoh->program_id, explode(",", env('TAKHOSSUS_IDS', ''))))
@@ -133,6 +165,43 @@
         							<td class="text-center">
         								<textarea name="data[{{$santri->peserta_id}}][management_note]">{{ $santri->catatan_manajemen }}</textarea>
         							</td>
+									@if(env('ENABLE_PENGAJAR_DU'))
+        							<td class="text-center" style="min-width: 160px;">
+										@if (!empty($santri->daftarUlang))
+											@if(@$santri->daftarUlang->jenis_kbm == "CUTI" || @$santri->daftarUlang->hari == "CUTI")
+												@if($santri->daftarUlang->isCreatedByPengajar())
+													<div class="chip black white-text"><span>CUTI</span> <small>(Pengajar)</small></div>
+												@else
+													<div class="chip black white-text"><span>CUTI</span></div>
+												@endif
+											@elseif($santri->daftarUlang->isCreatedByPengajar())
+												<div class="chip blue white-text">DU <small>(Pengajar)</small></div>
+											@else
+												<div class="chip green white-text">DU</div>
+											@endif
+											@if($santri->daftarUlang->created_by == auth()->id())
+												<button type="button" onclick="removeDU('{{ route('halaqoh.du.remove', ['id' => $santri->daftarUlang->id]) }}')" class="btn-floating btn-small waves-effect waves-light red"><i class="mdi-content-clear"></i></button>
+											@endif
+										@else
+											<div style="display:inline-flex; gap:4px; align-items:center; flex-wrap:wrap;">
+												<select id="du_hari_{{ $santri->peserta_id }}" class="browser-default" style="height:2rem; font-size:11px; width:auto; padding:0 4px;">
+													<option value="">Hari</option>
+													@foreach($days as $day)
+														<option value="{{ $day }}">{{ $day }}</option>
+													@endforeach
+													<option value="CUTI">CUTI</option>
+												</select>
+												<select id="du_kbm_{{ $santri->peserta_id }}" class="browser-default" style="height:2rem; font-size:11px; width:auto; padding:0 4px;">
+													<option value="">KBM</option>
+													<option value="OFFLINE">OFFLINE</option>
+													<option value="ONLINE">ONLINE</option>
+													<option value="CUTI">CUTI</option>
+												</select>
+												<button type="button" onclick="saveDU('{{ $santri->peserta_id }}', '{{ $halaqoh->halaqoh_reference }}')" class="btn-floating btn-small waves-effect waves-light green"><i class="mdi-content-add"></i></button>
+											</div>
+										@endif
+        							</td>
+									@endif
         						</tr>
         						@endforeach
         					</tbody>

@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
-use App\Model\{Semester, Halaqoh, Attendance, Pengajar, Peserta, Program};
+use App\Model\{Semester, Halaqoh, Attendance, Pengajar, Peserta, Program, DaftarUlang};
 use App\Model\View\ViewHalaqoh;
 use App\Model\View\ViewPeserta;
 use Illuminate\Support\Facades\DB;
@@ -134,9 +134,68 @@ class HalaqohController extends Controller
     public function editDetail(Request $request, $reference=null)
     {
         $this->data['halaqoh'] = \App\Model\View\ViewHalaqoh::where('halaqoh_reference', $reference)->first();
-        $this->data['peserta'] = \App\Model\View\ViewPeserta::where('halaqoh_reference', $reference)->get();
+        $this->data['peserta'] = \App\Model\View\ViewPeserta::where('halaqoh_reference', $reference)->with('daftarUlang')->get();
+        $this->data['days'] = explode(",", strtoupper(env('AVAILABLE_DAYS', 'SABTU,AHAD')));
 
         return view('pages.halaqoh.form-edit', $this->data);
+    }
+
+    public function saveDaftarUlang(Request $request)
+    {
+        if (!env('ENABLE_PENGAJAR_DU')) {
+            return redirect()->back()->with('alert', ['message' => 'Fitur ini tidak aktif', 'type' => 'danger']);
+        }
+
+        $pesertaId = $request->peserta_id;
+        $halaqohReference = $request->halaqoh_reference;
+
+        $peserta = Peserta::find($pesertaId);
+        if (!$peserta) {
+            return redirect()->back()->with('alert', ['message' => 'Peserta tidak ditemukan', 'type' => 'danger']);
+        }
+
+        $existing = DaftarUlang::where('peserta_id', $pesertaId)->first();
+        if ($existing) {
+            return redirect()->back()->with('alert', ['message' => 'Daftar Ulang sudah ada untuk peserta ini', 'type' => 'warning']);
+        }
+
+        $semesterActive = Semester::getActive();
+
+        $du = new DaftarUlang;
+        $du->peserta_id = $pesertaId;
+        $du->hari = $request->hari;
+        $du->jenis_kbm = $request->jenis_kbm;
+        $du->next_semester_id = $semesterActive->next_semester_id;
+        $du->created_by = auth()->id();
+
+        if ($du->save()) {
+            return redirect("/halaqoh/{$halaqohReference}/edit")
+                ->with('alert', ['message' => 'Daftar Ulang berhasil disimpan', 'type' => 'success']);
+        }
+
+        return redirect()->back()->with('alert', ['message' => 'Gagal menyimpan Daftar Ulang', 'type' => 'danger']);
+    }
+
+    public function removeDaftarUlang(Request $request, $id)
+    {
+        if (!env('ENABLE_PENGAJAR_DU')) {
+            return redirect()->back()->with('alert', ['message' => 'Fitur ini tidak aktif', 'type' => 'danger']);
+        }
+
+        $du = DaftarUlang::find($id);
+        if (!$du) {
+            return redirect()->back()->with('alert', ['message' => 'Data DU tidak ditemukan', 'type' => 'danger']);
+        }
+
+        if ($du->created_by != auth()->id()) {
+            return redirect()->back()->with('alert', ['message' => 'Anda tidak memiliki akses untuk menghapus data ini', 'type' => 'danger']);
+        }
+
+        if ($du->delete()) {
+            return redirect()->back()->with('alert', ['message' => 'Daftar Ulang berhasil dihapus', 'type' => 'success']);
+        }
+
+        return redirect()->back()->with('alert', ['message' => 'Gagal menghapus Daftar Ulang', 'type' => 'danger']);
     }
 
     public function saveDetail(Request $request)

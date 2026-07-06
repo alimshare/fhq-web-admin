@@ -20,4 +20,14 @@ class DaftarUlang extends Model
     {
         return $this->belongsTo(Peserta::class, 'next_peserta_id', 'id');
     }
+
+    public function creator()
+    {
+        return $this->belongsTo(\App\User::class, 'created_by', 'id');
+    }
+
+    public function isCreatedByPengajar()
+    {
+        return !empty($this->created_by);
+    }
 }

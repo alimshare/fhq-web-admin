@@ -136,9 +136,11 @@ Route::group(['middleware' => []], function () {
 	Route::get('halaqoh/peserta/restore/{pesertaId?}', 	[HalaqohController::class, 'cutiRestore'])->name('halaqoh.peserta.cuti.restore')->middleware(['permission:edit-halaqoh']);
 
 	Route::get('halaqoh/{reference}', 'HalaqohController@detail')->middleware(['permission:detail-halaqoh']);
-	Route::get('halaqoh/{reference}/edit', 'HalaqohController@editDetail')->middleware(['permission:input-nilai']);
+	Route::get('halaqoh/{reference}/edit', 'HalaqohController@editDetail')->name('halaqoh.editNilai')->middleware(['permission:input-nilai']);
 	Route::put('halaqoh/{reference}', 'HalaqohController@save');
 	Route::post('halaqoh-detail/save', 'HalaqohController@saveDetail')->middleware(['permission:input-nilai']);
+	Route::post('halaqoh-detail/daftar-ulang', 'HalaqohController@saveDaftarUlang')->name('halaqoh.du.save')->middleware(['permission:input-nilai']);
+	Route::post('halaqoh-detail/daftar-ulang/{id}/remove', 'HalaqohController@removeDaftarUlang')->name('halaqoh.du.remove')->middleware(['permission:input-nilai']);
 	Route::get('/raport-peserta/{pesertaId?}', 'HalaqohController@viewRaport')->name('peserta.raport.print');
 
 	/**

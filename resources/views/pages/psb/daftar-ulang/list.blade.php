@@ -260,6 +260,7 @@
                                         <th>Status</th>
                                         <th>Pilihan Hari</th>
                                         <th>Pilihan KBM</th>
+                                        <th>Sumber</th>
                                         <th>Halaqoh Terbaru</th>
                                         <th>Action</th>
                                     </tr>
@@ -275,8 +276,9 @@
                                         <th><input type="text" placeholder="Cari Pengajar" id="paramPengajar" class="input-text"></th>                                        
                                         <th><input type="text" placeholder="Cari Status" id="paramStatus" class="input-text"></th> 
                                         <th><input type="text" placeholder="Cari Hari" id="paramHari" class="input-text"></th> 
-                                        <th><input type="text" placeholder="Cari KBM" id="paramKBM" class="input-text"></th> 
-                                        <th></th> 
+                                        <th><input type="text" placeholder="Cari KBM" id="paramKBM" class="input-text"></th>
+                                        <th><input type="text" placeholder="Sumber" class="input-text"></th>
+                                        <th></th>
                                         <td data-dt-order="disable"></td>
                                     </tr>
                                 </thead>
@@ -301,6 +303,13 @@
                                             <td>{{ $du->status }}</td>
                                             <td>{{ $du->hari }}</td>
                                             <td>{{ $du->jenis_kbm }}</td>
+                                            <td class="text-center">
+                                                @if(!empty($du->created_by))
+                                                    <div class="chip blue white-text">Pengajar</div>
+                                                @else
+                                                    <div class="chip green white-text">Form</div>
+                                                @endif
+                                            </td>
                                             <td>
                                                 @if(!empty($du->nextPeserta))
                                                     <a href="/halaqoh/{{ @$du->nextPeserta->halaqoh->id }}">Lihat</a>

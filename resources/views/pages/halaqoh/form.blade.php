@@ -145,9 +145,15 @@
 									<td>
 										@if (!empty($santri->daftarUlang))
 											@php $countDU++; @endphp
-											@if(@$santri->daftarUlang->jenis_kbm == "CUTI" || @$santri->daftarUlang->hari == "CUTI") 
-												<div class="chip black white-text"> <span>CUTI</span></div>
-											@else 
+											@if(@$santri->daftarUlang->jenis_kbm == "CUTI" || @$santri->daftarUlang->hari == "CUTI")
+												@if($santri->daftarUlang->isCreatedByPengajar())
+													<div class="chip black white-text"> <span>CUTI</span> <small>(Pengajar)</small></div>
+												@else
+													<div class="chip black white-text"> <span>CUTI</span></div>
+												@endif
+											@elseif($santri->daftarUlang->isCreatedByPengajar())
+												<div class="chip blue white-text"> DU <small>(Pengajar)</small></div>
+											@else
 												<div class="chip green white-text"> DU</div>
 											@endif
 										@endif
