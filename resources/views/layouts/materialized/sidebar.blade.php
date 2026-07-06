@@ -77,11 +77,15 @@
                         <li class="bold"><a class="collapsible-header waves-effect waves-cyan"><i class="mdi-toggle-radio-button-on"></i> Manajemen DU & PSB</a>
                             <div class="collapsible-body">
                                 <ul>
+                                    @if(env('ENABLE_MENU_PESERTA_DU', true))
                                     <li><a href="{{ route('du') }}">Peserta Daftar Ulang</a></li>
-                                    @if(Session::has('semesterActive'))
+                                    @endif
+                                    @if(env('ENABLE_MENU_FORM_DU', true) && Session::has('semesterActive'))
                                         <li><a target="_blank" href="{{ route('public.du.form', ['semester'=> Session::get('semesterActive')->id, 'hash'=> env('PSB_SECURITY_HASH') ]) }}">Form Daftar Ulang</a></li>
                                     @endif
+                                    @if(env('ENABLE_MENU_PSB', true))
                                     <li><a href="{{ route('psb') }}">Daftar Calon Santri</a></li>
+                                    @endif
                                 </ul>
                             </div>
                         </li>
