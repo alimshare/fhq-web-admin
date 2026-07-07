@@ -146,9 +146,9 @@ class HomeController extends Controller
 
         // --- Day Distribution ---
         $data['day_dist'] = DB::table('view_halaqoh')
-            ->selectRaw("day, COUNT(DISTINCT halaqoh_id) as total_halaqoh, (SELECT COUNT(1) FROM view_peserta vp WHERE vp.semester_id = view_halaqoh.semester_id AND vp.day = view_halaqoh.day) as total_santri")
+            ->selectRaw("day, COUNT(DISTINCT halaqoh_id) as total_halaqoh, (SELECT COUNT(1) FROM view_peserta vp WHERE vp.semester_id = ? AND vp.day = view_halaqoh.day) as total_santri", [$semesterId])
             ->where('semester_id', $semesterId)
-            ->groupBy('semester_id', 'day')
+            ->groupBy('day')
             ->get();
 
         $data['semester_active'] = $selectedSemester;
