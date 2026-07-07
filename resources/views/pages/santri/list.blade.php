@@ -41,7 +41,7 @@
         "order" : [1, 'asc'],
         "columnDefs": [
             {
-                targets : [0,1,2], 
+                targets : [0,1,2,3],
                 orderable : false
             }
         ]
@@ -149,6 +149,7 @@
                                         <th>Gender</th>
                                         <th>NIS</th>
                                         <th>Name</th>
+                                        <th>Aksi</th>
                                     </tr>
                                     <tr class="row-filter">
                                         <th>
@@ -160,6 +161,7 @@
                                         </th>
                                         <th><input type="text" placeholder="Search NIP" id="paramNip" class="input-text"></th>
                                         <th><input type="text" placeholder="Search Name" id="paramName" class="input-text"></th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -167,7 +169,15 @@
                                         <tr>
                                             <td>{{ ($n->gender=="FEMALE") ? "AKHWAT" : "IKHWAN" }}</td>
                                             <td>{{ $n->nis }}</td>
-                                            <td><a href="/santri/edit/{{ $n->id }}">{{ $n->name }}</a></td>
+                                            <td>{{ $n->name }}</td>
+                                            <td>
+                                                <a href="/santri/profile/{{ $n->id }}" class="btn btn-small cyan" title="Lihat Peserta">
+                                                    <i class="mdi-action-visibility"></i>
+                                                </a> &nbsp;
+                                                <a href="/santri/edit/{{ $n->id }}" class="btn btn-small orange" title="Edit Santri">
+                                                    <i class="mdi-editor-mode-edit"></i>
+                                                </a>
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
