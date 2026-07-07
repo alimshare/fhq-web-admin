@@ -31,13 +31,11 @@
         <div class="container" style="margin-bottom: 25px">
             <div class="section">
                 <div class="row">
-                    <!-- <div class="col s12 l4">
-                        <div class="collection">
-                        @foreach ($list as $n)
-                            <a href="#!" class="collection-item">{{ $n->program_name }}</a>
-                        @endforeach
-                        </div>
-                    </div> -->
+                    <div class="col s12">
+                        @include('layouts.materialized.components.alert')
+                    </div>
+                </div>
+                <div class="row">
                     @foreach($list as $o)
                     <div class="col s12 l4">
                       <div class="card white-text" style="background-color: {{ $o->color }}">
@@ -45,10 +43,41 @@
                           <p class="card-title">{{ $o->program_name }}</p>
                           <p>{{ $o->halaqoh }} Halaqoh</p>
                           <p>{{ $o->peserta }} Peserta</p>
-                        </div>                  
+                        </div>
                       </div>
                     </div>
                     @endforeach
+                </div>
+                <div class="row">
+                    <div class="col s12">
+                        <div class="card-panel">
+                            <h5>Daftar Program</h5>
+                            <table class="bordered">
+                                <thead>
+                                    <tr class="cyan darken-3 white-text">
+                                        <th>Nama Program</th>
+                                        <th>Urutan</th>
+                                        <th>Program Selanjutnya</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($programs as $p)
+                                        <tr>
+                                            <td>{{ $p->name }}</td>
+                                            <td>{{ $p->sequence }}</td>
+                                            <td>{{ $p->next_program ?? '-' }}</td>
+                                            <td>
+                                                <a href="/program/edit/{{ $p->id }}" class="btn btn-small orange" title="Edit Program">
+                                                    <i class="mdi-editor-mode-edit"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

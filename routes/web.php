@@ -104,7 +104,9 @@ Route::group(['middleware' => []], function () {
 	/**
 	 * Program
 	 */
-	Route::get('program', 'ProgramController@index')->name('program.index')->middleware(['permission:list-program']);;
+	Route::get('program', 'ProgramController@index')->name('program.index')->middleware(['permission:list-program']);
+	Route::get('program/edit/{id}', 'ProgramController@edit')->name('program.edit')->middleware(['permission:list-program']);
+	Route::post('program/save', 'ProgramController@save')->name('program.save')->middleware(['permission:list-program']);
 
 	/**
 	 * Halaqoh

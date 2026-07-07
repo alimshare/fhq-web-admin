@@ -1,31 +1,19 @@
 <?php
- 
+
 namespace App\Http\Controllers;
- 
+
+use App\Model\Program;
 use Illuminate\Http\Request;
-use Ixudra\Curl\Facades\Curl;
 use Illuminate\Support\Facades\{DB, Cache};
- 
+
 class ProgramController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
+    public $data = array();
+
     public function __construct()
     {
         $this->middleware('auth');
     }
-    
-    /**
-     * Public container data.
-     * Variable ini untuk memudahkan penampungan data.
-     * Jadi, cukup 1 variable ini saja yg di pakai, untuk data yg akan di passing ke view.
-     * Cukup kirim $this->data, maka semuanya akan terkirim. Jadi insyaalah tidak ada yg kelewat.
-     */
-
-    public $data = array();
 
     public function index(){
 
@@ -41,13 +29,55 @@ class ProgramController extends Controller
         });
 
         $countProgram = count($program);
-        for ($i=0; $i < $countProgram; $i++) { 
+        for ($i=0; $i < $countProgram; $i++) {
             $program[$i]->color = $this->getRandomColor();
         }
 
         $this->data['list'] = (Object) $program;
+        $this->data['programs'] = Program::orderBy('sequence')->get();
 
         return view('pages.program.list', $this->data);
+    }
+
+    public function edit($id)
+    {
+        $this->data['program'] = Program::find($id);
+        if (is_null($this->data['program'])) {
+            return redirect('program');
+        }
+        $this->data['programs'] = Program::where('id', '!=', $id)->orderBy('sequence')->get();
+        return view('pages.program.form', $this->data);
+    }
+
+    public function save(Request $request)
+    {
+        $id = $request->input('id');
+
+        $program = Program::find($id);
+        if (is_null($program)) {
+            return redirect('program');
+        }
+
+        $program->next_program_id = $request->input('next_program_id');
+        $program->next_program    = null;
+
+        if ($program->next_program_id) {
+            $nextProgram = Program::find($program->next_program_id);
+            if ($nextProgram) {
+                $program->next_program = $nextProgram->name;
+            }
+        }
+
+        if ($program->save()) {
+            Cache::forget('program.all');
+            $message = "Ubah data program berhasil";
+            $messageType = "success";
+        } else {
+            $message = "Ubah data program gagal";
+            $messageType = "danger";
+        }
+
+        return redirect('program')->with('alert', ['message' => $message, 'type' => $messageType]);
     }
 
     public function getRandomColor()
