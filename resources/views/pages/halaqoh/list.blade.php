@@ -6,19 +6,11 @@
     .dataTables_filter {
         display: none;
     }
-    table.dataTable thead .row-filter .sorting_asc {
-        background-image: none;
-    }
     table.dataTable thead th {
         border: 1px solid #ddd;
     }
     table.dataTable thead tr.row-filter th {
         padding: 5px;
-    }
-    #input-select .input-field label {
-        position: absolute;
-        top: -14px;
-        font-size: 0.8rem;
     }
     table.dataTable input[type=text], table .select-wrapper input.select-dropdown {
         height: 2rem;
@@ -33,9 +25,26 @@
     .chip {
         margin-bottom: 0.5rem;
     }
-
-    #tblPeserta_wrapper .dataTables_filter {
-        display: block !important;
+    .tabs .tab a {
+        color: #fff !important;
+    }
+    .tabs .tab a.active {
+        background-color: rgba(0,0,0,0.2);
+    }
+    .tabs .indicator {
+        background-color: #fff;
+    }
+    /* Disable sorting indicators on all headers */
+    table.dataTable thead th.sorting,
+    table.dataTable thead th.sorting_asc,
+    table.dataTable thead th.sorting_desc {
+        background-image: none !important;
+        cursor: default;
+    }
+    .sort-controls label {
+        position: absolute;
+        top: -14px;
+        font-size: 0.8rem;
     }
 </style>
 @endsection
@@ -43,49 +52,130 @@
 @section('footer-script')
 <script src="{{ asset('assets/plugins/datatables/js/jquery.dataTables.min.js') }}"></script>
 <script type="text/javascript">
-    let table = $('#example').DataTable({
-        "lengthChange": false,
-        "order" : [[0, 'asc'],[1,'asc'],[3,'asc'],[4,'asc']],
-        "columnDefs": [
-            {
-                targets : [0,1,2,3,4,5], 
-                orderable : false
+
+    var dtLang = {
+        processing: "Memuat data...",
+        emptyTable: "Tidak ada data",
+        info: "Menampilkan _START_ - _END_ dari _TOTAL_ data",
+        infoEmpty: "Menampilkan 0 data",
+        infoFiltered: "(difilter dari _MAX_ total data)",
+        lengthMenu: "Tampilkan _MENU_ data",
+        search: "Cari:",
+        paginate: { first: "Pertama", last: "Terakhir", next: "&raquo;", previous: "&laquo;" }
+    };
+
+    // Bind column filter inputs/selects for a given table
+    function bindColumnFilters(tableId, dtInstance) {
+        $('#' + tableId + ' thead .row-filter').on('keyup change', 'input', function() {
+            var col = $(this).data('col');
+            var val = this.value;
+            if (dtInstance.column(col).search() !== val) {
+                dtInstance.column(col).search(val).draw();
             }
-        ]
-    });
-
-    $("#tblPeserta").DataTable();
-
-    // Apply the search
-    table.columns().every( function () {
-        var that = this;
-        $( 'input', this.header() ).on( 'keyup change clear', function () {
-            if ( that.search() !== this.value ) {
-                that.search( this.value ).draw();
+        });
+        $('#' + tableId + ' thead .row-filter').on('change', 'select', function() {
+            var col = $(this).data('col');
+            var val = $(this).val();
+            if (dtInstance.column(col).search() !== val) {
+                dtInstance.column(col).search(val).draw();
             }
-        }); 
-        $( 'select', this.header() ).on( 'change', function () {
-            let val = $.fn.dataTable.util.escapeRegex($(this).val());
-            that.search( val ? '^'+val+'$' : '', true, false ).draw();
-        });            
-    });
-
-    $("#orderBy").on('change', function(){
-        let colIdx = $("#orderBy").val();
-        let orderType = $("#orderType").val();
-        order(colIdx, orderType);
-    });
-
-    $("#orderType").on('change', function(){
-        let colIdx = $("#orderBy").val();
-        let orderType = $("#orderType").val();
-        order(colIdx, orderType); 
-    });
-
-    function order(columnIndex, type){
-        table.order([columnIndex, type]).draw();
+        });
     }
 
+    // Bind sort combo boxes above a table
+    function bindSortControls(prefix, dtInstance) {
+        function applySort() {
+            var col = $('#' + prefix + 'SortBy').val();
+            var dir = $('#' + prefix + 'SortDir').val();
+            if (col !== '') {
+                dtInstance.order([parseInt(col), dir]).draw();
+            }
+        }
+        $('#' + prefix + 'SortBy').on('change', applySort);
+        $('#' + prefix + 'SortDir').on('change', applySort);
+    }
+
+    // --- Tab 1: Halaqoh table (server-side) ---
+    var tblHalaqoh = $('#tblHalaqoh').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: '/api/datatable/halaqoh',
+        columns: [
+            { data: 'semester_name', orderable: false },
+            { data: 'day', orderable: false },
+            { data: 'gender', orderable: false },
+            { data: 'program_name', orderable: false },
+            { data: 'pengajar_name', orderable: false },
+            {
+                data: 'halaqoh_reference',
+                orderable: false,
+                searchable: false,
+                render: function(data, type, row) {
+                    return '<a href="/halaqoh/'+ data +'" class="btn-floating waves-effect waves-light primary tooltipped" data-position="bottom" data-tooltip="Detail"><i class="mdi-action-search"></i></a> ' +
+                           '<a onclick="loadPeserta(\''+ row.day +'\',\''+ row.gender +'\',\''+ row.program_name +'\',\''+ row.pengajar_name +'\',\''+ data +'\',\''+ row.semester_name +'\')" class="btn-floating waves-effect waves-light green tooltipped modal-triggers" data-position="bottom" data-tooltip="Daftar Peserta"><i class="mdi-social-people"></i></a>';
+                }
+            }
+        ],
+        orderCellsTop: true,
+        pageLength: 25,
+        order: [[0, 'asc']],
+        language: dtLang
+    });
+
+    bindColumnFilters('tblHalaqoh', tblHalaqoh);
+    bindSortControls('halaqoh', tblHalaqoh);
+
+    // --- Tab 2: Peserta table (server-side, lazy-loaded) ---
+    var tblPeserta = null;
+
+    function initPesertaTable() {
+        if (tblPeserta !== null) return;
+        tblPeserta = $('#tblPeserta').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: '/api/datatable/peserta',
+            columns: [
+                { data: 'semester_name', orderable: false },
+                { data: 'day', orderable: false },
+                { data: 'gender', orderable: false },
+                { data: 'program_name', orderable: false },
+                {
+                    data: 'pengajar_name',
+                    orderable: false,
+                    render: function(data, type, row) {
+                        return '<div style="display:flex;justify-content:space-between;align-items:center;">' +
+                               '<span>'+ data +'</span>' +
+                               '<a href="/halaqoh/'+ row.halaqoh_reference +'"><i class="mdi-action-search"></i></a>' +
+                               '</div>';
+                    }
+                },
+                { data: 'nis', orderable: false },
+                {
+                    data: 'santri_name',
+                    orderable: false,
+                    render: function(data, type, row) {
+                        return '<div style="display:flex;justify-content:space-between;align-items:center;">' +
+                               '<span>'+ data +'</span>' +
+                               '<a href="/peserta/'+ row.peserta_reference +'"><i class="mdi-action-search"></i></a>' +
+                               '</div>';
+                    }
+                }
+            ],
+            orderCellsTop: true,
+            pageLength: 25,
+            order: [[0, 'asc']],
+            language: dtLang
+        });
+        bindColumnFilters('tblPeserta', tblPeserta);
+        bindSortControls('peserta', tblPeserta);
+    }
+
+    // Lazy-load peserta table when tab is clicked
+    $('ul.tabs').on('click', 'a[href="#tab-peserta"]', function() {
+        initPesertaTable();
+    });
+
+    // --- Modal: Daftar Peserta per Halaqoh ---
     function loadPeserta(day, gender, program, pengajar, reference, semester) {
 
         $("#modalSemester").html(semester);
@@ -93,8 +183,7 @@
         $("#modalProgram").html(program);
         $("#modalPengajar").html(pengajar);
 
-        if (gender == "FEMALE") { 
-            // pink color for halaqoh akhwat
+        if (gender == "AKHWAT" || gender == "FEMALE") {
             $(".chip").removeClass('cyan');
             $(".chip").addClass('pink accent-2');
         } else {
@@ -103,18 +192,16 @@
         }
 
         $.get("/api/halaqoh/"+reference+"/peserta", function(res){
-            console.log(res);
             $('.collection-item').remove();
             res.forEach(function(obj){
-                let elem = `<div class='collection-item'><div>`+ obj.santri_name +`<a href="/peserta/${obj.peserta_reference}?referer=/halaqoh/${reference}" class="secondary-content"><i class="mdi-content-send"></i></a></diV></div>`;
+                var elem = '<div class="collection-item"><div>'+ obj.santri_name +'<a href="/peserta/'+ obj.peserta_reference +'?referer=/halaqoh/'+ reference +'" class="secondary-content"><i class="mdi-content-send"></i></a></div></div>';
                 $(".collection").append(elem);
             });
         });
 
         $('#modal').openModal();
-
     }
-    
+
 </script>
 @endsection
 
@@ -135,33 +222,12 @@
           </div>
         </div>
         <!--breadcrumbs end-->
-        
 
         <!--start container-->
         <div class="container" style="margin-bottom: 25px">
             <div class="section">
-                <div class="row" id="input-select">
-                    <div class="col s12 l3">                        
-                        <label>Order By</label>
-                        <select id="orderBy">
-                          <option value="" disabled selected>Choose your option</option>
-                          <option value="0" selected="">Semester</option>
-                          <option value="1" selected="">Hari</option>
-                          <option value="2">Gender</option>
-                          <option value="3">Program</option>
-                          <option value="4">Pengajar</option>
-                        </select>
-                    </div>
-                    <div class="col s12 l3">                        
-                        <label>&nbsp;</label>
-                        <select id="orderType">
-                          <option value="" disabled selected>Choose your option</option>
-                          <option value="asc" selected="">ASC</option>
-                          <option value="desc">DESC</option>
-                        </select>
-                    </div>
-                  </div>
-                </div>
+
+                <!-- Modal -->
                 <div class="row">
                     <div class="col s12">
                         <div id="modal" class="modal modal-fixed-footer" >
@@ -176,7 +242,6 @@
                                     <div class="chip cyan white-text"> <i class="mdi-social-person-outline"></i> <span id="modalPengajar"></span> </div>
                                   </p>
                                 </li>
-                                <!-- <li class="collection-item"><div>Alvin<a href="#!" class="secondary-content"><i class="mdi-content-send"></i></a></div></li> -->
                               </ul>
                           </div>
                           <div class="modal-footer">
@@ -185,106 +250,133 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Tabs -->
                 <div class="row">
                     <div class="col s12">
-                        <div style="overflow-x: scroll;">
-                            <table id="example" class="cell-border" cellspacing="0" width="100%">
-                                <thead>
-                                    <tr class="cyan darken-3 white-text" class="row-header">
-                                        <th>Semester</th>
-                                        <th>Hari</th>
-                                        <th>Gender</th>
-                                        <th>Program</th>
-                                        <th>Pengajar</th>
-                                        <th>Action</th>
-                                    </tr>
-                                    <tr class="row-filter">
-                                        <th><input type="text" placeholder="Cari Semester" id="paramSemester" class="input-text"></th>
-                                        <th>
-                                            <select id="paramHari">
-                                                <option value=""></option>
-                                                @foreach ($days as $day)
-                                                    <option value="{{ $day }}">{{ $day }}</option>
-                                                @endforeach
-                                            </select>
-                                        </th>
-                                        <th>
-                                            <select id="paramGender">
-                                                <option value=""></option>
-                                                <option value="IKHWAN">IKHWAN</option>
-                                                <option value="AKHWAT">AKHWAT</option>
-                                            </select>
-                                        </th>
-                                        <th><input type="text" placeholder="Cari Program" id="paramProgram" class="input-text"></th>
-                                        <th><input type="text" placeholder="Cari Pengajar" id="paramPengajar" class="input-text"></th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($list as $n)
-                                        <tr>
-                                            <td>{{ $n->semester_name }}</td>
-                                            <td>{{ $n->day }}</td>
-                                            <td>{{ ($n->gender=="FEMALE") ? "AKHWAT" : "IKHWAN" }}</td>
-                                            <td>{{ $n->program_name }}</td>
-                                            <td>{{ $n->pengajar_name }}</td>
-                                            <td class="text-center">
-                                                <a href="/halaqoh/{{ $n->halaqoh_reference }}" class="btn-floating waves-effect waves-light primary tooltipped" data-position="bottom" data-tooltip="Detail"><i class="mdi-action-search"></i></a>
-                                                <a onclick="loadPeserta(`{{ $n->day }}`,`{{ $n->gender }}`,`{{ $n->program_name }}`,`{{ $n->pengajar_name }}`,`{{ $n->halaqoh_reference }}`,`{{ $n->semester_name }}`)" class="btn-floating waves-effect waves-light green tooltipped modal-triggers" data-position="bottom" data-tooltip="Daftar Peserta"><i class="mdi-social-people"></i></a>
-                                            </td>
+                        <ul class="tabs tab-demo-active z-depth-1 cyan" style="width: 100%;">
+                            <li class="tab col s6"><a class="white-text waves-effect waves-light active" href="#tab-halaqoh">Daftar Halaqoh</a></li>
+                            <li class="tab col s6"><a class="white-text waves-effect waves-light" href="#tab-peserta">Daftar Peserta</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Tab 1: Halaqoh -->
+                <div id="tab-halaqoh" class="col s12">
+                    <div class="row sort-controls" style="margin-top: 10px">
+                        <div class="col s6 l3">
+                            <label>Urutkan</label>
+                            <select id="halaqohSortBy">
+                                <option value="0" selected>Semester</option>
+                                <option value="1">Hari</option>
+                                <option value="2">Gender</option>
+                                <option value="3">Program</option>
+                                <option value="4">Pengajar</option>
+                            </select>
+                        </div>
+                        <div class="col s6 l2">
+                            <label>&nbsp;</label>
+                            <select id="halaqohSortDir">
+                                <option value="asc" selected>A-Z</option>
+                                <option value="desc">Z-A</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12">
+                            <div style="overflow-x: scroll;">
+                                <table id="tblHalaqoh" class="cell-border" cellspacing="0" width="100%">
+                                    <thead>
+                                        <tr class="cyan darken-3 white-text">
+                                            <th>Semester</th>
+                                            <th>Hari</th>
+                                            <th>Gender</th>
+                                            <th>Program</th>
+                                            <th>Pengajar</th>
+                                            <th>Action</th>
                                         </tr>
-                                    @endforeach
-                                </tbody>
-                                <tfoot>
-                                </tfoot>
-                            </table>                            
+                                        <tr class="row-filter">
+                                            <th><input type="text" placeholder="Cari Semester" data-col="0"></th>
+                                            <th><input type="text" placeholder="Cari Hari" data-col="1"></th>
+                                            <th>
+                                                <select data-col="2">
+                                                    <option value="">Semua</option>
+                                                    <option value="IKHWAN">IKHWAN</option>
+                                                    <option value="AKHWAT">AKHWAT</option>
+                                                </select>
+                                            </th>
+                                            <th><input type="text" placeholder="Cari Program" data-col="3"></th>
+                                            <th><input type="text" placeholder="Cari Pengajar" data-col="4"></th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="row" style="margin-top: 25px">
-                    <div class="col s12">
-                        <h4>Daftar Peserta Halaqoh</h4>
-                        <div style="overflow-x: scroll;">
-                            <table id="tblPeserta" class="cell-border" cellspacing="0" width="100%">
-                                <thead>
-                                    <tr class="cyan darken-3 white-text" class="row-header">
-                                        <th>Semester</th>
-                                        <th>Hari</th>
-                                        <th>Gender</th>
-                                        <th>Program</th>
-                                        <th>Pengajar</th>
-                                        <th>NIS</th>
-                                        <th>Santri</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($peserta as $n)
-                                        <tr>
-                                            <td>{{ $n->semester_name }}</td>
-                                            <td>{{ $n->day }}</td>
-                                            <td>{{ ($n->gender_santri=="FEMALE") ? "AKHWAT" : "IKHWAN" }}</td>
-                                            <td>{{ $n->program_name }}</td>
-                                            <td>
-                                                <div style="display: flex;justify-content: space-between;align-items: center;">
-                                                    <span>{{ $n->pengajar_name }}</span>
-                                                    <a href="/halaqoh/{{ $n->halaqoh_reference }}" class="tooltipped" data-position="bottom" data-tooltip="Detail"><i class="mdi-action-search"></i></a></td>
-                                                </div>
-                                            <td>{{ $n->nis }}</td>
-                                            <td>
-                                                <div style="display: flex;justify-content: space-between;align-items: center;">
-                                                    <span>{{ $n->santri_name }}</span>
-                                                    <a href="/peserta/{{ $n->peserta_reference }}" class="tooltipped" data-position="bottom" data-tooltip="Detail"><i class="mdi-action-search"></i></a></td>
-                                                </div>
-                                            </td>
+
+                <!-- Tab 2: Peserta -->
+                <div id="tab-peserta" class="col s12">
+                    <div class="row sort-controls" style="margin-top: 10px">
+                        <div class="col s6 l3">
+                            <label>Urutkan</label>
+                            <select id="pesertaSortBy">
+                                <option value="0" selected>Semester</option>
+                                <option value="1">Hari</option>
+                                <option value="2">Gender</option>
+                                <option value="3">Program</option>
+                                <option value="4">Pengajar</option>
+                                <option value="5">NIS</option>
+                                <option value="6">Santri</option>
+                            </select>
+                        </div>
+                        <div class="col s6 l2">
+                            <label>&nbsp;</label>
+                            <select id="pesertaSortDir">
+                                <option value="asc" selected>A-Z</option>
+                                <option value="desc">Z-A</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12">
+                            <div style="overflow-x: scroll;">
+                                <table id="tblPeserta" class="cell-border" cellspacing="0" width="100%">
+                                    <thead>
+                                        <tr class="cyan darken-3 white-text">
+                                            <th>Semester</th>
+                                            <th>Hari</th>
+                                            <th>Gender</th>
+                                            <th>Program</th>
+                                            <th>Pengajar</th>
+                                            <th>NIS</th>
+                                            <th>Santri</th>
                                         </tr>
-                                    @endforeach
-                                </tbody>
-                                <tfoot>
-                                </tfoot>
-                            </table>                            
+                                        <tr class="row-filter">
+                                            <th><input type="text" placeholder="Cari Semester" data-col="0"></th>
+                                            <th><input type="text" placeholder="Cari Hari" data-col="1"></th>
+                                            <th>
+                                                <select data-col="2">
+                                                    <option value="">Semua</option>
+                                                    <option value="IKHWAN">IKHWAN</option>
+                                                    <option value="AKHWAT">AKHWAT</option>
+                                                </select>
+                                            </th>
+                                            <th><input type="text" placeholder="Cari Program" data-col="3"></th>
+                                            <th><input type="text" placeholder="Cari Pengajar" data-col="4"></th>
+                                            <th><input type="text" placeholder="Cari NIS" data-col="5"></th>
+                                            <th><input type="text" placeholder="Cari Santri" data-col="6"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
         <!--end container-->

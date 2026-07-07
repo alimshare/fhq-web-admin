@@ -20,3 +20,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::get('/halaqoh/{halaqohReference?}/peserta', 'Api\DataController@getPesertaHalaqoh');
 Route::get('/peserta/{pesertaReference}/pindah/{halaqohReference}', 'Api\DataController@pindahHalaqoh');
+Route::get('/datatable/halaqoh', 'Api\DataController@datatableHalaqoh');
+Route::get('/datatable/peserta', 'Api\DataController@datatablePeserta');

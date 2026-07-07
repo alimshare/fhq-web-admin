@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 use App\Model\{Semester, Halaqoh, Attendance, Pengajar, Peserta, Program, DaftarUlang};
 use App\Model\View\ViewHalaqoh;
 use App\Model\View\ViewPeserta;
@@ -31,19 +30,7 @@ class HalaqohController extends Controller
      */
     public function lists(Request $request, $reference=null)
     {
-        # cache for a day
-        $this->data['list'] = Cache::remember('viewHalaqoh.all', 60*60*24, function () {
-            return \App\Model\View\ViewHalaqoh::all();
-        });
-
-        # cache for a day
-        $this->data['peserta']      = Cache::remember('viewPeserta.all', 60*60*24, function () {
-            return \App\Model\View\ViewPeserta::all();
-        });
-
-        $this->data['days']     = explode(",", strtoupper(env('AVAILABLE_DAYS', 'SABTU,AHAD')));
-
-        return view('pages.halaqoh.list', $this->data);
+        return view('pages.halaqoh.list');
     }
 
     /**
