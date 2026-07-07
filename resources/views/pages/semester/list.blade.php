@@ -38,6 +38,16 @@
             <section class="section users-view">
                 <div class="row">
                     <div class="col s12">
+                        @include('layouts.materialized.components.alert')
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12 text-right">
+                        <a href="/semester/add" class="btn cyan">Tambah Semester</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12">
                         <div class="card">
                             <table id="" class="display responsive-table datatable-example bordered">
                                 <thead>
@@ -46,9 +56,9 @@
                                         <th>Deskripsi</th>
                                         <th>Start</th>
                                         <th>End</th>
-                                        <th>Code</th>
                                         <th>Status</th>
-                                        {{-- <th></th> --}}
+                                        <th>Semester Selanjutnya</th>
+                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -58,26 +68,21 @@
                                             <td>{{ $n->description }}</td>
                                             <td>{{ $n->start_period }}</td>
                                             <td>{{ $n->end_period }}</td>
-                                            <td>{{ $n->reference }}</td>
                                             <td>{{ $n->active ? "Aktif" : "-" }}</td>
-                                            {{-- <th>
-                                                <a href="#" class="waves-effect waves-light tooltipped" data-position="bottom" data-tooltip="Detail">
-                                                    <i class="mdi-action-search"></i>
+                                            <td>{{ $n->nextSemester ? $n->nextSemester->name : '-' }}</td>
+                                            <td>
+                                                <a href="/semester/edit/{{ $n->id }}" class="btn btn-small orange" title="Edit Semester">
+                                                    <i class="mdi-editor-mode-edit"></i>
                                                 </a>
-                                                <a href="#" class="waves-effect waves-light tooltipped" data-position="bottom" data-tooltip="Edit">
-                                                    <i class="mdi-editor-border-color"></i>
-                                                </a>
-                                            </th> --}}
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
-                            </table>                             
+                            </table>
                         </div>
                     </div>
                 </div>
-            </div>
-                
-        </section>
+            </section>
         </div>
         <!--end container-->
 

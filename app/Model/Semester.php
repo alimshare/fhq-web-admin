@@ -20,6 +20,10 @@ class Semester extends Model
         return $this->belongsTo('App\Model\Lembaga');
     }
 
+    public function nextSemester(){
+        return $this->belongsTo(Semester::class, 'next_semester_id', 'id');
+    }
+
     public static function getByReference($referenceId) {
     	return Semester::where('reference', '=', $referenceId)->first();
     }

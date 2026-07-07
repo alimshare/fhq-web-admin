@@ -1,140 +1,75 @@
 <?php
- 
+
 namespace App\Http\Controllers;
- 
+
+use App\Model\Semester;
 use Illuminate\Http\Request;
-use Ixudra\Curl\Facades\Curl;
- 
+
 class SemesterController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
+    public $data = array();
+
     public function __construct()
     {
         $this->middleware('auth');
     }
-    
-    /**
-     * Public container data.
-     * Variable ini untuk memudahkan penampungan data.
-     * Jadi, cukup 1 variable ini saja yg di pakai, untuk data yg akan di passing ke view.
-     * Cukup kirim $this->data, maka semuanya akan terkirim. Jadi insyaalah tidak ada yg kelewat.
-     */
-    public $data = array();
-
 
     public function index(Request $request)
     {
-        $this->data['list'] = \App\Model\Semester::orderBy('name','desc')->get();
+        $this->data['list'] = Semester::orderBy('name','desc')->get();
         return view('pages.semester.list', $this->data);
-
-	}
-
-    public function add(Request $request)
-    {
-        $this->data['lembaga'] = $this->get_lembaga_list();
-        return view('semester-form', $this->data);
     }
 
-    public function detail(Request $Request, $reference=null)
+    public function add()
     {
-        $this->data['semester'] = Curl::to(env('API_ENDPOINT').'semester/'.$reference)
-            ->withHeaders([
-                'Content-type: application/x-www-form-urlencoded',
-                'Authorization: Bearer '.$this->token()
-            ])
-            ->asJson()
-            ->get();
-
-        $this->data['lembaga'] = $this->get_lembaga_list();
-
-        $this->data['reference'] = $reference;
-
-        // dd($this->data);
-
-        return view('semester-form', $this->data);
-
+        $this->data['semesters'] = Semester::orderBy('name','desc')->get();
+        return view('pages.semester.form', $this->data);
     }
 
-    public function update(Request $request, $reference=null)
+    public function edit($id)
     {
-        $send_data = array();
-        if ($request->input('description')) 
-        {
-            $send_data['description'] = $request->input('description');
+        $this->data['semester'] = Semester::find($id);
+        if (is_null($this->data['semester'])) {
+            return redirect('semester');
         }
-
-        if ($request->input('lembaga')) 
-        {
-            $send_data['lembaga'] = $request->input('lembaga');
-        }
-
-        if ($request->input('name')) 
-        {
-            $send_data['name'] = $request->input('name');
-        }
-
-        $send_data['active'] = $request->input('active') == 'on' ? 1 : 0;
-        
-        if ($reference) 
-        {
-            $this->data['semester'] = Curl::to(env('API_ENDPOINT').'semester/edit/'.$reference)
-                ->withHeaders([
-                    'Content-type: application/json',
-                    'Authorization: Bearer '.$this->token()
-                ])
-                ->withData( $send_data )
-                ->asJson()
-                ->put();
-
-            return redirect('semester/'.$reference);
-        }
-        else
-        {
-            $this->data['semester'] = Curl::to(env('API_ENDPOINT').'semester/add')
-                ->withHeaders([
-                    'Content-type: application/json',
-                    'Authorization: Bearer '.$this->token()
-                ])
-                ->withData( $send_data )
-                ->asJson()
-                ->post();
-
-            // dd($this->data);
-
-            return redirect('semester/');
-        }
-
-        // dd($this->data, $send_data);
-
+        $this->data['semesters'] = Semester::where('id', '!=', $id)->orderBy('name','desc')->get();
+        return view('pages.semester.form', $this->data);
     }
 
-    public function remove(Request $request, $reference=null)
+    public function save(Request $request)
     {
-        // dd($request, $reference);
-        $this->data['semester'] = Curl::to(env('API_ENDPOINT').'semester/remove/'.$reference)
-            ->withHeaders([
-                'Content-type: application/json',
-                'Authorization: Bearer '.$this->token()
-            ])
-            // ->withData( $send_data )
-            // ->asJson()
-            ->delete(); 
+        $id = $request->input('id');
 
-        return redirect('semester');
-    }
+        $message = "";
+        $messageType = "success";
 
-    public function get_lembaga_list()
-    {
-        return Curl::to(env('API_ENDPOINT').'lembaga')
-            ->withHeaders([
-                'Content-type: application/json', 
-                'Authorization: Bearer '.$this->token()
-            ])
-            ->asJson()
-            ->get();
+        if (!$id) {
+            $semester = new Semester;
+        } else {
+            $semester = Semester::find($id);
+            if (is_null($semester)) {
+                return redirect('semester');
+            }
+        }
+
+        $semester->name         = $request->input('name');
+        $semester->description  = $request->input('description');
+        $semester->start_period = $request->input('start_period');
+        $semester->end_period   = $request->input('end_period');
+        $semester->active           = $request->input('active') ? 1 : 0;
+        $semester->next_semester_id = $request->input('next_semester_id') ?: null;
+
+        if ($semester->active) {
+            Semester::where('id', '!=', $semester->id)->where('active', 1)->update(['active' => 0]);
+        }
+
+        if ($semester->save()) {
+            $message = $id ? "Ubah data semester berhasil" : "Simpan data semester berhasil";
+        } else {
+            $message = $id ? "Ubah data semester gagal" : "Simpan data semester gagal";
+            $messageType = "danger";
+        }
+
+        return redirect('semester')->with('alert', ['message' => $message, 'type' => $messageType]);
     }
 }

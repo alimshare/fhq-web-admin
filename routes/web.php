@@ -95,17 +95,11 @@ Route::group(['middleware' => []], function () {
 	/**
 	 * Semester
 	 */
-	Route::get('semester/add', 'SemesterController@add');
-	Route::post('semester/add', 'SemesterController@update');
-	Route::delete('semester/remove/{reference}', 'SemesterController@remove')->middleware(['permission:delete-pengajar']);;
-	Route::get('semester/{reference}', 'SemesterController@detail')->middleware(['permission:detail-pengajar']);;
-	Route::put('semester/{reference}', 'SemesterController@update')->middleware(['permission:edit-pengajar']);;
-	Route::get('semester', 'SemesterController@index')->name('semester.index')->middleware(['permission:list-semester']);
+	Route::get('semester', 'SemesterController@index')->name('semester')->middleware(['permission:list-semester']);
+	Route::get('semester/add', 'SemesterController@add')->name('semester.add')->middleware(['permission:list-semester']);
+	Route::get('semester/edit/{id}', 'SemesterController@edit')->name('semester.edit')->middleware(['permission:list-semester']);
+	Route::post('semester/save', 'SemesterController@save')->name('semester.save')->middleware(['permission:list-semester']);
 	Route::get('semester/{reference}/halaqoh', 'HalaqohController@lists');
-
-	Route::prefix('semester')->name('semester')->group(function(){
-		Route::get('', [SemesterController::class, 'index']);
-	});
 
 	/**
 	 * Program
