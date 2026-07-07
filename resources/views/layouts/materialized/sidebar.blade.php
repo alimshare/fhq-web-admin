@@ -29,6 +29,9 @@
             </li>
 
             <li class="bold"><a href="/profile" class="waves-effect waves-cyan"><i class="mdi-action-account-circle"></i> Profile</a></li>
+            @if(Auth::user()->isAdmin())
+            {{-- <li class="bold"><a href="/dashboard" class="waves-effect waves-cyan"><i class="mdi-action-dashboard"></i> Dashboard</a></li> --}}
+            @endif
             <li class="bold"><a href="/absensi" class="waves-effect waves-cyan"><i class="mdi-action-assignment-ind"></i> Absensi</a></li>
             
             @allow('list-halaqoh')
