@@ -34,10 +34,22 @@
                     <input type="text" id="nip" name="nip" value="{{ $pengajar->nip }}">
                 </div>
             </div>
-            <div class="row"> 
-                <div class="col s12 m6"> 
+            <div class="row">
+                <div class="col s12 m6">
                     <label for="name">Nama</label>
                     <input type="text" name="name" value="{{ $pengajar->name }}">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 m6">
+                    <label for="phone">Nomor Telepon</label>
+                    <input type="text" id="phone" name="phone" value="{{ $pengajar->phone }}">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 m6">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" value="{{ $pengajar->email }}">
                 </div>
             </div>
             <div class="row" style="margin-bottom: 10px; text-align: right;">

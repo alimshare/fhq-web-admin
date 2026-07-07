@@ -168,6 +168,8 @@ class PengajarController extends Controller
 
         $pengajar->nip    = $nip;
         $pengajar->name   = $name;
+        $pengajar->phone  = $request->input('phone');
+        $pengajar->email  = $request->input('email');
 
         $message = "";
         if ($pengajar->save()) {
