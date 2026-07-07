@@ -145,11 +145,22 @@ class HomeController extends Controller
             ? round(($data['du_verified'] / $data['du_total']) * 100) : 0;
 
         // --- Day Distribution ---
-        $data['day_dist'] = DB::table('view_halaqoh')
-            ->selectRaw("day, COUNT(DISTINCT halaqoh_id) as total_halaqoh, (SELECT COUNT(1) FROM view_peserta vp WHERE vp.semester_id = ? AND vp.day = view_halaqoh.day) as total_santri", [$semesterId])
+        $dayHalaqoh = DB::table('view_halaqoh')
+            ->selectRaw("day, COUNT(DISTINCT halaqoh_id) as total_halaqoh")
             ->where('semester_id', $semesterId)
             ->groupBy('day')
-            ->get();
+            ->get()
+            ->keyBy('day');
+        $daySantri = DB::table('view_peserta')
+            ->selectRaw("day, COUNT(1) as total_santri")
+            ->where('semester_id', $semesterId)
+            ->groupBy('day')
+            ->get()
+            ->keyBy('day');
+        $data['day_dist'] = $dayHalaqoh->map(function ($row) use ($daySantri) {
+            $row->total_santri = $daySantri->has($row->day) ? $daySantri->get($row->day)->total_santri : 0;
+            return $row;
+        })->values();
 
         $data['semester_active'] = $selectedSemester;
 
