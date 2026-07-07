@@ -102,7 +102,7 @@
                         <button class="btn waves-effect waves-light" type="reset" name="reset" id="reset" onclick="window.history.back()">
                         <span>Batal</span></button>
                     </div>
-                    @if($pesertaCount == 0)                    
+                    @if($pesertaCount == 0 && $kbmCount == 0)
                     <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #e0e0e0; text-align: center;">
                         <p>Kamu bisa menghapus halaqoh ini. Karena tidak ada peserta yang terdaftar. Klik tombol di bawah ini.</p>
                         <button type="button" class="btn waves-effect waves-light red darken-2" onclick="confirmDelete()">
