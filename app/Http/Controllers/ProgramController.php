@@ -39,6 +39,47 @@ class ProgramController extends Controller
         return view('pages.program.list', $this->data);
     }
 
+    public function add()
+    {
+        $this->data['programs'] = Program::orderBy('sequence')->get();
+        return view('pages.program.add', $this->data);
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:60',
+            'sequence' => 'nullable|integer',
+            'description' => 'nullable|string|max:150',
+            'infaq' => 'nullable|numeric|min:0',
+        ]);
+
+        $program = new Program();
+        $program->name = $request->input('name');
+        $program->sequence = $request->input('sequence');
+        $program->description = $request->input('description');
+        $program->infaq = $request->input('infaq', 0);
+        $program->next_program_id = $request->input('next_program_id');
+
+        if ($program->next_program_id) {
+            $nextProgram = Program::find($program->next_program_id);
+            if ($nextProgram) {
+                $program->next_program = $nextProgram->name;
+            }
+        }
+
+        if ($program->save()) {
+            Cache::forget('program.all');
+            $message = "Tambah program berhasil";
+            $messageType = "success";
+        } else {
+            $message = "Tambah program gagal";
+            $messageType = "danger";
+        }
+
+        return redirect('program')->with('alert', ['message' => $message, 'type' => $messageType]);
+    }
+
     public function edit($id)
     {
         $this->data['program'] = Program::find($id);

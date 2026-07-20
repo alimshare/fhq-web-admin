@@ -51,7 +51,12 @@
                 <div class="row">
                     <div class="col s12">
                         <div class="card-panel">
-                            <h5>Daftar Program</h5>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <h5>Daftar Program</h5>
+                                <a href="/program/add" class="btn btn-small green" title="Tambah Program">
+                                    <i class="mdi-content-add left"></i>Tambah
+                                </a>
+                            </div>
                             <table class="bordered">
                                 <thead>
                                     <tr class="cyan darken-3 white-text">
