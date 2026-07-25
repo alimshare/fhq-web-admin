@@ -34,34 +34,125 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
-
         $semesterActive = Semester::getActive();
-        $halaqoh = Halaqoh::where('semester_id', $semesterActive->id);
+        $semesterList = Semester::whereNull('deleted_at')->orderBy('id', 'desc')->get();
 
-        $data['count_halaqoh']  = $halaqoh->count();
-        $data['count_pengajar'] = $halaqoh->distinct('pengajar_id')->count('pengajar_id');
-        $data['count_program']  = $halaqoh->count('program_id');
-        $data['count_santri']   = \App\Model\View\ViewPeserta::where('semester_id', $semesterActive->id)->count();
-
-        $SQL = "SELECT program_name, halaqoh, ( SELECT COUNT(1) AS peserta FROM view_peserta WHERE semester_id = '".$semesterActive->id."' AND program_id = T1.program_id) AS peserta
-                FROM (
-                    SELECT program_id, program_name, SUM(1) AS halaqoh FROM view_halaqoh
-                    WHERE semester_id = '". $semesterActive->id ."'
-                    GROUP BY program_id, program_name
-                ) T1";
-        $countPeserta = DB::select($SQL); // sementara pake native query
-
-        $colorList = array('#F7464A', '#46BFBD', '#FDB45C', '#0097a7', '#d84315', '#6d4c41','#283593', '#c2185b', '#00695c', '#9e9d24', '#01579b','#6a1b9a' ,'#ec407a', '#ea80fc');
-        for ($i=0; $i < count($countPeserta); $i++) { 
-            $colorIndex = array_rand($colorList, 1);
-            $countPeserta[$i]->color = $colorList[$colorIndex];
-            unset($colorList[$colorIndex]);
+        $semesterId = $request->input('semester_id', $semesterActive->id);
+        $selectedSemester = Semester::find($semesterId);
+        if (!$selectedSemester) {
+            $selectedSemester = $semesterActive;
+            $semesterId = $semesterActive->id;
         }
 
-        $data['count_peserta']  = $countPeserta;
-        
+        $data['semester_list'] = $semesterList;
+        $data['selected_semester_id'] = $semesterId;
+
+        // --- KPI Summary ---
+        $halaqohQuery = Halaqoh::where('semester_id', $semesterId);
+        $data['count_halaqoh']  = $halaqohQuery->count();
+        $data['count_pengajar'] = (clone $halaqohQuery)->distinct('pengajar_id')->count('pengajar_id');
+        $data['count_program']  = (clone $halaqohQuery)->distinct('program_id')->count('program_id');
+        $data['count_santri']   = \App\Model\View\ViewPeserta::where('semester_id', $semesterId)->count();
+        $data['rasio_santri_pengajar'] = $data['count_pengajar'] > 0
+            ? round($data['count_santri'] / $data['count_pengajar'], 1) : 0;
+
+        // --- Semester Trend (last 8 semesters) ---
+        $semesters = Semester::whereNull('deleted_at')->orderBy('id', 'desc')->limit(8)->get()->reverse()->values();
+        $semesterIds = $semesters->pluck('id');
+        $trendData = DB::table('view_peserta')
+            ->selectRaw('semester_id, COUNT(DISTINCT peserta_id) as total_santri')
+            ->whereIn('semester_id', $semesterIds)
+            ->groupBy('semester_id')
+            ->pluck('total_santri', 'semester_id');
+        $trendHalaqoh = DB::table('view_halaqoh')
+            ->selectRaw('semester_id, COUNT(DISTINCT halaqoh_id) as total_halaqoh, COUNT(DISTINCT pengajar_id) as total_pengajar')
+            ->whereIn('semester_id', $semesterIds)
+            ->groupBy('semester_id')
+            ->get()
+            ->keyBy('semester_id');
+
+        $data['trend'] = $semesters->map(function ($s) use ($trendData, $trendHalaqoh) {
+            $h = $trendHalaqoh->get($s->id);
+            return [
+                'semester'  => 'Sem ' . $s->name,
+                'santri'    => $trendData->get($s->id, 0),
+                'halaqoh'   => $h ? $h->total_halaqoh : 0,
+                'pengajar'  => $h ? $h->total_pengajar : 0,
+            ];
+        })->values();
+
+        // --- Program Distribution (active semester) ---
+        $data['program_dist'] = DB::table('view_peserta')
+            ->selectRaw('program_name, program_id, COUNT(DISTINCT peserta_id) as total_santri, COUNT(DISTINCT halaqoh_id) as total_halaqoh')
+            ->where('semester_id', $semesterId)
+            ->groupBy('program_name', 'program_id')
+            ->orderBy('program_id')
+            ->get();
+
+        // --- Gender Distribution ---
+        $data['gender_dist'] = DB::table('view_peserta')
+            ->selectRaw("CASE WHEN gender_santri = 'MALE' THEN 'Ikhwan' WHEN gender_santri = 'FEMALE' THEN 'Akhwat' ELSE 'Belum Diisi' END as label, COUNT(1) as total")
+            ->where('semester_id', $semesterId)
+            ->groupBy('gender_santri')
+            ->get();
+
+        // --- Age Distribution ---
+        $data['age_dist'] = DB::table('view_peserta')
+            ->join('santri', 'santri.id', '=', 'view_peserta.santri_id')
+            ->where('view_peserta.semester_id', $semesterId)
+            ->selectRaw("
+                CASE
+                    WHEN TIMESTAMPDIFF(YEAR, santri.birth_date, CURDATE()) < 10 THEN '< 10 th'
+                    WHEN TIMESTAMPDIFF(YEAR, santri.birth_date, CURDATE()) BETWEEN 10 AND 15 THEN '10-15 th'
+                    WHEN TIMESTAMPDIFF(YEAR, santri.birth_date, CURDATE()) BETWEEN 16 AND 20 THEN '16-20 th'
+                    WHEN TIMESTAMPDIFF(YEAR, santri.birth_date, CURDATE()) BETWEEN 21 AND 30 THEN '21-30 th'
+                    WHEN TIMESTAMPDIFF(YEAR, santri.birth_date, CURDATE()) BETWEEN 31 AND 40 THEN '31-40 th'
+                    WHEN TIMESTAMPDIFF(YEAR, santri.birth_date, CURDATE()) BETWEEN 41 AND 50 THEN '41-50 th'
+                    WHEN TIMESTAMPDIFF(YEAR, santri.birth_date, CURDATE()) > 50 THEN '> 50 th'
+                    ELSE 'N/A'
+                END as age_range,
+                COUNT(1) as total
+            ")
+            ->groupBy('age_range')
+            ->orderByRaw("FIELD(age_range, '< 10 th','10-15 th','16-20 th','21-30 th','31-40 th','41-50 th','> 50 th','N/A')")
+            ->get();
+
+        // --- KBM Activity ---
+        $kbmStats = DB::table('activity_report')
+            ->join('halaqoh', 'halaqoh.id', '=', 'activity_report.halaqoh_id')
+            ->where('halaqoh.semester_id', $semesterId)
+            ->selectRaw('COUNT(1) as total_kbm, COUNT(DISTINCT activity_report.halaqoh_id) as halaqoh_aktif')
+            ->first();
+        $data['kbm_total'] = $kbmStats->total_kbm ?? 0;
+        $data['kbm_halaqoh_aktif'] = $kbmStats->halaqoh_aktif ?? 0;
+        $data['kbm_coverage'] = $data['count_halaqoh'] > 0
+            ? round(($data['kbm_halaqoh_aktif'] / $data['count_halaqoh']) * 100) : 0;
+
+        // --- Daftar Ulang Progress ---
+        $duStats = DB::table('daftar_ulang')
+            ->join('peserta', 'peserta.id', '=', 'daftar_ulang.peserta_id')
+            ->join('halaqoh', 'halaqoh.id', '=', 'peserta.halaqoh_id')
+            ->where('halaqoh.semester_id', $semesterId)
+            ->whereNull('daftar_ulang.deleted_at')
+            ->selectRaw('COUNT(1) as total, SUM(CASE WHEN daftar_ulang.verified_at IS NOT NULL THEN 1 ELSE 0 END) as verified')
+            ->first();
+        $data['du_total'] = $duStats->total ?? 0;
+        $data['du_verified'] = $duStats->verified ?? 0;
+        $data['du_pending'] = $data['du_total'] - $data['du_verified'];
+        $data['du_percent'] = $data['du_total'] > 0
+            ? round(($data['du_verified'] / $data['du_total']) * 100) : 0;
+
+        // --- Day Distribution ---
+        $data['day_dist'] = DB::table('view_halaqoh')
+            ->selectRaw("day, COUNT(DISTINCT halaqoh_id) as total_halaqoh, (SELECT COUNT(1) FROM view_peserta vp WHERE vp.semester_id = view_halaqoh.semester_id AND vp.day = view_halaqoh.day) as total_santri")
+            ->where('semester_id', $semesterId)
+            ->groupBy('semester_id', 'day')
+            ->get();
+
+        $data['semester_active'] = $selectedSemester;
+
         return view('home')->with('data', (Object) $data);
     }
 
