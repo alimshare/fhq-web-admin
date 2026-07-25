@@ -3,6 +3,7 @@
 namespace App\Model\View;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 use App\Model\Peserta;
 use App\Model\ActivityReport;
 
@@ -13,6 +14,18 @@ use App\Model\ActivityReport;
 class ViewHalaqoh extends Model
 {
     protected 	$table 		= "view_halaqoh";
+
+    protected static function booted()
+    {
+        static::addGlobalScope('exclude_soft_deletes', function (Builder $builder) {
+            $builder->whereExists(function ($query) {
+                $query->selectRaw(1)
+                    ->from('halaqoh')
+                    ->whereRaw('halaqoh.id = view_halaqoh.halaqoh_id')
+                    ->whereNull('halaqoh.deleted_at');
+            });
+        });
+    }
 
     public function peserta(){
         return $this->hasMany(Peserta::class, 'halaqoh_id', 'halaqoh_id');

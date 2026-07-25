@@ -39,6 +39,7 @@ FROM ((((`halaqoh` `h`
     LEFT JOIN `program` `pg` ON ((`h`.`program_id` = `pg`.`id`)))
     LEFT JOIN `semester` `s` ON ((`h`.`semester_id` = `s`.`id`)))
     LEFT JOIN `lembaga` `l` ON ((`s`.`lembaga_id` = `l`.`id`)))
+WHERE `h`.`deleted_at` IS NULL
 ORDER BY `pg`.`name`, `p`.`gender`
 SQL);
     }
