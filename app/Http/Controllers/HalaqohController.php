@@ -228,7 +228,9 @@ class HalaqohController extends Controller
         $this->data['pengajar'] = Pengajar::orderBy('name','asc')->get();
         $this->data['days']     = explode(",", strtoupper(env('AVAILABLE_DAYS', 'SABTU,AHAD')));
         $this->data['redirectTo'] = $request->get('ref');
-        $this->data['pesertaCount'] = Peserta::where('halaqoh_id', $this->data['halaqoh']->halaqoh_id)->count();
+        $halaqohId = $this->data['halaqoh']->halaqoh_id;
+        $this->data['pesertaCount'] = Peserta::where('halaqoh_id', $halaqohId)->count();
+        $this->data['kbmCount'] = \App\Model\ActivityReport::where('halaqoh_id', $halaqohId)->count();
 
     	return view('pages.halaqoh.edit', $this->data);
     }
@@ -282,13 +284,19 @@ class HalaqohController extends Controller
             return redirect()->route('halaqoh.manage')->with('alert', ['message' => 'Data halaqoh tidak ditemukan', 'type' => 'danger']);
         }
 
-        $pesertaCount = Peserta::where('halaqoh_id', $viewHalaqoh->halaqoh_id)->count();
+        $halaqohId = $viewHalaqoh->halaqoh_id;
+        $pesertaCount = Peserta::where('halaqoh_id', $halaqohId)->count();
+        $kbmCount = \App\Model\ActivityReport::where('halaqoh_id', $halaqohId)->count();
 
         if ($pesertaCount > 0) {
             return redirect()->back()->with('alert', ['message' => 'Halaqoh tidak dapat dihapus karena masih memiliki santri', 'type' => 'danger']);
         }
 
-        $halaqoh = Halaqoh::find($viewHalaqoh->halaqoh_id);
+        if ($kbmCount > 0) {
+            return redirect()->back()->with('alert', ['message' => 'Halaqoh tidak dapat dihapus karena masih memiliki data KBM', 'type' => 'danger']);
+        }
+
+        $halaqoh = Halaqoh::find($halaqohId);
 
         if ($halaqoh && $halaqoh->forceDelete()) {
             $redirectTo = !empty($request->redirectTo) ? $request->redirectTo : 'halaqoh.manage';
