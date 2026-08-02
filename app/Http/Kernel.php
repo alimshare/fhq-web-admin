@@ -67,6 +67,7 @@ class Kernel extends HttpKernel
          */
         'jwtoken' => \App\Http\Middleware\JWToken::class,
         'permission' => \App\Http\Middleware\PermissionMiddleware::class,
+        'role' => \App\Http\Middleware\RoleMiddleware::class,
     ];
 
     /**

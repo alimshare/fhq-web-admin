@@ -1,0 +1,749 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sistem Manajemen Lembaga Tahfizh &amp; Tahsin Al-Qur'an</title>
+<style>
+  :root{
+    --forest:#14352A;
+    --deep:#1B4332;
+    --green:#2D6A4F;
+    --mid:#40916C;
+    --leaf:#52B788;
+    --mint:#74C69D;
+    --pale:#D8F3DC;
+    --paper:#F7FBF6;
+    --card:#FFFFFF;
+    --ink:#17251F;
+    --ink-soft:#4A5C53;
+    --line:#DCEBE0;
+    --shadow:0 1px 2px rgba(20,53,42,.05), 0 8px 24px rgba(20,53,42,.07);
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+
+  html,body{height:100%}
+  body{
+    font-family:"Segoe UI",system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif;
+    background:var(--forest);
+    color:var(--ink);
+    overflow:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ---------- slide shell ---------- */
+  .slide{
+    position:fixed; inset:0;
+    display:none;
+    flex-direction:column;
+    justify-content:center;
+    padding:clamp(28px,5vw,80px) clamp(28px,6vw,110px) clamp(64px,7vh,96px);
+    background:var(--paper);
+    overflow-y:auto;
+  }
+  .slide.on{display:flex;animation:rise .45s cubic-bezier(.2,.7,.3,1)}
+  @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+  .slide.dark{
+    background:
+      radial-gradient(900px 520px at 82% 12%, rgba(82,183,136,.22), transparent 60%),
+      radial-gradient(700px 480px at 10% 92%, rgba(64,145,108,.20), transparent 62%),
+      var(--forest);
+    color:#EAF6EE;
+  }
+
+  .wrap{width:100%;max-width:1180px;margin:0 auto}
+
+  /* ---------- typography ---------- */
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:9px;
+    font-size:clamp(11px,1.05vw,13px);font-weight:700;
+    letter-spacing:.16em;text-transform:uppercase;
+    color:var(--mid);margin-bottom:18px;
+  }
+  .eyebrow::before{content:"";width:26px;height:2px;background:var(--leaf);border-radius:2px}
+  .dark .eyebrow{color:var(--mint)}
+
+  h1{
+    font-size:clamp(34px,5.4vw,68px);line-height:1.08;
+    letter-spacing:-.025em;font-weight:800;
+  }
+  h2{
+    font-size:clamp(26px,3.5vw,46px);line-height:1.14;
+    letter-spacing:-.02em;font-weight:800;color:var(--deep);
+  }
+  .dark h2{color:#EAF6EE}
+
+  .lead{
+    font-size:clamp(15px,1.55vw,21px);line-height:1.6;
+    color:var(--ink-soft);max-width:56ch;margin-top:16px;
+  }
+  .dark .lead{color:#B7D6C4}
+
+  .sub{
+    font-size:clamp(14px,1.4vw,18px);line-height:1.6;
+    color:var(--ink-soft);max-width:62ch;margin-top:12px;
+  }
+
+  .rule{height:3px;width:64px;background:var(--leaf);border-radius:3px;margin:22px 0 26px}
+
+  /* ---------- cover ---------- */
+  .cover-tag{
+    display:inline-block;padding:7px 15px;border-radius:999px;
+    background:rgba(116,198,157,.14);border:1px solid rgba(116,198,157,.35);
+    color:var(--mint);font-size:clamp(11px,1.1vw,13px);font-weight:700;
+    letter-spacing:.14em;text-transform:uppercase;margin-bottom:26px;
+  }
+  .cover h1{color:#F2FBF5;max-width:19ch}
+  .cover .lead{margin-top:22px;font-size:clamp(16px,1.75vw,23px);color:#C6E3D2;max-width:50ch}
+  .cover-meta{
+    margin-top:44px;padding-top:24px;border-top:1px solid rgba(210,240,222,.16);
+    display:flex;flex-wrap:wrap;gap:12px 32px;
+    color:#8FBFA4;font-size:clamp(12px,1.15vw,15px);
+  }
+  .cover-meta b{color:#CFE9DA;font-weight:600}
+
+  /* ---------- grids ---------- */
+  .grid{display:grid;gap:clamp(12px,1.5vw,20px);margin-top:8px}
+  .g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+
+  .card{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:clamp(16px,1.9vw,26px);box-shadow:var(--shadow);
+    display:flex;flex-direction:column;gap:9px;
+  }
+  .card h3{
+    font-size:clamp(15px,1.45vw,19px);font-weight:700;color:var(--deep);
+    line-height:1.3;letter-spacing:-.01em;
+  }
+  .card p{font-size:clamp(12.5px,1.15vw,15px);line-height:1.55;color:var(--ink-soft)}
+
+  .icon{
+    width:clamp(34px,3.4vw,44px);height:clamp(34px,3.4vw,44px);
+    border-radius:11px;display:grid;place-items:center;
+    background:var(--pale);color:var(--green);flex:none;
+  }
+  .icon svg{width:55%;height:55%;stroke:currentColor;stroke-width:1.9;fill:none;
+    stroke-linecap:round;stroke-linejoin:round}
+
+  /* numbered module chip */
+  .num{
+    font-size:clamp(11px,1vw,13px);font-weight:800;letter-spacing:.1em;
+    color:var(--mid);background:var(--pale);
+    padding:5px 11px;border-radius:999px;display:inline-block;
+  }
+
+  /* status: fase pengembangan */
+  .wip{
+    font-size:clamp(11px,1vw,13px);font-weight:800;letter-spacing:.08em;
+    color:#8A5A12;background:#FDF3DC;border:1px solid #EFD9A6;
+    padding:5px 12px;border-radius:999px;display:inline-flex;align-items:center;gap:7px;
+    margin-left:10px;vertical-align:middle;
+  }
+  .wip::before{content:"";width:7px;height:7px;border-radius:50%;background:#D99A2B;flex:none}
+
+  .note{
+    margin-top:26px;border-radius:14px;
+    background:#FDF9EF;border:1px solid #EFD9A6;border-left:4px solid #D99A2B;
+    padding:clamp(16px,1.9vw,24px);
+  }
+  .note h3{
+    font-size:clamp(14px,1.35vw,18px);font-weight:800;color:#7A4F0C;
+    margin-bottom:8px;letter-spacing:-.01em;
+  }
+  .note p{font-size:clamp(12.5px,1.2vw,16px);line-height:1.6;color:#6B5326}
+  .note p + p{margin-top:10px}
+  .note b{color:#7A4F0C;font-weight:700}
+
+  /* group header on the map slide */
+  .grouphead{
+    display:flex;align-items:center;flex-wrap:wrap;gap:10px;
+    font-size:clamp(12px,1.15vw,15px);font-weight:800;
+    letter-spacing:.06em;text-transform:uppercase;
+    margin:0 0 14px;
+  }
+  .grouphead + .grid{margin-top:0}
+  .grid + .grouphead{margin-top:clamp(20px,2.6vw,34px)}
+  .grouphead .dot{width:9px;height:9px;border-radius:50%;flex:none}
+  .grouphead .ghcount{
+    font-size:clamp(11px,1.02vw,13px);font-weight:600;
+    letter-spacing:.02em;text-transform:none;opacity:.72;
+  }
+  .grouphead.ready{color:var(--green)}
+  .grouphead.ready .dot{background:var(--leaf)}
+  .grouphead.wip-head{color:#8A5A12}
+  .grouphead.wip-head .dot{background:#D99A2B}
+
+  /* card variant: not ready yet */
+  .card.soon{background:#FEFCF7;border-color:#EFD9A6}
+  .card.soon .icon{background:#FDF3DC;color:#B57A18}
+  .card.soon h3{color:#7A4F0C}
+  .card.soon p{color:#6B5326}
+
+  /* ---------- feature list ---------- */
+  .feat{list-style:none;display:flex;flex-direction:column;gap:clamp(10px,1.3vw,16px)}
+  .feat li{
+    display:flex;gap:14px;align-items:flex-start;
+    font-size:clamp(13px,1.3vw,17px);line-height:1.55;color:var(--ink-soft);
+  }
+  .feat li b{color:var(--deep);font-weight:700}
+  .dark .feat li{color:#B7D6C4}
+  .dark .feat li b{color:#EAF6EE}
+  .tick{
+    flex:none;width:22px;height:22px;border-radius:7px;margin-top:1px;
+    background:var(--pale);color:var(--green);display:grid;place-items:center;
+  }
+  .tick svg{width:13px;height:13px;stroke:currentColor;stroke-width:2.6;fill:none;
+    stroke-linecap:round;stroke-linejoin:round}
+  .dark .tick{background:rgba(116,198,157,.16);color:var(--mint)}
+
+  /* two-column split */
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,4vw,64px);align-items:center}
+
+  /* highlight panel */
+  .panel{
+    background:linear-gradient(150deg,var(--deep),var(--green));
+    color:#EAF6EE;border-radius:16px;padding:clamp(20px,2.4vw,32px);
+    box-shadow:0 12px 34px rgba(20,53,42,.22);
+  }
+  .panel h3{font-size:clamp(16px,1.6vw,21px);font-weight:700;margin-bottom:12px;color:#fff}
+  .panel p{font-size:clamp(13px,1.2vw,16px);line-height:1.6;color:#C6E3D2}
+  .panel .feat li{color:#C6E3D2}
+  .panel .feat li b{color:#fff}
+  .panel .tick{background:rgba(255,255,255,.14);color:#CFF3DF}
+
+  .quote{
+    border-left:4px solid var(--leaf);padding:6px 0 6px 20px;
+    font-size:clamp(15px,1.6vw,21px);line-height:1.5;color:var(--deep);
+    font-weight:600;letter-spacing:-.01em;
+  }
+  .dark .quote{color:#EAF6EE;border-color:var(--mint)}
+
+  /* ---------- chrome ---------- */
+  .bar{
+    position:fixed;left:0;right:0;bottom:0;height:3px;
+    background:rgba(20,53,42,.10);z-index:60;
+  }
+  .bar span{display:block;height:100%;width:0;background:var(--leaf);
+    transition:width .35s cubic-bezier(.2,.7,.3,1)}
+
+  .hud{
+    position:fixed;right:clamp(16px,2.6vw,36px);bottom:clamp(16px,2.4vw,28px);
+    display:flex;align-items:center;gap:10px;z-index:70;
+  }
+  .hud button{
+    width:38px;height:38px;border-radius:10px;border:1px solid var(--line);
+    background:rgba(255,255,255,.9);color:var(--green);cursor:pointer;
+    display:grid;place-items:center;font-size:16px;line-height:1;
+    transition:background .15s,transform .15s;
+  }
+  .hud button:hover{background:var(--pale);transform:translateY(-1px)}
+  .hud .count{
+    font-size:13px;font-weight:700;color:var(--ink-soft);
+    min-width:52px;text-align:center;font-variant-numeric:tabular-nums;
+  }
+  body.is-dark .hud button{background:rgba(255,255,255,.08);border-color:rgba(210,240,222,.2);color:var(--mint)}
+  body.is-dark .hud .count{color:#9FCBB2}
+
+  .brandmark{
+    position:fixed;left:clamp(16px,2.6vw,36px);bottom:clamp(18px,2.4vw,30px);
+    font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+    color:rgba(74,92,83,.5);z-index:70;
+  }
+  body.is-dark .brandmark{color:rgba(199,230,212,.45)}
+
+  /* ---------- responsive ---------- */
+  @media (max-width:900px){
+    .g3,.g4{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .split{grid-template-columns:1fr;gap:24px}
+    .slide{justify-content:flex-start;padding-top:56px}
+  }
+  @media (max-width:600px){
+    .g2,.g3,.g4{grid-template-columns:1fr}
+  }
+
+  /* ---------- print / PDF ---------- */
+  @media print{
+    body{overflow:visible;background:#fff}
+    .slide{
+      position:static;display:flex !important;min-height:100vh;
+      page-break-after:always;break-after:page;animation:none;
+    }
+    .hud,.bar,.brandmark{display:none}
+    .slide.dark{background:var(--forest);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  }
+</style>
+</head>
+<body class="is-dark">
+
+<!-- reusable icons -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="i-clipboard" viewBox="0 0 24 24"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M9 14l2 2 4-4"/></symbol>
+  <symbol id="i-award" viewBox="0 0 24 24"><circle cx="12" cy="8" r="6"/><path d="M15.5 13.5 17 22l-5-3-5 3 1.5-8.5"/></symbol>
+  <symbol id="i-form" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M9 13h6M9 17h4"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 15l4-5 3 3 5-7"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20z"/></symbol>
+  <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-1.8-.3 1.6 1.6 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1A1.6 1.6 0 0 0 9 19.4a1.6 1.6 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0 .3-1.8 1.6 1.6 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1A1.6 1.6 0 0 0 4.6 9a1.6 1.6 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.6 1.6 0 0 0 1.8.3H9a1.6 1.6 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.6 1.6 0 0 0 1 1.5 1.6 1.6 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-.3 1.8V9a1.6 1.6 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.6 1.6 0 0 0-1.5 1z"/></symbol>
+  <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></symbol>
+  <symbol id="i-device" viewBox="0 0 24 24"><rect x="2" y="4" width="14" height="12" rx="2"/><path d="M2 20h20"/><rect x="18" y="9" width="4" height="8" rx="1"/></symbol>
+  <symbol id="i-swap" viewBox="0 0 24 24"><path d="M16 3l4 4-4 4"/><path d="M20 7H4"/><path d="M8 21l-4-4 4-4"/><path d="M4 17h16"/></symbol>
+</svg>
+
+
+<!-- ============ 1. COVER ============ -->
+<section class="slide dark cover on" data-theme="dark">
+  <div class="wrap">
+    <span class="cover-tag">Sistem Informasi Manajemen Pendidikan</span>
+    <h1>Satu Sistem untuk Seluruh Kegiatan Belajar Lembaga Al-Qur'an</h1>
+    <p class="lead">Mengelola santri, pengajar, kelompok belajar, absensi, nilai, raport, sampai laporan pimpinan — semuanya di satu tempat, bisa diakses dari mana saja.</p>
+    <div class="cover-meta">
+      <span><b>Berbasis web</b> — tanpa instalasi</span>
+      <span><b>Bisa dibuka dari HP</b>, tablet, atau laptop</span>
+      <span><b>Sudah dipakai</b> beberapa lembaga tahfizh</span>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============ 2. PETA SISTEM ============ -->
+<section class="slide" data-theme="light">
+  <div class="wrap">
+    <span class="eyebrow">Peta Sistem</span>
+    <h2>Sembilan modul yang saling terhubung</h2>
+    <p class="sub">Data cukup dimasukkan sekali. Modul berikutnya otomatis memakai data yang sama — tidak ada pengetikan ulang.</p>
+    <div class="rule"></div>
+
+    <div class="grouphead ready">
+      <span class="dot"></span> Siap digunakan <span class="ghcount">Modul 01 – 07</span>
+    </div>
+    <div class="grid g4">
+      <div class="card"><div class="icon"><svg><use href="#i-users"/></svg></div><h3>01 &nbsp;Data Induk</h3><p>Santri, pengajar, program, semester, dan identitas lembaga.</p></div>
+      <div class="card"><div class="icon"><svg><use href="#i-book"/></svg></div><h3>02 &nbsp;Halaqoh</h3><p>Membentuk kelompok belajar beserta pengajar dan jadwalnya.</p></div>
+      <div class="card"><div class="icon"><svg><use href="#i-clipboard"/></svg></div><h3>03 &nbsp;Absensi &amp; Jurnal KBM</h3><p>Kehadiran dan catatan materi setiap pertemuan.</p></div>
+      <div class="card"><div class="icon"><svg><use href="#i-award"/></svg></div><h3>04 &nbsp;Nilai &amp; Raport</h3><p>Penilaian ujian dan raport tercetak otomatis.</p></div>
+      <div class="card"><div class="icon"><svg><use href="#i-download"/></svg></div><h3>05 &nbsp;Laporan &amp; Ekspor</h3><p>Rekap nilai, KBM, dan kehadiran — unduh ke Excel.</p></div>
+      <div class="card"><div class="icon"><svg><use href="#i-shield"/></svg></div><h3>06 &nbsp;Hak Akses</h3><p>Setiap peran hanya melihat yang menjadi tanggung jawabnya.</p></div>
+      <div class="card"><div class="icon"><svg><use href="#i-globe"/></svg></div><h3>07 &nbsp;Halaman Publik</h3><p>Informasi kelas yang bisa dilihat santri tanpa login.</p></div>
+    </div>
+
+    <div class="grouphead wip-head">
+      <span class="dot"></span> Masih dalam pengembangan <span class="ghcount">Modul 08 – 09 &middot; belum masuk lingkup tahap awal</span>
+    </div>
+    <div class="grid g4">
+      <div class="card soon"><div class="icon"><svg><use href="#i-chart"/></svg></div><h3>08 &nbsp;Dashboard Pimpinan</h3><p>Ringkasan angka dan grafik kondisi lembaga.</p></div>
+      <div class="card soon"><div class="icon"><svg><use href="#i-form"/></svg></div><h3>09 &nbsp;Daftar Ulang &amp; PSB</h3><p>Pendaftaran ulang online dan pendaftaran santri baru.</p></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============ 3. DATA INDUK ============ -->
+<section class="slide" data-theme="light">
+  <div class="wrap">
+    <span class="num">MODUL 01</span>
+    <h2 style="margin-top:14px">Data Induk — ketik sekali, dipakai selamanya</h2>
+    <div class="rule"></div>
+
+    <div class="split">
+      <ul class="feat">
+        <li><span class="tick"><svg><use href="#i-check"/></svg></span><span><b>Data Santri.</b> Biodata lengkap: identitas, alamat, riwayat pendidikan, pekerjaan, data orang tua dan pasangan. Setiap santri punya nomor induk sendiri.</span></li>
+        <li><span class="tick"><svg><use href="#i-check"/></svg></span><span><b>Data Pengajar.</b> Biodata dan NIP, lengkap dengan daftar kelompok belajar yang sedang dan pernah diampu.</span></li>
+        <li><span class="tick"><svg><use href="#i-check"/></svg></span><span><b>Program Belajar.</b> Jenjang bebas ditentukan sendiri — Iqro, Pra Tahsin, Tahsin, Takhassus, Tahfidz, Bahasa Arab, dan lainnya.</span></li>
+        <li><span class="tick"><svg><use href="#i-check"/></svg></span><span><b>Semester.</b> Periode belajar dengan tanggal mulai dan selesai. Satu semester ditandai aktif, dan disambungkan ke semester berikutnya.</span></li>
+        <li><span class="tick"><svg><use href="#i-check"/></svg></span><span><b>Identitas Lembaga.</b> Data lembaga yang dipakai di seluruh dokumen dan laporan.</span></li>
+      </ul>
+
+      <div class="panel">
+        <h3>Profil santri yang menyimpan seluruh perjalanan belajar</h3>
+        <p style="margin-bottom:16px">Buka satu nama, dan seluruh riwayatnya muncul:</p>
+        <ul class="feat">
+          <li><span class="tick"><svg><use href="#i-check"/></svg></span><span>Semua kelas yang pernah diikuti, dari semester ke semester</span></li>
+          <li><span class="tick"><svg><use href="#i-check"/></svg></span><span>Siapa pengajarnya di tiap periode</span></li>
+          <li><span class="tick"><svg><use href="#i-check"/></svg></span><span>Nilai dan capaian di setiap semester</span></li>
+          <li><span class="tick"><svg><use href="#i-check"/></svg></span><span>Catatan mutaba'ah perkembangan santri</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============ 4. HALAQOH ============ -->
+<section class="slide" data-theme="light">
+  <div class="wrap">
+    <span class="num">MODUL 02</span>
+    <h2 style="margin-top:14px">Manajemen Halaqoh — membentuk dan merapikan kelas</h2>
+    <p class="sub">Pekerjaan yang dulu memakan berhari-hari di awal semester, kini selesai dalam beberapa klik.</p>
+    <div class="rule"></div>
+
+    <div class="grid g3">
+      <div class="card"><div class="icon"><svg><use href="#i-book"/></svg></div><h3>Buat Halaqoh</h3><p>Tentukan program, pengajar, hari, jam, dan tempat. Halaqoh langsung siap diisi peserta.</p></div>
+      <div class="card"><div class="icon"><svg><use href="#i-users"/></svg></div><h3>Tambah Peserta</h3><p>Masukkan santri ke kelompok belajar, bisa beberapa sekaligus dalam satu layar.</p></div>
+      <div class="card"><div class="icon"><svg><use href="#i-swap"/></svg></div><h3>Pindah Halaqoh</h3><p>Santri pindah kelas cukup satu langkah — riwayat lamanya tetap tersimpan utuh.</p></div>
+      <div class="card"><div class="icon"><svg><use href="#i-calendar"/></svg></div><h3>Santri Cuti</h3><p>Tandai santri yang berhalangan hadir sementara, dan pulihkan kembali saat aktif lagi.</p></div>
+      <div class="card"><div class="icon"><svg><use href="#i-clipboard"/></svg></div><h3>Halaqoh Aktif &amp; Riwayat</h3><p>Layar terpisah untuk kelas yang sedang berjalan dan arsip kelas semester lampau.</p></div>
+      <div class="card"><div class="icon"><svg><use href="#i-shield"/></svg></div><h3>Pengaman Data</h3><p>Halaqoh yang sudah punya catatan pertemuan tidak bisa dihapus sembarangan.</p></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============ 5. ABSENSI ============ -->
+<section class="slide" data-theme="light">
+  <div class="wrap">
+    <span class="num">MODUL 03</span>
+    <h2 style="margin-top:14px">Absensi &amp; Jurnal KBM — dari buku tulis ke layar HP</h2>
+    <div class="rule"></div>
+
+    <div class="split">
+      <ul class="feat">
+        <li><span class="tick"><svg><use href="#i-check"/></svg></span><span><b>Isi langsung dari HP.</b> Pengajar memilih halaqoh dan tanggal, lalu mencentang santri yang hadir. Selesai.</span></li>
+        <li><span class="tick"><svg><use href="#i-check"/></svg></span><span><b>Jurnal pertemuan.</b> Jam mulai dan selesai, materi yang diajarkan, serta catatan khusus untuk manajemen.</span></li>
+        <li><span class="tick"><svg><use href="#i-check"/></svg></span><span><b>Pengajar pengganti (badal).</b> Setiap pertemuan bisa ditandai <i>Normal</i>, <i>Badal</i>, atau <i>Gabung</i> — jadi jelas siapa yang benar-benar mengajar hari itu.</span></li>
+        <li><span class="tick"><svg><use href="#i-check"/></svg></span><span><b>Anti input ganda.</b> Sistem menolak absensi untuk tanggal yang sudah pernah diisi.</span></li>
+        <li><span class="tick"><svg><use href="#i-check"/></svg></span><span><b>Bisa diperbaiki.</b> Absensi yang salah dapat diedit atau dihapus oleh yang berwenang.</span></li>
+      </ul>
+
+      <div class="panel">
+        <h3>Rekap kehadiran terhitung sendiri</h3>
+        <p>Begitu absensi tersimpan, sistem langsung menjumlahkan kehadiran setiap santri — tanpa ada yang perlu menghitung manual.</p>
+        <div style="height:18px"></div>
+        <ul class="feat">
+          <li><span class="tick"><svg><use href="#i-check"/></svg></span><span>Jumlah kehadiran per santri, urut dari yang terajin</span></li>
+          <li><span class="tick"><svg><use href="#i-check"/></svg></span><span>Daftar pertemuan per halaqoh beserta jumlah yang hadir</span></li>
+          <li><span class="tick"><svg><use href="#i-check"/></svg></span><span>Angka ini langsung dipakai saat pengisian raport</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============ 6. NILAI & RAPORT ============ -->
+<section class="slide" data-theme="light">
+  <div class="wrap">
+    <span class="num">MODUL 04</span>
+    <h2 style="margin-top:14px">Nilai &amp; Raport — raport jadi tanpa mengetik ulang</h2>
+    <div class="rule"></div>
+
+    <div class="grid g2" style="margin-bottom:20px">
+      <div class="card">
+        <div class="icon"><svg><use href="#i-award"/></svg></div>
+        <h3>Yang dicatat pengajar</h3>
+        <p style="margin-top:4px">Nilai UTS dan UAS untuk <b>Teori</b>, <b>Praktik</b>, dan <b>Hafalan</b>; nilai latihan; capaian khatam; jumlah kehadiran; catatan pengajar; serta catatan manajemen.</p>
+      </div>
+      <div class="card">
+        <div class="icon"><svg><use href="#i-download"/></svg></div>
+        <h3>Yang dikerjakan sistem</h3>
+        <p style="margin-top:4px">Raport siap cetak dalam bentuk file Word, dibuat otomatis dari nilai yang sudah diinput — satu klik per santri.</p>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3>Empat hal yang biasanya paling melelahkan, kini otomatis</h3>
+      <div class="grid g2" style="margin-top:6px">
+        <ul class="feat">
+          <li><span class="tick"><svg><use href="#i-check"/></svg></span><span><b>Angka menjadi huruf.</b> Nilai 85 otomatis tertulis "delapan puluh lima" di raport.</span></li>
+          <li><span class="tick"><svg><use href="#i-check"/></svg></span><span><b>Predikat otomatis.</b> Kehadiran dan capaian khatam langsung berubah menjadi predikat penilaian.</span></li>
+        </ul>
+        <ul class="feat">
+          <li><span class="tick"><svg><use href="#i-check"/></svg></span><span><b>Rekomendasi jenjang.</b> Sistem menyarankan program untuk semester berikutnya sesuai hasil belajar.</span></li>
+          <li><span class="tick"><svg><use href="#i-check"/></svg></span><span><b>Format sesuai program.</b> Raport Tahsin, Tahfidz, dan Bahasa Arab memakai bentuk masing-masing.</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============ 7. LAPORAN ============ -->
+<section class="slide" data-theme="light">
+  <div class="wrap">
+    <span class="num">MODUL 05</span>
+    <h2 style="margin-top:14px">Laporan &amp; Ekspor — siap dicetak, siap dibawa rapat</h2>
+    <div class="rule"></div>
+
+    <div class="grid g2">
+      <div class="card"><div class="icon"><svg><use href="#i-award"/></svg></div><h3>Rekap Nilai</h3><p>Seluruh nilai santri dalam satu semester, tersusun per pengajar dan per kelompok belajar.</p></div>
+      <div class="card"><div class="icon"><svg><use href="#i-clipboard"/></svg></div><h3>Rekap KBM</h3><p>Jumlah pertemuan setiap halaqoh — memperlihatkan kelas yang berjalan rutin dan yang tertinggal.</p></div>
+      <div class="card"><div class="icon"><svg><use href="#i-users"/></svg></div><h3>Rekap Kehadiran</h3><p>Kehadiran santri sepanjang semester, untuk bahan pembinaan dan komunikasi dengan wali.</p></div>
+      <div class="card"><div class="icon"><svg><use href="#i-download"/></svg></div><h3>Unduh Sekali Klik</h3><p>Setiap rekap dapat diunduh ke <b>Excel</b>, dan raport santri diunduh dalam bentuk <b>Word</b> siap cetak.</p></div>
+    </div>
+
+    <div class="quote" style="margin-top:26px">Laporan tidak perlu disusun ulang — cukup dipilih semesternya, lalu diunduh.</div>
+  </div>
+</section>
+
+
+<!-- ============ 10. HAK AKSES ============ -->
+<section class="slide" data-theme="light">
+  <div class="wrap">
+    <span class="num">MODUL 06</span>
+    <h2 style="margin-top:14px">Hak Akses — setiap orang melihat sesuai perannya</h2>
+    <div class="rule"></div>
+
+    <div class="split">
+      <div>
+        <h3 style="font-size:clamp(15px,1.5vw,19px);color:var(--deep);margin-bottom:16px">Peran yang tersedia</h3>
+        <ul class="feat">
+          <li><span class="tick"><svg><use href="#i-check"/></svg></span><span><b>Muwajih / Pengajar</b> — hanya melihat dan mengisi halaqohnya sendiri</span></li>
+          <li><span class="tick"><svg><use href="#i-check"/></svg></span><span><b>Frontliner</b> — melayani pendaftaran dan data santri</span></li>
+          <li><span class="tick"><svg><use href="#i-check"/></svg></span><span><b>Koordinator Pendidikan</b> — mengatur halaqoh dan memantau KBM</span></li>
+          <li><span class="tick"><svg><use href="#i-check"/></svg></span><span><b>Direktur Pendidikan</b> — melihat seluruh laporan dan dashboard</span></li>
+          <li><span class="tick"><svg><use href="#i-check"/></svg></span><span><b>Pengelola Pengguna &amp; Administrator</b> — mengelola akun dan pengaturan</span></li>
+        </ul>
+      </div>
+
+      <div class="panel">
+        <h3>Aman dan tertib</h3>
+        <ul class="feat">
+          <li><span class="tick"><svg><use href="#i-check"/></svg></span><span>Setiap orang masuk dengan <b>akunnya sendiri</b> — jelas siapa mengerjakan apa</span></li>
+          <li><span class="tick"><svg><use href="#i-check"/></svg></span><span>Menu yang tidak menjadi haknya <b>tidak muncul</b> di layar</span></li>
+          <li><span class="tick"><svg><use href="#i-check"/></svg></span><span>Izin dapat diatur <b>sedetail per fitur</b>, bukan sekadar per jabatan</span></li>
+          <li><span class="tick"><svg><use href="#i-check"/></svg></span><span>Pengurus bisa <b>menambah akun</b> dan <b>mengatur ulang kata sandi</b> sendiri</span></li>
+          <li><span class="tick"><svg><use href="#i-check"/></svg></span><span>Data yang dihapus <b>masih tersimpan</b> dan dapat dipulihkan</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============ 11. HALAMAN PUBLIK ============ -->
+<section class="slide" data-theme="light">
+  <div class="wrap">
+    <span class="num">MODUL 07</span>
+    <h2 style="margin-top:14px">Halaman Publik — mengurangi pertanyaan berulang ke admin</h2>
+    <div class="rule"></div>
+
+    <div class="grid g3">
+      <div class="card"><div class="icon"><svg><use href="#i-globe"/></svg></div><h3>Info Pembagian Kelas</h3><p>Santri bisa mengecek sendiri masuk halaqoh mana, dengan pengajar siapa, hari dan jam berapa — tanpa perlu login.</p></div>
+      <div class="card"><div class="icon"><svg><use href="#i-form"/></svg></div><h3>Form Daftar Ulang</h3><p>Tautan pendaftaran ulang yang bisa dibuka siapa saja, namun dilindungi kode rahasia agar tidak disalahgunakan.</p></div>
+      <div class="card"><div class="icon"><svg><use href="#i-device"/></svg></div><h3>Ringan Dibuka</h3><p>Halaman publik dirancang cepat diakses, sehingga tetap lancar meski dibuka banyak orang bersamaan.</p></div>
+    </div>
+
+    <div class="quote" style="margin-top:28px">Pengumuman pembagian kelas cukup dibagikan satu tautan — tidak perlu lagi menyalin daftar panjang ke grup pesan.</div>
+  </div>
+</section>
+
+
+<!-- ============ PEMBATAS: MODUL BELUM SIAP ============ -->
+<section class="slide dark" data-theme="dark">
+  <div class="wrap">
+    <span class="cover-tag" style="background:rgba(217,154,43,.16);border-color:rgba(217,154,43,.45);color:#F0C879">Masih Dalam Pengembangan</span>
+    <h1 style="font-size:clamp(30px,4.6vw,56px);max-width:21ch">Beberapa modul dalam pengembangan</h1>
+    <p class="lead" style="margin-top:22px">Keduanya sudah berjalan di FHQ, teapi perlu dikembangkan kembali agar dapat dipakai lembaga lain.</p>
+  </div>
+</section>
+
+
+<!-- ============ MODUL 08 — DASHBOARD (belum siap) ============ -->
+<section class="slide" data-theme="light">
+  <div class="wrap">
+    <span class="num">MODUL 08</span><span class="wip">Sedang Dikembangkan</span>
+    <h2 style="margin-top:14px">Dashboard Pimpinan — kondisi lembaga dalam satu layar</h2>
+    <p class="sub">Bentuk awalnya sudah berjalan dan bisa dilihat, namun tampilan serta pilihan angkanya <b>masih kami rapikan</b>. Berikut arah yang sedang dikembangkan.</p>
+    <div class="rule"></div>
+
+    <div class="grid g3">
+      <div class="card soon"><h3>Ringkasan Utama</h3><p>Jumlah halaqoh, pengajar, program, dan santri aktif — plus rasio santri per pengajar.</p></div>
+      <div class="card soon"><h3>Tren Antar Semester</h3><p>Naik-turunnya jumlah santri, halaqoh, dan pengajar dari periode ke periode.</p></div>
+      <div class="card soon"><h3>Sebaran Program</h3><p>Program mana yang paling diminati dan mana yang perlu didorong.</p></div>
+      <div class="card soon"><h3>Profil Santri</h3><p>Komposisi ikhwan dan akhwat, serta pengelompokan berdasarkan usia.</p></div>
+      <div class="card soon"><h3>Sebaran Hari Belajar</h3><p>Hari mana yang paling padat — dasar untuk mengatur ruang dan pengajar.</p></div>
+      <div class="card soon"><h3>Cakupan KBM</h3><p>Berapa persen halaqoh yang benar-benar rutin mengisi jurnal pertemuan.</p></div>
+    </div>
+
+    <div class="note">
+      <h3>Catatan</h3>
+      <p>Ukuran dan grafik yang ditampilkan <b>masih akan disesuaikan</b> — termasuk kemungkinan menyesuaikan dengan angka yang paling dibutuhkan pimpinan di lembaga Anda. Untuk sementara, kebutuhan laporan sudah tercukupi oleh <b>Modul 05 — Laporan &amp; Ekspor</b>.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============ MODUL 09 — DAFTAR ULANG (belum siap) ============ -->
+<section class="slide" data-theme="light">
+  <div class="wrap">
+    <span class="num">MODUL 09</span><span class="wip">Sedang Dikembangkan</span>
+    <h2 style="margin-top:14px">Daftar Ulang Online &amp; Pendaftaran Santri Baru</h2>
+    <p class="sub">Modul ini <b>sudah berjalan</b> di lembaga yang ada saat ini, namun <b>belum kami tawarkan sebagai fitur siap pakai</b>. Gambaran di bawah adalah bentuk yang sedang kami rapikan.</p>
+    <div class="rule"></div>
+
+    <div class="split">
+      <div>
+        <h3 style="font-size:clamp(15px,1.5vw,19px);color:var(--deep);margin-bottom:16px">Dari sisi santri</h3>
+        <ul class="feat">
+          <li><span class="tick"><svg><use href="#i-check"/></svg></span><span>Menerima <b>satu tautan</b> yang bisa disebar lewat grup atau broadcast</span></li>
+          <li><span class="tick"><svg><use href="#i-check"/></svg></span><span>Mencari datanya sendiri cukup dengan <b>nomor HP</b> — nomor ditampilkan tersamar demi privasi</span></li>
+          <li><span class="tick"><svg><use href="#i-check"/></svg></span><span>Memilih <b>program dan jadwal</b> untuk semester berikutnya</span></li>
+          <li><span class="tick"><svg><use href="#i-check"/></svg></span><span>Mengunggah <b>bukti pembayaran</b> langsung dari HP</span></li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 style="font-size:clamp(15px,1.5vw,19px);color:var(--deep);margin-bottom:16px">Dari sisi pengurus</h3>
+        <ul class="feat">
+          <li><span class="tick"><svg><use href="#i-check"/></svg></span><span>Semua pengajuan masuk ke <b>satu daftar</b>, tidak tercecer</span></li>
+          <li><span class="tick"><svg><use href="#i-check"/></svg></span><span><b>Tampilan galeri</b> untuk memeriksa bukti pembayaran secara cepat</span></li>
+          <li><span class="tick"><svg><use href="#i-check"/></svg></span><span><b>Verifikasi satu klik</b>, lengkap dengan catatan siapa yang memverifikasi</span></li>
+          <li><span class="tick"><svg><use href="#i-check"/></svg></span><span>Data pengajuan bisa <b>diperbaiki, dihapus,</b> dan <b>diunduh ke Excel</b></span></li>
+          <li><span class="tick"><svg><use href="#i-check"/></svg></span><span>Modul terpisah untuk <b>calon santri baru</b></span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="note">
+      <h3>Catatan</h3>
+      <p>Alur daftar ulang dan pendaftaran santri baru saat ini <b>masih terikat pada kebiasaan di FHQ Bintaro Jaya</b>. Kedepannya akan dikembangkan menjadi <b>lebih umum</b> dan dapat mengikuti alur pendaftaran masing-masing lembaga.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============ 12. PENYESUAIAN ============ -->
+<section class="slide" data-theme="light">
+  <div class="wrap">
+    <span class="eyebrow">Fleksibilitas</span>
+    <h2>Bisa disesuaikan dengan lembaga Anda</h2>
+    <p class="sub">Sistem ini tidak dikunci pada satu lembaga. Bagian-bagian berikut dapat diatur mengikuti kebiasaan yang sudah berjalan di tempat Anda.</p>
+    <div class="rule"></div>
+
+    <div class="grid g3">
+      <div class="card"><div class="icon"><svg><use href="#i-settings"/></svg></div><h3>Nama &amp; Logo</h3><p>Identitas lembaga tampil di seluruh halaman dan dokumen.</p></div>
+      <div class="card"><div class="icon"><svg><use href="#i-award"/></svg></div><h3>Template Raport Sendiri</h3><p>Bentuk raport mengikuti format lembaga Anda — sudah diterapkan untuk beberapa lembaga berbeda.</p></div>
+      <div class="card"><div class="icon"><svg><use href="#i-book"/></svg></div><h3>Program &amp; Jenjang</h3><p>Nama program dan urutan kenaikan jenjang ditentukan sendiri.</p></div>
+      <div class="card"><div class="icon"><svg><use href="#i-calendar"/></svg></div><h3>Hari Belajar</h3><p>Bebas memilih hari kegiatan, dari Senin sampai Ahad.</p></div>
+      <div class="card"><div class="icon"><svg><use href="#i-shield"/></svg></div><h3>Peran &amp; Izin</h3><p>Susunan jabatan dan kewenangannya mengikuti struktur organisasi Anda.</p></div>
+      <div class="card"><div class="icon"><svg><use href="#i-swap"/></svg></div><h3>Fitur Dinyalakan Bertahap</h3><p>Modul seperti daftar ulang online bisa diaktifkan belakangan, saat lembaga sudah siap.</p></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============ 13. AKSES & TEKNOLOGI ============ -->
+<section class="slide" data-theme="light">
+  <div class="wrap">
+    <span class="eyebrow">Cara Menggunakan</span>
+    <h2>Cukup buka lewat browser</h2>
+    <div class="rule"></div>
+
+    <div class="split">
+      <ul class="feat">
+        <li><span class="tick"><svg><use href="#i-check"/></svg></span><span><b>Tanpa instalasi.</b> Tidak ada aplikasi yang perlu dipasang di HP atau komputer pengurus.</span></li>
+        <li><span class="tick"><svg><use href="#i-check"/></svg></span><span><b>Dari perangkat apa saja.</b> Tampilan menyesuaikan layar HP, tablet, maupun laptop.</span></li>
+        <li><span class="tick"><svg><use href="#i-check"/></svg></span><span><b>Data terpusat.</b> Semua tersimpan di satu tempat — tidak tersebar di banyak berkas Excel milik orang berbeda.</span></li>
+        <li><span class="tick"><svg><use href="#i-check"/></svg></span><span><b>Bisa disambungkan.</b> Tersedia jalur penghubung ke aplikasi lain, misalnya website pendaftaran lembaga.</span></li>
+        <li><span class="tick"><svg><use href="#i-check"/></svg></span><span><b>Ada panduan.</b> Tautan panduan penggunaan tersedia langsung di dalam menu aplikasi.</span></li>
+      </ul>
+
+      <div class="panel">
+        <h3>Yang berubah bagi tiap orang</h3>
+        <ul class="feat">
+          <li><span class="tick"><svg><use href="#i-check"/></svg></span><span><b>Pengajar</b> — cukup buka HP untuk absensi dan input nilai</span></li>
+          <li><span class="tick"><svg><use href="#i-check"/></svg></span><span><b>Admin</b> — tidak lagi merekap manual dan mengetik ulang raport</span></li>
+          <li><span class="tick"><svg><use href="#i-check"/></svg></span><span><b>Pimpinan</b> — angka tersedia kapan pun, tanpa harus meminta</span></li>
+          <li><span class="tick"><svg><use href="#i-check"/></svg></span><span><b>Santri &amp; wali</b> — informasi kelas dan daftar ulang bisa diakses mandiri</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ============ 14. PENUTUP ============ -->
+<section class="slide dark" data-theme="dark">
+  <div class="wrap">
+    <span class="cover-tag">Penutup</span>
+    <h1 style="font-size:clamp(30px,4.6vw,58px);max-width:20ch">Dari pendaftaran sampai raport — dalam satu sistem.</h1>
+    <p class="lead" style="margin-top:22px">Semua modul saling terhubung, sehingga data yang dimasukkan pengajar hari ini langsung menjadi laporan yang dibaca pimpinan.</p>
+
+    <div class="grid g3" style="margin-top:40px">
+      <div class="card" style="background:rgba(255,255,255,.06);border-color:rgba(210,240,222,.16)">
+        <h3 style="color:#EAF6EE">1 &nbsp;Demo Langsung</h3>
+        <p style="color:#B7D6C4">Melihat sistem berjalan dengan contoh data nyata.</p>
+      </div>
+      <div class="card" style="background:rgba(255,255,255,.06);border-color:rgba(210,240,222,.16)">
+        <h3 style="color:#EAF6EE">2 &nbsp;Penyesuaian</h3>
+        <p style="color:#B7D6C4">Menyesuaikan program, raport, dan struktur peran lembaga Anda.</p>
+      </div>
+      <div class="card" style="background:rgba(255,255,255,.06);border-color:rgba(210,240,222,.16)">
+        <h3 style="color:#EAF6EE">3 &nbsp;Pendampingan</h3>
+        <p style="color:#B7D6C4">Pelatihan pengurus dan pengajar sampai sistem berjalan mandiri.</p>
+      </div>
+    </div>
+
+    <p style="margin-top:44px;color:#8FBFA4;font-size:clamp(13px,1.2vw,16px)">Terima kasih — Silahkan ditanyakan jika ada yang belum jelas.</p>
+  </div>
+</section>
+
+
+<!-- chrome -->
+<div class="brandmark">Sistem Manajemen Lembaga Al-Qur'an</div>
+<div class="hud">
+  <button id="prev" title="Slide sebelumnya (←)" aria-label="Slide sebelumnya">&#8592;</button>
+  <span class="count"><span id="cur">1</span> / <span id="tot">15</span></span>
+  <button id="next" title="Slide berikutnya (→)" aria-label="Slide berikutnya">&#8594;</button>
+</div>
+<div class="bar"><span id="prog"></span></div>
+
+<script>
+(function(){
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var i = 0;
+  var cur = document.getElementById('cur');
+  var tot = document.getElementById('tot');
+  var prog = document.getElementById('prog');
+
+  tot.textContent = slides.length;
+
+  function show(n){
+    i = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach(function(s, k){ s.classList.toggle('on', k === i); });
+    cur.textContent = i + 1;
+    prog.style.width = ((i + 1) / slides.length * 100) + '%';
+    document.body.classList.toggle('is-dark', slides[i].dataset.theme === 'dark');
+    slides[i].scrollTop = 0;
+    if (location.hash !== '#' + (i + 1)) history.replaceState(null, '', '#' + (i + 1));
+  }
+
+  document.getElementById('next').addEventListener('click', function(){ show(i + 1); });
+  document.getElementById('prev').addEventListener('click', function(){ show(i - 1); });
+
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); show(i + 1); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); show(i - 1); }
+    else if (e.key === 'Home') { show(0); }
+    else if (e.key === 'End') { show(slides.length - 1); }
+    else if (e.key === 'f' || e.key === 'F') {
+      if (document.fullscreenElement) document.exitFullscreen();
+      else document.documentElement.requestFullscreen();
+    }
+  });
+
+  // swipe on touch devices
+  var x0 = null;
+  document.addEventListener('touchstart', function(e){ x0 = e.changedTouches[0].clientX; }, {passive:true});
+  document.addEventListener('touchend', function(e){
+    if (x0 === null) return;
+    var dx = e.changedTouches[0].clientX - x0;
+    if (Math.abs(dx) > 60) show(dx < 0 ? i + 1 : i - 1);
+    x0 = null;
+  }, {passive:true});
+
+  var start = parseInt((location.hash || '').replace('#',''), 10);
+  show(isNaN(start) ? 0 : start - 1);
+})();
+</script>
+
+</body>
+</html>

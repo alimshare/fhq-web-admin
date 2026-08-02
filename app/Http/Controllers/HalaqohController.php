@@ -223,11 +223,14 @@ class HalaqohController extends Controller
      */
     public function editView(Request $request, $halaqohReference)
     {
-        $this->data['halaqoh']  = ViewHalaqoh::where('halaqoh_reference', $halaqohReference)->first();                        
+        $this->data['halaqoh']  = ViewHalaqoh::where('halaqoh_reference', $halaqohReference)->first();
     	$this->data['program']  = Program::orderBy('name','asc')->get();
         $this->data['pengajar'] = Pengajar::orderBy('name','asc')->get();
         $this->data['days']     = explode(",", strtoupper(env('AVAILABLE_DAYS', 'SABTU,AHAD')));
         $this->data['redirectTo'] = $request->get('ref');
+        $halaqohId = $this->data['halaqoh']->halaqoh_id;
+        $this->data['pesertaCount'] = Peserta::where('halaqoh_id', $halaqohId)->count();
+        $this->data['kbmCount'] = \App\Model\ActivityReport::where('halaqoh_id', $halaqohId)->count();
 
     	return view('pages.halaqoh.edit', $this->data);
     }
@@ -268,6 +271,39 @@ class HalaqohController extends Controller
             return redirect()->route($redirectTo)->with('alert', ['message'=>"Perubahan informasi halaqoh gagal dilakukan", 'type'=>'danger']);
         }
 
+    }
+
+    /**
+     * Delete halaqoh if it has no peserta
+     */
+    public function deleteHalaqoh(Request $request, $halaqohReference)
+    {
+        $viewHalaqoh = ViewHalaqoh::where('halaqoh_reference', $halaqohReference)->first();
+
+        if (!$viewHalaqoh) {
+            return redirect()->route('halaqoh.manage')->with('alert', ['message' => 'Data halaqoh tidak ditemukan', 'type' => 'danger']);
+        }
+
+        $halaqohId = $viewHalaqoh->halaqoh_id;
+        $pesertaCount = Peserta::where('halaqoh_id', $halaqohId)->count();
+        $kbmCount = \App\Model\ActivityReport::where('halaqoh_id', $halaqohId)->count();
+
+        if ($pesertaCount > 0) {
+            return redirect()->back()->with('alert', ['message' => 'Halaqoh tidak dapat dihapus karena masih memiliki santri', 'type' => 'danger']);
+        }
+
+        if ($kbmCount > 0) {
+            return redirect()->back()->with('alert', ['message' => 'Halaqoh tidak dapat dihapus karena masih memiliki data KBM', 'type' => 'danger']);
+        }
+
+        $halaqoh = Halaqoh::find($halaqohId);
+
+        if ($halaqoh && $halaqoh->forceDelete()) {
+            $redirectTo = !empty($request->redirectTo) ? $request->redirectTo : 'halaqoh.manage';
+            return redirect()->route($redirectTo)->with('alert', ['message' => 'Halaqoh berhasil dihapus', 'type' => 'success']);
+        }
+
+        return redirect()->back()->with('alert', ['message' => 'Gagal menghapus halaqoh', 'type' => 'danger']);
     }
 
     /**
