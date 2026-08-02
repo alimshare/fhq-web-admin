@@ -9,7 +9,7 @@
                           <a href="{{ route('home') }}" class="brand-logo darken-1">
                             <img src="{{ env('APP_SETTING_LOGO', '/images/logo_web.png') }}" alt="logo">
                           </a> 
-                          <span class="logo-text">{{ env('APP_NAME', 'FHQ') }}</span>
+                          <span class="logo-text">{{ env('APP_NAME', 'Sistem FHQ') }}</span>
                         </h1>
                       </li>
                     </ul>
