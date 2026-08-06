@@ -63,6 +63,12 @@
             </div>
             <div class="row"> 
                 <div class="col s12 m6"> 
+                    <label for="birth_date">Tanggal Lahir</label>
+                    <input type="date" name="birth_date" value="{{ $santri->birth_date }}">
+                </div>
+            </div>
+            <div class="row"> 
+                <div class="col s12 m6"> 
                     <label for="name">Alamat</label>
                     <input type="text" name="address" value="{{ $santri->address }}">
                 </div>

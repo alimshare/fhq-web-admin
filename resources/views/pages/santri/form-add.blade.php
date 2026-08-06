@@ -54,7 +54,13 @@
             <div class="row"> 
                 <div class="col s12 m6"> 
                     <label for="phone">Nomor Telpon</label>
-                    <input type="text" name="phone" value="">
+                    <input type="number" name="phone" value="">
+                </div>
+            </div>
+            <div class="row"> 
+                <div class="col s12 m6"> 
+                    <label for="birth_date">Tanggal Lahir</label>
+                    <input type="date" name="birth_date" value="">
                 </div>
             </div>
             <div class="row" style="margin-bottom: 10px; text-align: right;">

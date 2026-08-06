@@ -46,6 +46,7 @@ class SantriController extends Controller
         $nis        = $request->input('nis');
         $gender     = $request->input('gender');
         $phone      = $request->input('phone');
+        $birthDate  = $request->input('birth_date');
 
         $kelurahan      = $request->input('kelurahan');
         $kecamatan      = $request->input('kecamatan');
@@ -62,6 +63,7 @@ class SantriController extends Controller
             $santri->name   = $name;
             $santri->gender = $gender;
             $santri->phone  = $phone;
+            $santri->birth_date = $birthDate;
 
             if ($santri->save()) {
                 $message = "simpan data santri berhasil";
@@ -81,6 +83,7 @@ class SantriController extends Controller
             $santri->name   = $name;
             $santri->gender = $gender;
             $santri->phone  = $phone;
+            $santri->birth_date = $birthDate;
             $santri->kota   = $kota;
             $santri->kecamatan   = $kecamatan;
             $santri->kelurahan   = $kelurahan;
