@@ -84,6 +84,12 @@
                                             <td>Telepon:</td>
                                             <td class="">{{ $profile->phone }}</td>
                                         </tr>
+                                        @if(!empty($profile->birth_date))
+                                        <tr>
+                                            <td>Tanggal Lahir</td>
+                                            <td class="">{{ date('d F Y', strtotime($profile->birth_date)) }} <br> {{ date('Y') - date('Y', strtotime($profile->birth_date)) }} tahun</td>
+                                        </tr>
+                                        @endif
                                     </tbody>
                                   </table>
 
