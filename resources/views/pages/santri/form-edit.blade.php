@@ -69,26 +69,32 @@
             </div>
             <div class="row"> 
                 <div class="col s12 m6"> 
-                    <label for="name">Alamat</label>
+                    <label for="address">Alamat</label>
                     <input type="text" name="address" value="{{ $santri->address }}">
                 </div>
             </div>
-            <div class="row"> 
-                <div class="col s12 m6"> 
-                    <label for="name">Kelurahan</label>
+            <div class="row">
+                <div class="col s12 m6">
+                    <label for="kelurahan">Kelurahan</label>
                     <input type="text" name="kelurahan" value="{{ $santri->kelurahan }}">
                 </div>
             </div>
-            <div class="row"> 
-                <div class="col s12 m6"> 
-                    <label for="name">Kecamatan</label>
+            <div class="row">
+                <div class="col s12 m6">
+                    <label for="kecamatan">Kecamatan</label>
                     <input type="text" name="kecamatan" value="{{ $santri->kecamatan }}">
                 </div>
             </div>
-            <div class="row"> 
-                <div class="col s12 m6"> 
-                    <label for="name">Kota/Kabupaten</label>
+            <div class="row">
+                <div class="col s12 m6">
+                    <label for="kota">Kota/Kabupaten</label>
                     <input type="text" name="kota" value="{{ $santri->kota }}">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 m6">
+                    <label for="propinsi">Provinsi</label>
+                    <input type="text" name="propinsi" value="{{ $santri->propinsi }}">
                 </div>
             </div>
             <div class="row" style="margin-bottom: 10px; text-align: right;">
