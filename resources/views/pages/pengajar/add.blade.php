@@ -57,7 +57,7 @@
             <div class="row"> 
                 <div class="col s12 m6"> 
                     <label for="phone">Nomor Telpon</label>
-                    <input type="text" name="phone" value="" required>
+                    <input type="number" name="phone" value="" required>
                 </div>
             </div>
 
