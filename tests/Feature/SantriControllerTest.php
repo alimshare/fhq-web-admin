@@ -74,4 +74,66 @@ class SantriControllerTest extends TestCase
             'birth_date' => '1995-05-10',
         ]);
     }
+
+    public function test_it_saves_address_fields_when_creating_santri()
+    {
+        $this->withoutMiddleware();
+
+        $response = $this->post('/santri/save', [
+            'name' => 'Ahmad',
+            'nis' => '1002',
+            'gender' => 'MALE',
+            'address' => 'Jl. Merdeka No. 1',
+            'kelurahan' => 'Cikini',
+            'kecamatan' => 'Menteng',
+            'kota' => 'Jakarta Pusat',
+            'propinsi' => 'DKI Jakarta',
+        ]);
+
+        $response->assertRedirect('/santri');
+
+        $this->assertDatabaseHas('santri', [
+            'nis' => '1002',
+            'address' => 'Jl. Merdeka No. 1',
+            'kelurahan' => 'Cikini',
+            'kecamatan' => 'Menteng',
+            'kota' => 'Jakarta Pusat',
+            'propinsi' => 'DKI Jakarta',
+        ]);
+    }
+
+    public function test_it_updates_address_fields_when_editing_santri()
+    {
+        $this->withoutMiddleware();
+
+        $id = $this->app['db']->table('santri')->insertGetId([
+            'nis' => '1003',
+            'name' => 'Fatimah',
+            'gender' => 'FEMALE',
+            'kota' => 'Bandung',
+        ]);
+
+        $response = $this->post('/santri/save', [
+            'id' => $id,
+            'name' => 'Fatimah',
+            'nis' => '1003',
+            'gender' => 'FEMALE',
+            'address' => 'Jl. Asia Afrika No. 5',
+            'kelurahan' => 'Braga',
+            'kecamatan' => 'Sumur Bandung',
+            'kota' => 'Kota Bandung',
+            'propinsi' => 'Jawa Barat',
+        ]);
+
+        $response->assertRedirect('/santri');
+
+        $this->assertDatabaseHas('santri', [
+            'id' => $id,
+            'address' => 'Jl. Asia Afrika No. 5',
+            'kelurahan' => 'Braga',
+            'kecamatan' => 'Sumur Bandung',
+            'kota' => 'Kota Bandung',
+            'propinsi' => 'Jawa Barat',
+        ]);
+    }
 }

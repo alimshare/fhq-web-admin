@@ -51,6 +51,7 @@ class SantriController extends Controller
         $kelurahan      = $request->input('kelurahan');
         $kecamatan      = $request->input('kecamatan');
         $kota           = $request->input('kota');
+        $propinsi       = $request->input('propinsi');
         $address        = $request->input('address');
 
         $message = "";
@@ -64,6 +65,11 @@ class SantriController extends Controller
             $santri->gender = $gender;
             $santri->phone  = $phone;
             $santri->birth_date = $birthDate;
+            $santri->kota        = $kota;
+            $santri->kecamatan   = $kecamatan;
+            $santri->kelurahan   = $kelurahan;
+            $santri->propinsi    = $propinsi;
+            $santri->address     = $address;
 
             if ($santri->save()) {
                 $message = "simpan data santri berhasil";
@@ -84,9 +90,10 @@ class SantriController extends Controller
             $santri->gender = $gender;
             $santri->phone  = $phone;
             $santri->birth_date = $birthDate;
-            $santri->kota   = $kota;
+            $santri->kota        = $kota;
             $santri->kecamatan   = $kecamatan;
             $santri->kelurahan   = $kelurahan;
+            $santri->propinsi    = $propinsi;
             $santri->address     = $address;
 
             if ($santri->save()) {

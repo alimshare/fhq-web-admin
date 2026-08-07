@@ -22,3 +22,4 @@ Route::get('/halaqoh/{halaqohReference?}/peserta', 'Api\DataController@getPesert
 Route::get('/peserta/{pesertaReference}/pindah/{halaqohReference}', 'Api\DataController@pindahHalaqoh');
 Route::get('/datatable/halaqoh', 'Api\DataController@datatableHalaqoh');
 Route::get('/datatable/peserta', 'Api\DataController@datatablePeserta');
+Route::post('/santri', 'Api\DataController@storeSantri');

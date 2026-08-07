@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Model\Halaqoh;
 use App\Model\Peserta;
+use App\Model\Santri;
 use Exception;
 use Illuminate\Support\Facades\DB;
 
@@ -143,6 +144,58 @@ class DataController extends Controller
 				];
 			}),
 		]);
+	}
+
+	function storeSantri(Request $request) {
+		$request->validate([
+			'name' => 'required|string|max:255',
+			'gender' => 'required|in:MALE,FEMALE',
+		]);
+
+		$fields = [
+			'nis', 'name', 'join_date', 'birth_date', 'birth_place',
+			'gender', 'address', 'email', 'phone',
+			'educational_background', 'educational_field',
+			'father_name', 'father_job', 'mother_name', 'mother_job',
+			'occupation', 'job_salary', 'marital_status',
+			'spouse_name', 'spouse_job',
+			'kota', 'kecamatan', 'kelurahan', 'propinsi',
+			'registration_number',
+		];
+
+		try {
+			$nis = $request->input('nis');
+			$regNumber = $request->input('registration_number');
+
+			$santri = null;
+			if ($nis) {
+				$santri = Santri::where('nis', $nis)->first();
+			}
+			if (!$santri && $regNumber) {
+				$santri = Santri::where('registration_number', $regNumber)->first();
+			}
+
+			$isNew = !$santri;
+			if ($isNew) {
+				$santri = new Santri;
+			}
+
+			foreach ($fields as $field) {
+				if ($request->has($field)) {
+					$santri->$field = $request->input($field);
+				}
+			}
+
+			$santri->save();
+
+			return response()->json([
+				'status' => 'ok',
+				'is_new' => $isNew,
+				'data' => $santri,
+			], $isNew ? 201 : 200);
+		} catch (Exception $e) {
+			return response()->json(['error' => $e->getMessage()], 500);
+		}
 	}
 
 	function pindahHalaqoh(Request $request, $pesertaReference, $halaqohReference) {
