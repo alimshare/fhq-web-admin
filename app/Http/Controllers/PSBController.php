@@ -6,6 +6,7 @@ use App\Exports\RekapDaftarUlang;
 use App\Exports\RekapDaftarUlangExport;
 use App\Model\Daftar\CalonSantri;
 use App\Model\DaftarUlang;
+use App\Model\View\ViewPeserta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -126,7 +127,7 @@ class PSBController extends Controller
                 'placement_test.penguji', 'calon_santri.upload_file', 'calon_santri.phone', 'calon_santri.nis')
             ->leftJoin('placement_test', 'placement_test.registration_number', 'calon_santri.registration_number')
             ->where('semester_psb', $semester)
-            ->orderBy('nis')
+            ->orderBy('calon_santri.created_at', 'DESC')
             ->get();
         
         
