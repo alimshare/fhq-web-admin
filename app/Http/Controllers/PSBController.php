@@ -37,7 +37,9 @@ class PSBController extends Controller
             ->where('next_semester_id', $semester)
             ->orderBy('created_at', 'DESC')
             ->get();
-            
+        
+        $data['pesertaNextSemester'] = ViewPeserta::where('semester_id', $semester)->select('peserta_id','santri_id','program_name','day')->get();
+
         $data['days'] = explode(",", strtoupper(env('AVAILABLE_DAYS', 'SABTU,AHAD')));
         
         if ($request->view == "gallery") {
@@ -49,6 +51,35 @@ class PSBController extends Controller
         }
 
         return view('pages.psb.daftar-ulang.list', $data);
+    }
+
+    function syncNextPesertDaftarUlang(Request $request) {
+        $semester = !empty($request->semester_id) ?  $request->semester_id : Session::get('semesterActive')->next_semester_id;
+
+        $list = DaftarUlang::where('next_semester_id', $semester)->with('peserta')->get();
+        $pesertaNextSemester = ViewPeserta::where('semester_id', $semester)
+            ->select('peserta_id','santri_id','program_name','day')
+            ->get()
+            ->keyBy(function($item) {
+                return strtoupper(trim($item->santri_id . '_' . $item->day));
+            });
+
+        $synced = 0;
+        foreach ($list as $du) {
+            if (empty($du->peserta->id)) continue;
+
+            $key = strtoupper(trim($du->peserta->santri_id . '_' . $du->hari));
+            $peserta = $pesertaNextSemester->get($key);
+            if (empty($peserta)) continue;
+
+            if ($du->next_peserta_id == $peserta->peserta_id) continue;
+
+            $du->next_peserta_id = $peserta->peserta_id;
+            $du->save();
+            $synced++;
+        }
+
+        return redirect()->route('du', ['semester_id'=>$semester])->with('alert', ['message'=>"Sinkronisasi peserta DU berhasil dilakukan ($synced data diperbarui)", 'type'=>'success']);
     }
 
     function editDaftarUlang(Request $request, $id)
