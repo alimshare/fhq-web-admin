@@ -36,6 +36,7 @@ Route::group(['middleware' => []], function () {
 	Route::get('/dashboard', 'HomeController@index')->name('dashboard')->middleware(['role:admin']);
 	Route::get('/admin/clear-cache/{key?}', 'HomeController@clearCache')->name('clear.cache');
 
+
 	Route::get('/rekap-nilai', [HomeController::class, 'rekapNilai'])->name('rekap.nilai')->middleware(['permission:rekap-nilai.view']);
 	Route::get('/rekap-nilai/download', 'HomeController@exportRekapNilai')->name('rekap.nilai.download')->middleware(['permission:rekap-nilai.download']);
 	
@@ -202,9 +203,10 @@ Route::prefix('/daftar-ulang')->name('du')->group(function() {
 	Route::post('/{id}/remove', [PSBController::class, 'removeDaftarUlang'])->name('.remove');
 
 	// Route::get('/add', 		[PSBController::class, 'formDaftarUlang'])->name('.add');
-	Route::patch('/{id}/verify', [PSBController::class, 'verify'])->name('.verify');
+	Route::patch('/{id}/verify', 	 [PSBController::class, 'verify'])->name('.verify');
+	Route::get('/sync-next-peserta', [PSBController::class, 'syncNextPesertDaftarUlang'])->name('.sync-next-peserta');
 });
 
 Route::prefix('/psb')->name('psb')->group(function() {
-	Route::get('', 				[PSBController::class, 'daftarCalonSantri']);
+	Route::get('', 					 [PSBController::class, 'daftarCalonSantri']);
 });
