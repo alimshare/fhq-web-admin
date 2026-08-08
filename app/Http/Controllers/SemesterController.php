@@ -32,7 +32,7 @@ class SemesterController extends Controller
         if (is_null($this->data['semester'])) {
             return redirect('semester');
         }
-        $this->data['semesters'] = Semester::where('id', '!=', $id)->orderBy('name','desc')->get();
+        $this->data['semesters'] = Semester::orderBy('name','desc')->get();
         return view('pages.semester.form', $this->data);
     }
 
